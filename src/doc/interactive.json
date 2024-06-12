@@ -1,0 +1,43 @@
+{
+    "object": "whatsapp_business_account",
+    "entry": [
+        {
+            "id": "105133522282263",
+            "changes": [
+                {
+                    "value": {
+                        "messaging_product": "whatsapp",
+                        "metadata": {
+                            "display_phone_number": "15550293773",
+                            "phone_number_id": "100584242748738"
+                        },
+                        "contacts": [
+                            {
+                                "profile": {
+                                    "name": "User Name"
+                                },
+                                "wa_id": "51123456789"
+                            }
+                        ],
+                        "messages": [
+                            {
+                                "from": "51123456789",
+                                "id": "wamid.HBgLNTE5NDM2NjI5NjQVAgASGBQzRUIwQTRBMDI4OUEwOERCNUM2OAA=",
+                                "timestamp": "1658392580",
+                                "type": "interactive",
+                                "interactive": {
+                                    "type": "list_reply",
+                                    "list_reply": {
+                                        "id": "01",
+                                        "title": "Ver habitaciones"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "field": "messages"
+                }
+            ]
+        }
+    ]
+}
