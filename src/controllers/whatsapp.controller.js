@@ -1,5 +1,5 @@
 const verifyToken = (req, res) => {
-    res.send("Hola Mundo strange hijos de mil p")
+    res.send("Hola Mundo strange cabrones")
 }
 
 const receiveMessage = (req, res) => {
