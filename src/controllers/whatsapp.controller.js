@@ -8,14 +8,17 @@ const verifyToken = (req, res) => {
         let challenge = req.query["hub.challenge"];
 
         if (challenge != null && token != null & token == accessToken) {
+            console.log("verifico ok");
             myConsole.log("verifico ok");
             res.send(challenge);
         } else {
+            console.log("no verifico");
             myConsole.log("no verifico");
             res.status(400).send();
         }
 
     } catch (ex) {
+        console.log("ocurrio una excepcion");
         myConsole.log("ocurrio una excepcion");
         res.status(400).send();
     }
