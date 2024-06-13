@@ -32,8 +32,8 @@ const receiveMessage = (req, res) => {
         let value = changes["value"];
         let messageValue = value["messages"];
 
-        myConsole.log(messageValue);
-        console.log(messageValue)
+        myConsole.log(messageValue[0]);
+        console.log(GetTextUser(messageValue[0]))
 
         res.send("EVENT_RECEIVED")
     } catch (ex) {
@@ -41,6 +41,29 @@ const receiveMessage = (req, res) => {
         myConsole.log(ex);
         res.send("EVENT_RECEIVED")
     }
+}
+
+function GetTextUser(messages) {
+    let text = "";
+    let typeMessage = messages["type"];
+    if (typeMessage == "text") {
+        text = (messages["text"])["body"]
+
+    } else if (typeMessage == "interactive") {
+        let interactiveObject = messages["interactive"];
+        let type = interactiveObject["type"];
+        if (type == "button_reply") {
+
+        } else if (type == "list_reply") {
+
+        } else {
+            console.log("sin mensaje")
+        }
+    } else {
+        console.log("sin mensaje")
+    }
+
+    return text;
 }
 
 module.exports = {
