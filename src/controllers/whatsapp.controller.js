@@ -30,10 +30,15 @@ const receiveMessage = (req, res) => {
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
         let value = changes["value"];
-        let messageValue = value["messages"];
+        let messages = value["messages"];
 
-        myConsole.log(messageValue[0]);
-        console.log(GetTextUser(messageValue[0]))
+        if (typeof messages != "undefined") {
+            let messageValue = messages[0];
+            console.log(messageValue);
+        }
+
+        // myConsole.log(messageValue[0]);
+        //console.log(GetTextUser(messageValue[0]))
 
         res.send("EVENT_RECEIVED")
     } catch (ex) {
