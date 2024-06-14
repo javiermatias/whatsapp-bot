@@ -36,7 +36,7 @@ const receiveMessage = (req, res) => {
 
         if (typeof messages != "undefined") {
             let messageValue = messages[0];
-            let number = messages["from"];
+            let number = messageValue["from"];
             whatsappService.sendMessage("mensaje user " + messageValue, number);
 
             console.log(messageValue);
