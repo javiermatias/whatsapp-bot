@@ -39,7 +39,7 @@ const receiveMessage = (req, res) => {
             let number = messages["from"];
             whatsappService.sendMessage("mensaje user " + messageValue, number);
 
-            //console.log(messageValue);
+            console.log(messageValue);
         }
 
         // myConsole.log(messageValue[0]);
