@@ -1,5 +1,6 @@
 const fs = require('fs')
 const myConsole = new console.Console(fs.createWriteStream('./logs.txt'));
+const whatsappService = require("../services/whatsappService")
 const verifyToken = (req, res) => {
 
     try {
@@ -32,9 +33,13 @@ const receiveMessage = (req, res) => {
         let value = changes["value"];
         let messages = value["messages"];
 
+
         if (typeof messages != "undefined") {
             let messageValue = messages[0];
-            console.log(messageValue);
+            let number = messages["from"];
+            whatsappService.sendMessage("mensaje user " + messageValue, number);
+
+            //console.log(messageValue);
         }
 
         // myConsole.log(messageValue[0]);
