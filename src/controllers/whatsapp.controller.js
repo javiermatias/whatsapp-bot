@@ -1,8 +1,9 @@
 const fs = require('fs')
 const myConsole = new console.Console(fs.createWriteStream('./logs.txt'));
-const whatsappService = require("../services/whatsappService")
-const utilities = require("../shared/utilities")
+const whatsappService = require("../services/whatsappService");
+const utilities = require("../shared/utilities");
 const usersState = {}; // Aquí almacenamos el estado de cada usuario
+const model = require("../shared/models");
 
 const verifyToken = (req, res) => {
 
@@ -47,16 +48,18 @@ const receiveMessage = (req, res) => {
             //console.log(userState);
             switch (userState.step) {
                 case 1:
-                    whatsappService.sendMessage(number, utilities.greetingMessage);
+                    let modelGreeting = model.modelText(number, utilities.greetingMessage);
+                    whatsappService.sendMessage(modelGreeting);
                     userState.step = 2;
                     break;
                 case 2:
-                    userState.name = text;
-                    whatsappService.sendMessage(number, `Gracias ${userState.name}. ¿Cuál es tu edad?`);
+                    //userState.name = text;
+                    let modelOpcion = model.modelButtonAusencia(number, "Que tipo de ausencia quieres notificar?")
+                    whatsappService.sendMessage(modelOpcion);
                     userState.step = 3;
                     break;
                 case 3:
-                    userState.age = text;
+                    //userState.age = text;
                     whatsappService.sendMessage(number, `Perfecto ${userState.name}, de ${userState.age} años. ¡Hemos terminado!`);
                     userState.step = 1; // Reiniciamos el flujo
                     break;
