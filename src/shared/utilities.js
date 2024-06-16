@@ -15,10 +15,12 @@ function GetTextUser(messages) {
     } else if (typeMessage == "interactive") {
         let interactiveObject = messages["interactive"];
         let type = interactiveObject["type"];
+
         if (type == "button_reply") {
+            text = (interactiveObject["button_reply"])["title"]
 
         } else if (type == "list_reply") {
-
+            text = (interactiveObject["list_reply"])["title"]
         } else {
             console.log("sin mensaje")
         }
