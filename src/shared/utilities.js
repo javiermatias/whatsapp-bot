@@ -1,8 +1,6 @@
 // messages.js
 
-const greetingMessage = `Bienvenidos a Ausentismos online. Para notificar su ausencia
-                         via online puede dirigirse a: https://front-ausentismo.vercel.app/
-                         Si quiere notificar la ausencia por este medio indique *OK*`;
+const greetingMessage = "Bienvenidos a Ausentismos online. Para notificar su ausencia via online puede dirigirse a: https://front-ausentismo.vercel.app/ Si quiere notificar la ausencia por este medio indique *OK*";
 const farewellMessage = "Goodbye! Have a great day!";
 const helpMessage = "Here are some things you can ask me to do...";
 const errorMessage = "Oops! Something went wrong. Please try again.";
