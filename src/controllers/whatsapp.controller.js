@@ -1,6 +1,9 @@
 const fs = require('fs')
 const myConsole = new console.Console(fs.createWriteStream('./logs.txt'));
 const whatsappService = require("../services/whatsappService")
+
+const usersState = {}; // Aquí almacenamos el estado de cada usuario
+
 const verifyToken = (req, res) => {
 
     try {
@@ -38,7 +41,34 @@ const receiveMessage = (req, res) => {
             let messageValue = messages[0];
             let number = messageValue["from"];
             let text = GetTextUser(messageValue)
-            whatsappService.sendMessage("mensaje user " + text, number);
+
+            if (!usersState[number]) {
+                usersState[number] = { step: 1 };
+            }
+
+            const userState = usersState[number];
+            console.log("numero: " + number + " estado: " + userState);
+            //console.log(userState);
+            switch (userState.step) {
+                case 1:
+                    whatsappService.sendMessage(number, 'Bienvenido! ¿Cuál es tu nombre?');
+                    userState.step = 2;
+                    break;
+                case 2:
+                    userState.name = text;
+                    whatsappService.sendMessage(number, `Gracias ${userState.name}. ¿Cuál es tu edad?`);
+                    userState.step = 3;
+                    break;
+                case 3:
+                    userState.age = text;
+                    whatsappService.sendMessage(number, `Perfecto ${userState.name}, de ${userState.age} años. ¡Hemos terminado!`);
+                    userState.step = 1; // Reiniciamos el flujo
+                    break;
+                default:
+                    whatsappService.sendMessage(number, 'Algo salió mal, vamos a empezar de nuevo. ¿Cuál es tu nombre?');
+                    userState.step = 1;
+                    break;
+            }
 
             console.log(messageValue);
         }
