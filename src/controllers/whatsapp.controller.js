@@ -1,7 +1,7 @@
 const fs = require('fs')
 const myConsole = new console.Console(fs.createWriteStream('./logs.txt'));
 const whatsappService = require("../services/whatsappService")
-
+const utilities = require("../shared/utilities")
 const usersState = {}; // Aquí almacenamos el estado de cada usuario
 
 const verifyToken = (req, res) => {
@@ -12,18 +12,14 @@ const verifyToken = (req, res) => {
         let challenge = req.query["hub.challenge"];
 
         if (challenge != null && token != null & token == accessToken) {
-            console.log("verifico ok");
-            myConsole.log("verifico ok");
             res.send(challenge);
         } else {
-            console.log("no verifico");
-            myConsole.log("no verifico");
             res.status(400).send();
         }
 
     } catch (ex) {
-        console.log("ocurrio una excepcion");
-        myConsole.log("ocurrio una excepcion");
+        /* console.log("ocurrio una excepcion");
+        myConsole.log("ocurrio una excepcion"); */
         res.status(400).send();
     }
 
@@ -40,7 +36,7 @@ const receiveMessage = (req, res) => {
         if (typeof messages != "undefined") {
             let messageValue = messages[0];
             let number = messageValue["from"];
-            let text = GetTextUser(messageValue)
+            let text = utilities.GetTextUser(messageValue);
 
             if (!usersState[number]) {
                 usersState[number] = { step: 1 };
@@ -51,7 +47,7 @@ const receiveMessage = (req, res) => {
             //console.log(userState);
             switch (userState.step) {
                 case 1:
-                    whatsappService.sendMessage(number, 'Bienvenido! ¿Cuál es tu nombre?');
+                    whatsappService.sendMessage(number, utilities.greetingMessage);
                     userState.step = 2;
                     break;
                 case 2:
@@ -84,28 +80,7 @@ const receiveMessage = (req, res) => {
     }
 }
 
-function GetTextUser(messages) {
-    let text = "";
-    let typeMessage = messages["type"];
-    if (typeMessage == "text") {
-        text = (messages["text"])["body"]
 
-    } else if (typeMessage == "interactive") {
-        let interactiveObject = messages["interactive"];
-        let type = interactiveObject["type"];
-        if (type == "button_reply") {
-
-        } else if (type == "list_reply") {
-
-        } else {
-            console.log("sin mensaje")
-        }
-    } else {
-        console.log("sin mensaje")
-    }
-
-    return text;
-}
 
 module.exports = {
     verifyToken,
