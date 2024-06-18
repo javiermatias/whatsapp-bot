@@ -25,7 +25,13 @@ function sendMessage(data) {
 
 }
 
+// Function to check if the text is numeric
+function isNumeric(text) {
+    return /^\d+$/.test(text);
+}
+
 
 module.exports = {
-    sendMessage
+    sendMessage,
+    isNumeric
 }

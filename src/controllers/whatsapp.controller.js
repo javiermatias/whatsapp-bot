@@ -79,7 +79,7 @@ const receiveMessage = (req, res) => {
                     // i have to send a message to repeat 
                     const dni = Number.parseInt(text)
                     // Check if the conversion resulted in a valid number
-                    if (isNaN(dni)) {
+                    if (whatsappService.isNumeric(dni)) {
                         let errorDni = model.modelText(number, utilities.errorDni);
                         whatsappService.sendMessage(errorDni);
                         userState.step = 2;
