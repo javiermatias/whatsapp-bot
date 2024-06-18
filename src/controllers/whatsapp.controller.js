@@ -1,4 +1,5 @@
-const fs = require('fs')
+const fs = require('fs');
+require('dotenv').config();
 const myConsole = new console.Console(fs.createWriteStream('./logs.txt'));
 const whatsappService = require("../services/whatsappService");
 const utilities = require("../shared/utilities");
@@ -8,7 +9,7 @@ const model = require("../shared/models");
 const verifyToken = (req, res) => {
 
     try {
-        let accessToken = "ASDA#$@RRDFS#@$DFSVXC234234SDF";
+        let accessToken = process.env.accessToken;
         let token = req.query["hub.verify_token"];
         let challenge = req.query["hub.challenge"];
 
