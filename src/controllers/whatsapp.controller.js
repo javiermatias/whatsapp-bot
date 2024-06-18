@@ -69,7 +69,7 @@ const receiveMessage = (req, res) => {
                     userState.step = 2;
                     break;
                 case 2:
-                    let modelDni = model.modelText(number, utilities.dniMessage);
+                    const modelDni = model.modelText(number, utilities.dniMessage);
                     whatsappService.sendMessage(modelDni);
                     userState.step = 3;
                     break;
@@ -77,12 +77,14 @@ const receiveMessage = (req, res) => {
                     //userState.name = text;
                     //here i have to see if dni is a number or not if tis not a number
                     // i have to send a message to repeat 
-                    const dni = Number.parseInt(text)
+                    //const dni = Number.parseInt(text)
                     // Check if the conversion resulted in a valid number
-                    if (whatsappService.isNumeric(dni)) {
+                    if (whatsappService.isNumeric(text)) {
                         let errorDni = model.modelText(number, utilities.errorDni);
+                        let modelDni = model.modelText(number, utilities.dniMessage);
                         whatsappService.sendMessage(errorDni);
-                        userState.step = 2;
+                        whatsappService.sendMessage(modelDni);
+                        userState.step = 3;
                     } else {
                         //Traer el dni del usuario
                         // If it's a valid number, proceed with updating the user state
