@@ -29,6 +29,8 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = (req, res) => {
     try {
+        myConsole.log(req);
+
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
         let value = changes["value"];
