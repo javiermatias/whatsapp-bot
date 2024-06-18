@@ -6,6 +6,11 @@ const utilities = require("../shared/utilities");
 const usersState = {}; // Aquí almacenamos el estado de cada usuario
 const model = require("../shared/models");
 
+const test = (req, res) => {
+    console.log(new Date().getTime());
+    res.send("hola")
+}
+
 const verifyToken = (req, res) => {
 
     try {
@@ -27,39 +32,71 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = (req, res) => {
     try {
-        myConsole.log(req);
+        //myConsole.log(req);
 
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
         let value = changes["value"];
         let messages = value["messages"];
+        const dni = 32972080;
 
 
         if (typeof messages != "undefined") {
-            let messageValue = messages[0];
-            let number = messageValue["from"];
-            let text = utilities.GetTextUser(messageValue);
-
+            const messageValue = messages[0];
+            const number = messageValue["from"];
+            const text = utilities.GetTextUser(messageValue);
+            const currentTime = new Date().getTime();
             if (!usersState[number]) {
-                usersState[number] = { step: 1 };
+                usersState[number] = { step: 1, timestamp: currentTime };
+            } else {
+                const lastInteractionTime = usersState[number].timestamp;
+                const timeDifference = currentTime - lastInteractionTime;
+                // 20 minutes in milliseconds
+                const twentyMinutes = 20 * 60 * 1000;
+                // If more than 20 minutes have passed, reset the step
+                if (timeDifference > twentyMinutes) {
+                    usersState[number] = { step: 1, timestamp: currentTime };
+                }
             }
 
             const userState = usersState[number];
-            console.log("numero: " + number + " estado: " + userState);
-            //console.log(userState);
+            //console.log("numero: " + number + " estado: " + userState);
+            console.log(userState);
             switch (userState.step) {
                 case 1:
-                    let modelGreeting = model.modelText(number, utilities.greetingMessage);
+                    const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
                     userState.step = 2;
                     break;
                 case 2:
-                    //userState.name = text;
-                    let modelOpcion = model.modelButtonAusencia(number, "Que tipo de ausencia quieres notificar?")
-                    whatsappService.sendMessage(modelOpcion);
+                    let modelDni = model.modelText(number, utilities.dniMessage);
+                    whatsappService.sendMessage(modelDni);
                     userState.step = 3;
                     break;
                 case 3:
+                    //userState.name = text;
+                    //here i have to see if dni is a number or not if tis not a number
+                    // i have to send a message to repeat 
+                    const dni = Number.parseInt(text)
+                    // Check if the conversion resulted in a valid number
+                    if (isNaN(dni)) {
+                        let errorDni = model.modelText(number, utilities.errorDni);
+                        whatsappService.sendMessage(errorDni);
+                        userState.step = 2;
+                    } else {
+                        //Traer el dni del usuario
+                        // If it's a valid number, proceed with updating the user state
+                        userState.dni = dni;
+                        let dniAceptado = model.modelText(number, utilities.dniAceptado);
+                        whatsappService.sendMessage(dniAceptado);
+                        userState.step = 4;
+                    }
+
+                    //let modelOpcion = model.modelButtonAusencia(number, "Que tipo de ausencia quieres notificar?")
+                    //whatsappService.sendMessage(modelOpcion);
+
+                    break;
+                case 4:
                     //userState.age = text;
                     whatsappService.sendMessage(number, `Perfecto ${userState.name}, de ${userState.age} años. ¡Hemos terminado!`);
                     userState.step = 1; // Reiniciamos el flujo
@@ -88,5 +125,6 @@ const receiveMessage = (req, res) => {
 
 module.exports = {
     verifyToken,
-    receiveMessage
+    receiveMessage,
+    test
 }
