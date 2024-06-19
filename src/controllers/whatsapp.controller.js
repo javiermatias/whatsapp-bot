@@ -80,18 +80,20 @@ const receiveMessage = (req, res) => {
                     //const dni = Number.parseInt(text)
                     // Check if the conversion resulted in a valid number
                     if (whatsappService.isNumeric(text)) {
-                        let errorDni = model.modelText(number, utilities.errorDni);
-                        let modelDni = model.modelText(number, utilities.dniMessage);
-                        whatsappService.sendMessage(errorDni);
-                        whatsappService.sendMessage(modelDni);
-                        userState.step = 3;
-                    } else {
                         //Traer el dni del usuario
                         // If it's a valid number, proceed with updating the user state
                         userState.dni = dni;
                         let dniAceptado = model.modelText(number, utilities.dniAceptado);
                         whatsappService.sendMessage(dniAceptado);
                         userState.step = 4;
+                    } else {
+
+                        let errorDni = model.modelText(number, utilities.errorDni);
+                        let modelDni = model.modelText(number, utilities.dniMessage);
+                        whatsappService.sendMessage(errorDni);
+                        whatsappService.sendMessage(modelDni);
+                        userState.step = 3;
+
                     }
 
                     //let modelOpcion = model.modelButtonAusencia(number, "Que tipo de ausencia quieres notificar?")
