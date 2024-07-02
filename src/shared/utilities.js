@@ -6,6 +6,8 @@ const errorDni = "Disculpa! El DNI que indicaste tiene un error. ";
 const dniAceptado = "Gracias por indicar tu dni";
 const userNoEncontrado = "No encontramos tu dni. Por favor registrese en https://front-ausentismo.vercel.app/register";
 const tituloBoton = "Ausencia por enfermedad u otras causas";
+const nombre = "Ingrese su nombre";
+const apellido = "Ingrese su apellido";
 const test = "Mensaje de prueba";
 
 
@@ -43,5 +45,7 @@ module.exports = {
     dniMessage,
     errorDni,
     dniAceptado,
-    userNoEncontrado
+    userNoEncontrado,
+    nombre,
+    apellido
 }
