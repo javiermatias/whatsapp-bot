@@ -90,10 +90,11 @@ const receiveMessage = async(req, res) => {
                             userState.user = user;
                             let dniAceptado = model.modelText(number, utilities.dniAceptado);
                             whatsappService.sendMessage(dniAceptado);
-                            userState.step = 4;
+                            userState.step = 3;
                         }else{
                             const dniNoEncontrado = model.modelText(number, utilities.userNoEncontrado);
-                            whatsappService.sendMessage(dniNoEncontrado);                            
+                            whatsappService.sendMessage(dniNoEncontrado); 
+                            userState.step = 3;                           
                         }
                         
                       
