@@ -38,10 +38,10 @@ function GetTextUser(messages) {
 module.exports = {
     GetTextUser,
     greetingMessage,
-    farewellMessage,
     helpMessage,
     errorMessage,
     dniMessage,
     errorDni,
-    dniAceptado
+    dniAceptado,
+    userNoEncontrado
 }
