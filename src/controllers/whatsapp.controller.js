@@ -7,6 +7,8 @@ const usersState = {}; // Aquí almacenamos el estado de cada usuario
 const model = require("../shared/models");
 
 const test = (req, res) => {
+    let accessToken = process.env.accessToken;
+    console.log(accessToken);
     console.log(new Date().getTime());
     res.send("hola")
 }
@@ -15,6 +17,7 @@ const verifyToken = (req, res) => {
 
     try {
         let accessToken = process.env.accessToken;
+        console.log(accessToken);
         let token = req.query["hub.verify_token"];
         let challenge = req.query["hub.challenge"];
         if (challenge != null && token != null & token == accessToken) {
@@ -30,7 +33,7 @@ const verifyToken = (req, res) => {
 
 }
 
-const receiveMessage = (req, res) => {
+const receiveMessage = async(req, res) => {
     try {
         //myConsole.log(req);
 
@@ -63,11 +66,13 @@ const receiveMessage = (req, res) => {
             //console.log("numero: " + number + " estado: " + userState);
             console.log(userState);
             switch (userState.step) {
+                // Bienvenidos a Ausentismos Online
                 case 1:
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
                     userState.step = 2;
                     break;
+                // Por favor indique numero de DNI
                 case 2:
                     const modelDni = model.modelText(number, utilities.dniMessage);
                     whatsappService.sendMessage(modelDni);
@@ -81,11 +86,12 @@ const receiveMessage = (req, res) => {
                     // Check if the conversion resulted in a valid number
                     if (whatsappService.isNumeric(text)) {
                         //Traer el dni del usuario
-                        // If it's a valid number, proceed with updating the user state
+                        const user = whatsappService.findByDni(text)                    
+                        console.log(user);
                         userState.dni = dni;
                         let dniAceptado = model.modelText(number, utilities.dniAceptado);
                         whatsappService.sendMessage(dniAceptado);
-                        userState.step = 4;
+                        userState.step = 3;
                     } else {
 
                         let errorDni = model.modelText(number, utilities.errorDni);
