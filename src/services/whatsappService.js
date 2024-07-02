@@ -5,7 +5,7 @@ require('dotenv').config();
 const base_url = 'https://ausentismos.online/api/';
 async function findByDni(dni){
     const url = `${base_url}/whatsapp/${dni}`;
-    console.log(url);
+    //console.log(url);
     try {
       const response = await axios.get(url);
       return response.data; // Return the data if the request is successful

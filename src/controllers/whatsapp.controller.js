@@ -86,11 +86,18 @@ const receiveMessage = async(req, res) => {
                     if (whatsappService.isNumeric(text)) {
                         //Traer el dni del usuario
                         const user = await whatsappService.findByDni(text)                    
-                        console.log(user);
-                        userState.dni = dni;
-                        let dniAceptado = model.modelText(number, utilities.dniAceptado);
-                        whatsappService.sendMessage(dniAceptado);
-                        userState.step = 3;
+                        if(user){
+                            userState.user = user;
+                            let dniAceptado = model.modelText(number, utilities.dniAceptado);
+                            whatsappService.sendMessage(dniAceptado);
+                            userState.step = 4;
+                        }else{
+                            const dniNoEncontrado = model.modelText(number, utilities.userNoEncontrado);
+                            whatsappService.sendMessage(dniNoEncontrado);                            
+                        }
+                        
+                      
+                        
                     } else {
 
                         let errorDni = model.modelText(number, utilities.errorDni);
