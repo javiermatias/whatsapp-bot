@@ -2,8 +2,8 @@ const https = require("https");
 const axios = require('axios');
 require('dotenv').config();
 
+const base_url = 'https://ausentismos.online/api/';
 async function findByDni(dni){
-    const base_url = process.env.base_url;
     const url = `${base_url}/whatsapp/${dni}`;
     console.log(url);
     try {
