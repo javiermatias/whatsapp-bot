@@ -121,8 +121,8 @@ const receiveMessage = async(req, res) => {
                     userState.step = 1; // Reiniciamos el flujo
                     break;
                 default:
-                    whatsappService.sendMessage(number, 'Algo salió mal, vamos a empezar de nuevo. ¿Cuál es tu nombre?');
-                    userState.step = 1;
+                    const test1 = model.modelText(number, utilities.test);                    
+                    whatsappService.sendMessage(number, test1);
                     break;
             }
 
