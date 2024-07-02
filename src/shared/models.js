@@ -18,7 +18,6 @@ function modelButtonAusencia(number, text) {
         "recipient_type": "individual",
         "to": number,
         "type": "interactive",
-
         "interactive": {
             "type": "button",
             "body": {
