@@ -6,11 +6,11 @@ const errorDni = "Disculpa! El DNI que indicaste tiene un error. ";
 const dniAceptado = "Gracias por indicar tu dni";
 const userNoEncontrado = "No encontramos tu dni. Por favor registrese en https://front-ausentismo.vercel.app/register";
 const tituloBoton = "Ausencia por enfermedad u otras causas";
-const errorMessage = "Oops! Something went wrong. Please try again.";
+const test = "Mensaje de prueba";
 
 
 function GetTextUser(messages) {
-    console.log(messages);
+    //console.log(messages);
     let text = "";
     let typeMessage = messages["type"];
     if (typeMessage == "text") {
@@ -39,7 +39,7 @@ module.exports = {
     GetTextUser,
     greetingMessage,
     tituloBoton,
-    errorMessage,
+    test,
     dniMessage,
     errorDni,
     dniAceptado,

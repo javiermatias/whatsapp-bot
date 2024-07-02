@@ -47,6 +47,7 @@ const receiveMessage = async(req, res) => {
             const messageValue = messages[0];
             const number = messageValue["from"];
             const text = utilities.GetTextUser(messageValue);
+            console.log(text);
             const currentTime = new Date().getTime();
             if (!usersState[number]) {
                 usersState[number] = { step: 1, timestamp: currentTime };
@@ -102,8 +103,8 @@ const receiveMessage = async(req, res) => {
                         
                     } else {
 
-                        let errorDni = model.modelText(number, utilities.errorDni);
-                        let modelDni = model.modelText(number, utilities.dniMessage);
+                        const errorDni = model.modelText(number, utilities.errorDni);
+                        const modelDni = model.modelText(number, utilities.dniMessage);
                         whatsappService.sendMessage(errorDni);
                         whatsappService.sendMessage(modelDni);
                         userState.step = 3;
@@ -115,8 +116,8 @@ const receiveMessage = async(req, res) => {
 
                     break;
                 case 4:
-                    //userState.age = text;
-                    whatsappService.sendMessage(number, `Perfecto ${userState.name}, de ${userState.age} años. ¡Hemos terminado!`);
+                    const test = model.modelText(number, utilities.test);                    
+                    whatsappService.sendMessage(number, test);
                     userState.step = 1; // Reiniciamos el flujo
                     break;
                 default:
