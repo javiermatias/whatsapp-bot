@@ -88,13 +88,14 @@ const receiveMessage = async(req, res) => {
                         const user = await whatsappService.findByDni(text)                    
                         if(user){
                             userState.user = user;
-                            let dniAceptado = model.modelText(number, utilities.dniAceptado);
-                            whatsappService.sendMessage(dniAceptado);
-                            userState.step = 3;
+                            const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
+                            whatsappService.sendMessage(botonEleccion);
+
+                            userState.step = 4;
                         }else{
                             const dniNoEncontrado = model.modelText(number, utilities.userNoEncontrado);
                             whatsappService.sendMessage(dniNoEncontrado); 
-                            userState.step = 3;                           
+                            userState.step = 1;                           
                         }
                         
                       

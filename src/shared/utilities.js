@@ -4,9 +4,8 @@ const greetingMessage = "Bienvenidos a Ausentismos online. Para notificar su aus
 const dniMessage = "Por favor indique numero de *DNI*:";
 const errorDni = "Disculpa! El DNI que indicaste tiene un error. ";
 const dniAceptado = "Gracias por indicar tu dni";
-
 const userNoEncontrado = "No encontramos tu dni. Por favor registrese en https://front-ausentismo.vercel.app/register";
-const helpMessage = "Here are some things you can ask me to do...";
+const tituloBoton = "Ausencia por enfermedad u otras causas";
 const errorMessage = "Oops! Something went wrong. Please try again.";
 
 
@@ -38,7 +37,7 @@ function GetTextUser(messages) {
 module.exports = {
     GetTextUser,
     greetingMessage,
-    helpMessage,
+    tituloBoton,
     errorMessage,
     dniMessage,
     errorDni,
