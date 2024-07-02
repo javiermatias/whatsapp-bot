@@ -10,6 +10,7 @@ const errorMessage = "Oops! Something went wrong. Please try again.";
 
 
 function GetTextUser(messages) {
+    console.log(messages);
     let text = "";
     let typeMessage = messages["type"];
     if (typeMessage == "text") {

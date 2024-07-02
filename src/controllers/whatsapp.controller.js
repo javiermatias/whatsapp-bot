@@ -40,7 +40,7 @@ const receiveMessage = async(req, res) => {
         let changes = (entry["changes"])[0];
         let value = changes["value"];
         let messages = value["messages"];
-        const dni = 32972080;
+       
 
 
         if (typeof messages != "undefined") {
@@ -125,7 +125,7 @@ const receiveMessage = async(req, res) => {
                     break;
             }
 
-            console.log(messageValue);
+            //console.log(messageValue);
         }
 
         // myConsole.log(messageValue[0]);
