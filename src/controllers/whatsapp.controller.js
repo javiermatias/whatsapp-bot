@@ -116,8 +116,8 @@ const receiveMessage = async(req, res) => {
 
                     break;
                 case 4:
-                    //const test = model.modelText(number, utilities.test);                    
-                    //whatsappService.sendMessage(number, test);
+                    const modelDni1 = model.modelText(number, utilities.dniMessage);
+                    whatsappService.sendMessage(modelDni1);
                     userState.step = 1; // Reiniciamos el flujo
                     break;
                 default:
