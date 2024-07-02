@@ -1,5 +1,6 @@
 const https = require("https");
 const axios = require('axios');
+require('dotenv').config();
 
 async function findByDni(dni){
     const base_url = process.env.base_url;
