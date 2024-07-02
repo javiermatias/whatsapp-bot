@@ -7,9 +7,8 @@ const usersState = {}; // Aquí almacenamos el estado de cada usuario
 const model = require("../shared/models");
 
 const test = (req, res) => {
-    let accessToken = process.env.accessToken;
-    console.log(accessToken);
-    console.log(new Date().getTime());
+    const user =whatsappService.findByDni("32972085");
+
     res.send("hola")
 }
 
@@ -86,7 +85,7 @@ const receiveMessage = async(req, res) => {
                     // Check if the conversion resulted in a valid number
                     if (whatsappService.isNumeric(text)) {
                         //Traer el dni del usuario
-                        const user = whatsappService.findByDni(text)                    
+                        const user = await whatsappService.findByDni(text)                    
                         console.log(user);
                         userState.dni = dni;
                         let dniAceptado = model.modelText(number, utilities.dniAceptado);

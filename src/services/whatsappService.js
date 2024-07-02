@@ -4,6 +4,7 @@ const axios = require('axios');
 async function findByDni(dni){
     const base_url = process.env.base_url;
     const url = `${base_url}/whatsapp/${dni}`;
+    console.log(url);
     try {
       const response = await axios.get(url);
       return response.data; // Return the data if the request is successful
