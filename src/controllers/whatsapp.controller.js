@@ -150,7 +150,7 @@ const receiveMessage = async(req, res) => {
                 case 9://celular
                     userState.celular = text;                         
                                      
-                    const provincia = model.modelList(number, "Provincia", "Elija su provincia", "Ver Opciones") 
+                    const provincia = model.modelList(number, "Elija su Provincia", "Ver Opciones") 
                     whatsappService.sendMessage(provincia);
                     //userState.step = 8; 
                     break;         
