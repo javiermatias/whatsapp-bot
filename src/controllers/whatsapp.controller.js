@@ -70,7 +70,7 @@ const receiveMessage = async(req, res) => {
                 case 1:
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
-                    userState.step = 2;
+                    userState.step = 9;
                     break;
                 // Por favor indique numero de DNI
                 case 2:
@@ -148,9 +148,10 @@ const receiveMessage = async(req, res) => {
                     userState.step = 9; 
                     break; 
                 case 9://celular
-                    userState.celular = text;                                            
-                    //const direccion = model.modelText(number, utilities.direccion);
-                    //whatsappService.sendMessage(direccion);
+                    userState.celular = text;                         
+                                     
+                    const provincia = model.modelList(number, "Provincia", "Elija su provincia", "Ver Opciones") 
+                    whatsappService.sendMessage(provincia);
                     //userState.step = 8; 
                     break;         
                 default://direccion
