@@ -12,18 +12,17 @@ function modelText(number, text) {
     return data;
 }
 
-function modelList(number, header, footer) {
+function modelList(number, body, footer) {
     const data = JSON.stringify({
     "messaging_product": "whatsapp",
     "recipient_type": "individual",
     "to": number,
     "type": "interactive",
     "interactive": {
-        "type": "list",
-        "header": {
-            "type": "text",
-            "text": header
-        },    
+        "type": "list",    
+        "body": {
+            "text": body
+        },      
         "action": {
             "button": footer,
             "sections": [
