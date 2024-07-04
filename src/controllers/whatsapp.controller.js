@@ -97,10 +97,8 @@ const receiveMessage = async(req, res) => {
                             const dniNoEncontrado = model.modelText(number, utilities.userNoEncontrado);
                             whatsappService.sendMessage(dniNoEncontrado); 
                             userState.step = 1;                           
-                        }
-                        
-                      
-                        
+                        }                      
+                                              
                     } else {
 
                         const errorDni = model.modelText(number, utilities.errorDni);
@@ -109,24 +107,53 @@ const receiveMessage = async(req, res) => {
                         whatsappService.sendMessage(modelDni);
                         userState.step = 3;
 
+                    }               
+
+                    break;
+                case 4://nombre y apellido
+                    if(text == "Enfermedad" || text == "Otros"){
+                        userState.causa = text;                  
+                        const nombreyapellido = model.modelText(number, utilities.apellido);
+                        whatsappService.sendMessage(nombreyapellido);
+                        userState.step = 5; 
+                    }else{
+                        const ausencia = model.modelText(number, utilities.ausencia);
+                        whatsappService.sendMessage(ausencia);
+                        userState.step = 4; 
                     }
-
-                    //let modelOpcion = model.modelButtonAusencia(number, "Que tipo de ausencia quieres notificar?")
-                    //whatsappService.sendMessage(modelOpcion);
-
+              
                     break;
-                case 4:
-                    userState.causa = text;                  
-                    const nombre = model.modelText(number, utilities.nombre);
-                    whatsappService.sendMessage(nombre);
-                    userState.step = 5; // Reiniciamos el flujo
+                case 5: //email
+                    userState.nombreApellido = text;                                            
+                    const email = model.modelText(number, utilities.email);
+                    whatsappService.sendMessage(email);
+                    userState.step = 6; 
                     break;
-                case 5:                                         
-                    const apellido = model.modelText(number, utilities.apellido);
-                    whatsappService.sendMessage(apellido);
-                    userState.step = 6; // Reiniciamos el flujo
+                case 6://legajo
+                    userState.email = text;                                            
+                    const legajo = model.modelText(number, utilities.legajo);
+                    whatsappService.sendMessage(legajo);
+                    userState.step = 7; 
                     break;
-                default:
+                case 7://direccion
+                    userState.legajo = text;                                            
+                    const dire = model.modelText(number, utilities.direccion);
+                    whatsappService.sendMessage(dire);
+                    userState.step = 8; 
+                    break;
+                case 8://celular
+                    userState.direccion = text;                                            
+                    const celular = model.modelText(number, utilities.celular);
+                    whatsappService.sendMessage(celular);
+                    userState.step = 9; 
+                    break; 
+                case 9://celular
+                    userState.celular = text;                                            
+                    //const direccion = model.modelText(number, utilities.direccion);
+                    //whatsappService.sendMessage(direccion);
+                    //userState.step = 8; 
+                    break;         
+                default://direccion
                     //const test1 = model.modelText(number, utilities.test);                    
                     //whatsappService.sendMessage(number, test1);
                     break;
@@ -137,7 +164,7 @@ const receiveMessage = async(req, res) => {
 
         // myConsole.log(messageValue[0]);
         //console.log(GetTextUser(messageValue[0]))
-
+   
         res.send("EVENT_RECEIVED")
     } catch (ex) {
 
