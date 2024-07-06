@@ -37,7 +37,7 @@ function modelList(number, header, body, footer, title, rows) {
 
 
     const sectionsj =  JSON.stringify(sections);
-
+    console.log(sectionsj);
 
     const data = JSON.stringify({
     "messaging_product": "whatsapp",
