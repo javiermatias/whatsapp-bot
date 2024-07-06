@@ -6,6 +6,8 @@ const utilities = require("../shared/utilities");
 const usersState = {}; // Aquí almacenamos el estado de cada usuario
 const model = require("../shared/models");
 
+
+
 const test = async(req, res) => {
     const user =await whatsappService.findProvincia(1079);
     console.log(user);
@@ -69,6 +71,7 @@ const receiveMessage = async(req, res) => {
             switch (userState.step) {
                 // Bienvenidos a Ausentismos Online
                 case 1:
+                    userState.user = JSON.parse(utilities.userJson);
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
                     userState.step = 9;

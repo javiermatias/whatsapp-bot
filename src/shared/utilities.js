@@ -13,6 +13,24 @@ const legajo = "Ingrese su legajo, 0 si no tiene";
 const direccion = "Ingrese su dirección";
 const celular = "Ingrese su celular";
 const test = "Mensaje de prueba";
+const userJson = `
+{
+    "id": 3,
+    "dni": 32972085,
+    "nombre": "javi",
+    "apellido": "jimenez",
+    "role": {
+        "id": 3,
+        "roleName": "empleado",
+        "description": "Empleados de la empresa"
+    },
+    "empresa": {
+        "id": 1079,
+        "nombre": "Carrefour",
+        "razonSocial": "Carrefour",
+        "createdAt": "2023-11-03T03:29:11.698Z"
+    }
+}`;
 
 
 function GetTextUser(messages) {
@@ -55,5 +73,6 @@ module.exports = {
     email,
     legajo,
     direccion,
-    celular
+    celular,
+    userJson
 }
