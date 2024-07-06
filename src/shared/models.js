@@ -1,3 +1,11 @@
+function chunkArray(array, chunkSize) {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+}
+
 function modelText(number, text) {
     const data = JSON.stringify({
         "messaging_product": "whatsapp",
@@ -18,9 +26,17 @@ function modelList(number, header, body, footer, title, rows) {
         id: item.id.toString(),
         title: item.nombre,
         description: item.nombre
-      })).slice(0, 9);
+      }))
 
-    const itemsj =  JSON.stringify(items);
+      const chunks = chunkArray(items, 10);
+
+      const sections = chunks.map((chunk, index) => ({
+        title: `${title} ${index + 1}`,
+        rows: chunk
+      }));
+
+
+    const sectionsj =  JSON.stringify(sections);
 
 
     const data = JSON.stringify({
@@ -39,13 +55,7 @@ function modelList(number, header, body, footer, title, rows) {
         },      
         "action": {
             "button": footer,
-            "sections": [
-                {
-                    "title": title,
-                    "rows": itemsj
-                }
-         
-            ]
+            "sections": sectionsj
         }
     }
     })
