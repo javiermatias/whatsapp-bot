@@ -152,7 +152,7 @@ const receiveMessage = async(req, res) => {
                     userState.celular = text;
                     const empresaId = userState.user.empresa.id;     
                     const provincias = await whatsappService.findProvincia(empresaId);                    
-                                     
+                     console.log(provincias)                
                     const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
                     whatsappService.sendMessage(provincia);
                     //userState.step = 8; 
