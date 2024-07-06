@@ -28,7 +28,7 @@ function modelList(number, header, body, footer, title, rows) {
         description: item.nombre
       }))
 
-      const chunks = chunkArray(items, 10);
+      const chunks = chunkArray(items, 9);
 
       const sections = chunks.map((chunk, index) => ({
         title: `${title} ${index + 1}`,
