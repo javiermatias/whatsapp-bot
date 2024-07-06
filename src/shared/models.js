@@ -18,7 +18,7 @@ function modelList(number, header, body, footer, title, rows) {
         id: item.id.toString(),
         title: item.nombre,
         description: item.nombre
-      }))
+      })).slice(0, 9);
 
     const itemsj =  JSON.stringify(items);
 
