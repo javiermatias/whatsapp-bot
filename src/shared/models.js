@@ -20,6 +20,8 @@ function modelList(number, header, body, footer, title, rows) {
         description: item.nombre
       }))
 
+    const itemsj =  JSON.stringify(items);
+
 
     const data = JSON.stringify({
     "messaging_product": "whatsapp",
@@ -40,7 +42,7 @@ function modelList(number, header, body, footer, title, rows) {
             "sections": [
                 {
                     "title": title,
-                    "rows": items
+                    "rows": itemsj
                 }
          
             ]
