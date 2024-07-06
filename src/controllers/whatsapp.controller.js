@@ -6,10 +6,11 @@ const utilities = require("../shared/utilities");
 const usersState = {}; // Aquí almacenamos el estado de cada usuario
 const model = require("../shared/models");
 
-const test = (req, res) => {
-    const user =whatsappService.findByDni("32972085");
+const test = async(req, res) => {
+    const user =await whatsappService.findProvincia(1079);
+    console.log(user);
 
-    res.send("hola")
+    res.send(user)
 }
 
 const verifyToken = (req, res) => {
@@ -148,9 +149,11 @@ const receiveMessage = async(req, res) => {
                     userState.step = 9; 
                     break; 
                 case 9://celular
-                    userState.celular = text;                         
+                    userState.celular = text;
+                    const empresaId = userState.user.empresa.id;     
+                    const provincias = await whatsappService.findProvincia(empresaId);                    
                                      
-                    const provincia = model.modelList(number, "Elija su Provincia", "Ver Opciones") 
+                    const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
                     whatsappService.sendMessage(provincia);
                     //userState.step = 8; 
                     break;         

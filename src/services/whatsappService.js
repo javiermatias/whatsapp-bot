@@ -14,21 +14,24 @@ async function findByDni(dni){
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         console.error('Error response:', error.response.status);
-        throw new Error(`Error from API: ${error.response.status}`);
+        return {}
+        //throw new Error(`Error from API: ${error.response.status}`);
       } else if (error.request) {
         // The request was made but no response was received
         console.error('Error request:', error.request);
-        throw new Error('No response received from the API.');
+        return {}
+        //throw new Error('No response received from the API.');
       } else {
         // Something happened in setting up the request that triggered an Error
         console.error('Error', error.message);
-        throw new Error('An error occurred while making the request.');
+        return {}
+        //throw new Error('An error occurred while making the request.');
       }
     }
 }
 
-async function findProvincia(idProvincia){
-  const url = `${base_url}/whatsapp/${dni}`;
+async function findProvincia(idEmpresa) {
+  const url = `${base_url}/whatsapp/provincias?empresa=${idEmpresa}`;
   //console.log(url);
   try {
     const response = await axios.get(url);
@@ -38,19 +41,20 @@ async function findProvincia(idProvincia){
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
       console.error('Error response:', error.response.status);
-      throw new Error(`Error from API: ${error.response.status}`);
+      return [];
+      //throw new Error(`Error from API: ${error.response.status}`);
     } else if (error.request) {
       // The request was made but no response was received
       console.error('Error request:', error.request);
-      throw new Error('No response received from the API.');
+     // throw new Error('No response received from the API.');
+     return [];
     } else {
       // Something happened in setting up the request that triggered an Error
       console.error('Error', error.message);
-      throw new Error('An error occurred while making the request.');
+      //throw new Error('An error occurred while making the request.');
+      return [];
     }
   }
-
-
 }
 
 function sendMessage(data) {
@@ -86,5 +90,6 @@ function isNumeric(text) {
 module.exports = {
     sendMessage,
     isNumeric,
-    findByDni
+    findByDni,
+    findProvincia
 }
