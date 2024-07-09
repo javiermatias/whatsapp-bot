@@ -4,15 +4,19 @@ const myConsole = new console.Console(fs.createWriteStream('./logs.txt'));
 const whatsappService = require("../services/whatsappService");
 const utilities = require("../shared/utilities");
 const usersState = {}; // Aquí almacenamos el estado de cada usuario
+//deberiamos eliminar el estado pasado x tiempo
 const model = require("../shared/models");
 
 
 
 const test = async(req, res) => {
     const user =await whatsappService.findProvincia(1079);
+    //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
+    const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
+
     console.log(user);
 
-    res.send(user)
+    res.send(resultString)
 }
 
 const verifyToken = (req, res) => {
@@ -155,9 +159,12 @@ const receiveMessage = async(req, res) => {
                     userState.celular = text;
                     const empresaId = userState.user.empresa.id;     
                     const provincias = await whatsappService.findProvincia(empresaId);                    
-                     console.log(provincias)                
-                    const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
-                    whatsappService.sendMessage(provincia);
+                    const resultString = provincias.map((item, index) => `${index + 1}. ${item.name}`).join('\n');
+                    const str_provincias = model.modelText(number, str_provincias);
+                    whatsappService.sendMessage(resultString);
+                    //console.log(provincias)                
+                    //const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
+                    //whatsappService.sendMessage(provincia);
                     //userState.step = 8; 
                     break;         
                 default://direccion
