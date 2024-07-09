@@ -160,11 +160,12 @@ const receiveMessage = async(req, res) => {
                     userState.celular = text;
                     const empresaId = userState.user.empresa.id;     
                     const provincias = await whatsappService.findProvincia(empresaId);
-                    let title = 'Elija su provincia\n'                    
+                    let title = 'Por Favot Elija su provincia\n'                    
                     const resultString = provincias.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
-                    let msg = title + resultString;
-                    //console.log(resultString);
-                    const str_provincias = model.modelText(number, msg);
+                                        //console.log(resultString);
+                    const str_provincias_title = model.modelText(number, title );
+                    const str_provincias = model.modelText(number, resultString);
+                    whatsappService.sendMessage(str_provincias_title);
                     whatsappService.sendMessage(str_provincias);
                     //console.log(provincias)                
                     //const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
