@@ -14,7 +14,8 @@ const test = async(req, res) => {
     //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
     const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
 
-    console.log(user);
+    console.log(JSON.stringify(resultString));
+    //process.stdout.write(resultString)
 
     res.send(resultString)
 }
@@ -160,8 +161,8 @@ const receiveMessage = async(req, res) => {
                     const empresaId = userState.user.empresa.id;     
                     const provincias = await whatsappService.findProvincia(empresaId);                    
                     const resultString = provincias.map((item, index) => `${index + 1}. ${item.name}`).join('\n');
-                    const str_provincias = model.modelText(number, str_provincias);
-                    whatsappService.sendMessage(resultString);
+                    const str_provincias = model.modelText(number, resultString);
+                    whatsappService.sendMessage(str_provincias);
                     //console.log(provincias)                
                     //const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
                     //whatsappService.sendMessage(provincia);
