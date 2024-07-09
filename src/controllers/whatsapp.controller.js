@@ -164,7 +164,7 @@ const receiveMessage = async(req, res) => {
                     const resultString = provincias.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                     let msg = title + resultString;
                     //console.log(resultString);
-                    const str_provincias = model.modelText(number, title);
+                    const str_provincias = model.modelText(number, msg);
                     whatsappService.sendMessage(str_provincias);
                     //console.log(provincias)                
                     //const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
