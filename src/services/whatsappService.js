@@ -71,7 +71,7 @@ function sendMessage(data) {
     }
 
     const req = https.request(options, res => {
-        res.on("data", d => { process.stdout.write(d) });
+        res.on("data", d => { process.stdout.write(d); console.log(d) });
     })
 
     req.on("error", error => { console.error(error) })
