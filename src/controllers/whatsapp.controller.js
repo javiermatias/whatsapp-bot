@@ -12,12 +12,12 @@ const model = require("../shared/models");
 const test = async(req, res) => {
     const user =await whatsappService.findProvincia(1079);
     //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
-    const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
+    // const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
 
-    console.log(JSON.stringify(resultString));
+    //console.log(JSON.stringify(resultString));
     //process.stdout.write(resultString)
 
-    res.send(resultString)
+    res.send(user)
 }
 
 const verifyToken = (req, res) => {
@@ -43,7 +43,7 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = async(req, res) => {
     try {
-        console.log(usersState);
+        //console.log(usersState);
 
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
@@ -157,25 +157,36 @@ const receiveMessage = async(req, res) => {
                     whatsappService.sendMessage(celular);
                     userState.step = 9; 
                     break; 
-                case 9://celular
+                case 9://provincia
                     userState.celular = text;
                     const empresaId = userState.user.empresa.id;     
                     const provincias = await whatsappService.findProvincia(empresaId);
                     userState
                     let title = 'Por Favor Elija su provincia\n'                    
                     const resultString = provincias.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
-                                        //console.log(resultString);
+                    userState.provincias = provincias;
                     const str_provincias_title = title + resultString;
                     const str_provincias = model.modelText(number, str_provincias_title);
                     whatsappService.sendMessage(str_provincias);
-
                     userState.step = 10; 
-                    // whatsappService.sendMessage(str_provincias);
-                    //console.log(provincias)                
-                    //const provincia = model.modelList(number,"Provincias", "Elija su Provincia", "Ver Opciones","Provincias",provincias) 
-                    //whatsappService.sendMessage(provincia);
-                    //userState.step = 8; 
-                    break;         
+             
+                    break;
+                    
+                case 10://localidad
+
+                if (whatsappService.isNumeric(text)) {
+                    const idProvincia = Number.parseInt(text)
+                    
+                }else{
+                    const provinciaNoEncontrado = model.modelText(number, utilities.errorProvincia);
+                    whatsappService.sendMessage(provinciaNoEncontrado); 
+                    userState.step = 9;  
+
+
+                }
+                        
+             
+                    break;      
                 default://direccion
                     //const test1 = model.modelText(number, utilities.test);                    
                     //whatsappService.sendMessage(number, test1);

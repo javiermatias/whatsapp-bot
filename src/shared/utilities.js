@@ -13,6 +13,7 @@ const legajo = "Ingrese su legajo, 0 si no tiene";
 const direccion = "Ingrese su dirección";
 const celular = "Ingrese su celular";
 const test = "Mensaje de prueba";
+const errorProvincia = "Por favor elija con el numero la provincia";
 const userJson = `
 {
     "id": 3,
@@ -74,5 +75,6 @@ module.exports = {
     legajo,
     direccion,
     celular,
-    userJson
+    userJson,
+    errorProvincia 
 }
