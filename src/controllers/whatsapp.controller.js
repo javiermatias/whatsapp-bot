@@ -21,6 +21,7 @@ const test = async(req, res) => {
 }
 
 const verifyToken = (req, res) => {
+    
 
     try {
         let accessToken = process.env.accessToken;
@@ -42,7 +43,7 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = async(req, res) => {
     try {
-        //myConsole.log(req);
+        console.log(usersState);
 
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
