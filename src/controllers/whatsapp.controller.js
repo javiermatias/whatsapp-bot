@@ -10,8 +10,10 @@ const model = require("../shared/models");
 
 
 const test = async(req, res) => {
-    const user =await whatsappService.findProvincia(1079);
-    //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
+   // const user =await whatsappService.findProvincia(1079);
+   const user = await whatsappService.findLocalidad(141);
+   
+   //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
     // const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
 
     //console.log(JSON.stringify(resultString));
@@ -76,19 +78,24 @@ const receiveMessage = async(req, res) => {
             console.log(userState);
             switch (userState.step) {
                 // Bienvenidos a Ausentismos Online
-                case 1:
-                    userState.user = JSON.parse(utilities.userJson);
+                case 1:{
+                    let a = 1;
+                    userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
                     userState.step = 9;
                     break;
+                }
                 // Por favor indique numero de DNI
                 case 2:
+                    {
                     const modelDni = model.modelText(number, utilities.dniMessage);
                     whatsappService.sendMessage(modelDni);
                     userState.step = 3;
                     break;
-                case 3:
+                    }
+                case 3:{
+                    
                     //userState.name = text;
                     //here i have to see if dni is a number or not if tis not a number
                     // i have to send a message to repeat 
@@ -120,7 +127,9 @@ const receiveMessage = async(req, res) => {
                     }               
 
                     break;
+                }
                 case 4://nombre y apellido
+                {
                     if(text == "Enfermedad" || text == "Otros"){
                         userState.causa = text;                  
                         const nombreyapellido = model.modelText(number, utilities.apellido);
@@ -133,36 +142,45 @@ const receiveMessage = async(req, res) => {
                     }
               
                     break;
+                }
                 case 5: //email
+                {
                     userState.nombreApellido = text;                                            
                     const email = model.modelText(number, utilities.email);
                     whatsappService.sendMessage(email);
                     userState.step = 6; 
                     break;
+                }
                 case 6://legajo
+                {
                     userState.email = text;                                            
                     const legajo = model.modelText(number, utilities.legajo);
                     whatsappService.sendMessage(legajo);
                     userState.step = 7; 
                     break;
+                }
                 case 7://direccion
+                {
                     userState.legajo = text;                                            
                     const dire = model.modelText(number, utilities.direccion);
                     whatsappService.sendMessage(dire);
                     userState.step = 8; 
                     break;
+                }
                 case 8://celular
+                {
                     userState.direccion = text;                                            
                     const celular = model.modelText(number, utilities.celular);
                     whatsappService.sendMessage(celular);
                     userState.step = 9; 
-                    break; 
+                    break;
+                } 
                 case 9://provincia
+                {
                     userState.celular = text;
                     const empresaId = userState.user.empresa.id;     
-                    const provincias = await whatsappService.findProvincia(empresaId);
-                    userState
-                    let title = 'Por Favor Elija su provincia\n'                    
+                    const provincias = await whatsappService.findProvincia(empresaId);                    
+                    const title = 'Por Favor elija su provincia\n'                    
                     const resultString = provincias.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                     userState.provincias = provincias;
                     const str_provincias_title = title + resultString;
@@ -171,26 +189,45 @@ const receiveMessage = async(req, res) => {
                     userState.step = 10; 
              
                     break;
-                    
+                }   
                 case 10://localidad
-
-                if (whatsappService.isNumeric(text)) {
-                    const idProvincia = Number.parseInt(text)
-                    
-                }else{
-                    const provinciaNoEncontrado = model.modelText(number, utilities.errorProvincia);
-                    whatsappService.sendMessage(provinciaNoEncontrado); 
-                    userState.step = 9;  
-
-
-                }
+                {
+                    let isValid = false;
+                    if (whatsappService.isNumeric(text)) {
+                    const index = (Number.parseInt(text) - 1);
+                       if(index >= 0 && index < userState.provincias.length){
+                        const idProvincia = userState.provincias[index].id;
+                        const localidades = await whatsappService.findLocalidad(idProvincia);
+                        const title = 'Por Favor elija su localidad\n'                    
+                        const resultString = localidades.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
+                        userState.localidades = localidades;
+                        const str_localidades_title = title + resultString;
+                        const str_localidades = model.modelText(number, str_localidades_title);
+                        whatsappService.sendMessage(str_localidades);
+                        userState.step = 11; 
+                        isValid = true;
+                       }
+                   }
+                    if (!isValid) {
+                        // Handle case where the input text is not numeric or index is out of bounds
+                        const provinciaNoEncontrado = model.modelText(number, utilities.errorProvincia);
+                        whatsappService.sendMessage(provinciaNoEncontrado);
+                        userState.step = 9;
+                    }
+                
                         
              
                     break;      
-                default://direccion
+                }
+                default:
+                {
+                        //direccion{}
                     //const test1 = model.modelText(number, utilities.test);                    
                     //whatsappService.sendMessage(number, test1);
                     break;
+
+                }
+                    
             }
 
             //console.log(messageValue);
