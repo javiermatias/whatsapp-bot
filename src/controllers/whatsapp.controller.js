@@ -212,13 +212,74 @@ const receiveMessage = async(req, res) => {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const provinciaNoEncontrado = model.modelText(number, utilities.errorProvincia);
                         whatsappService.sendMessage(provinciaNoEncontrado);
-                        userState.step = 9;
+                        userState.step = 10;
                     }
                 
                         
              
                     break;      
                 }
+                case 11://localidad
+                {
+                    let isValid = false;
+                    if (whatsappService.isNumeric(text)) {
+                    const index = (Number.parseInt(text) - 1);
+                       if(index >= 0 && index < userState.localidades.length){
+                        const idLocalidad = userState.localidades[index].id;
+                        const sucursales = await whatsappService.findSucursal(idLocalidad);
+                        const title = 'Por Favor elija su sucursal\n'                    
+                        const resultString = sucursales.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
+                        userState.sucursales = sucursales;
+                        const str_sucursales_title = title + resultString;
+                        const str_sucursales = model.modelText(number, str_sucursales_title);
+                        whatsappService.sendMessage(str_sucursales);
+                        userState.step = 12; 
+                        isValid = true;
+                       }
+                   }
+                    if (!isValid) {
+                        // Handle case where the input text is not numeric or index is out of bounds
+                        const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
+                        whatsappService.sendMessage(sucursalNoEncontrado);
+                        userState.step = 11;
+                    }
+                
+                        
+             
+                    break;      
+                }
+
+                case 12://localidad
+                {
+                    let isValid = false;
+                    if (whatsappService.isNumeric(text)) {
+                    const index = (Number.parseInt(text) - 1);
+                       if(index >= 0 && index < userState.localidades.length){
+                        const idLocalidad = userState.localidades[index].id;
+                        const sucursales = await whatsappService.findSucursal(idLocalidad);
+                        const title = 'Por Favor elija su sucursal\n'                    
+                        const resultString = sucursales.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
+                        userState.sucursales = sucursales;
+                        const str_sucursales_title = title + resultString;
+                        const str_sucursales = model.modelText(number, str_sucursales_title);
+                        whatsappService.sendMessage(str_sucursales);
+                        userState.step = 12; 
+                        isValid = true;
+                       }
+                   }
+                    if (!isValid) {
+                        // Handle case where the input text is not numeric or index is out of bounds
+                        const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
+                        whatsappService.sendMessage(sucursalNoEncontrado);
+                        userState.step = 11;
+                    }
+                
+                        
+             
+                    break;      
+                }
+
+
                 default:
                 {
                         //direccion{}
