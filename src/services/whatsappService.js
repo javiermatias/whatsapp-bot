@@ -84,8 +84,8 @@ async function findLocalidad(idProvincia) {
   }
 }
 
-async function findSucursal(idSucursal) {
-  const url = `${base_url}/whatsapp/sucursales?sucursal=${idSucursal}`;
+async function findSucursal(idLocalidad) {
+  const url = `${base_url}/whatsapp/sucursales?localidad=${idLocalidad}`;
   //console.log(url);
   try {
     const response = await axios.get(url);
