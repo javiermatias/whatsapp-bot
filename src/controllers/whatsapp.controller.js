@@ -271,7 +271,7 @@ const receiveMessage = async(req, res) => {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
                         whatsappService.sendMessage(sucursalNoEncontrado);
-                        userState.step = 11;
+                        userState.step = 12;
                     }
                 
                         
