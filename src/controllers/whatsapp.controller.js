@@ -78,8 +78,7 @@ const receiveMessage = async(req, res) => {
             console.log(userState);
             switch (userState.step) {
                 // Bienvenidos a Ausentismos Online
-                case 1:{
-                    let a = 1;
+                case 1:{                    
                     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
@@ -290,6 +289,15 @@ const receiveMessage = async(req, res) => {
                     const botonAsistencia = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);        
                     whatsappService.sendMessage(botonAsistencia);
                     userState.step = 16; 
+                    break;           
+                    
+                }
+                case 16://Recibio Asistencia
+                {
+                    userState.asistencia = text;     
+                    const asistencia = model.modelText(number, text);        
+                    whatsappService.sendMessage(asistencia);
+                    userState.step = 17; 
                     break;           
                     
                 }
