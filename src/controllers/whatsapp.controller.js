@@ -83,7 +83,7 @@ const receiveMessage = async(req, res) => {
                     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
-                    userState.step = 9;
+                    userState.step = 15;
                     break;
                 }
                 // Por favor indique numero de DNI
