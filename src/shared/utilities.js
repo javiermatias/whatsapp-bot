@@ -15,6 +15,9 @@ const celular = "Ingrese su celular";
 const test = "Mensaje de prueba";
 const errorProvincia = "Por favor elija con el numero la provincia";
 const errorSucursal = "Por favor elija con el numero la sucursal";
+const enfermedad = "Por favor indique presunta enfermedad";
+const sintomas = "Por favor indique sus sintomas";
+const medicacion = "Indique la medicación que toma";
 const userJson = `
 {
     "id": 3,
@@ -78,5 +81,8 @@ module.exports = {
     celular,
     userJson,
     errorProvincia,
-    errorSucursal
+    errorSucursal,
+    enfermedad,
+    sintomas,
+    medicacion
 }

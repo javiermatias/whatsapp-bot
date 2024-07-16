@@ -98,9 +98,40 @@ function modelButtonAusencia(number, text) {
     return data;
 }
 
+function modelButtonGeneric(number, text, options) {
+    const buttons = options.map((option, index) => ({
+        "type": "reply",
+        "reply": {
+            "id": String(index + 1).padStart(3, '0'), // Creates IDs like "001", "002", etc.
+            "title": option
+        }
+    }));
+    //const buttonsj =  JSON.stringify(buttons);
+
+    const data = JSON.stringify({
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": number,
+        "type": "interactive",
+        "interactive": {
+            "type": "button",
+            "body": {
+                "text": text
+            },
+            "action": {
+                "buttons": buttons
+            }
+        }
+    });
+
+    return data;
+}
+
+
 module.exports = {
     modelText,
     modelButtonAusencia,
-    modelList
+    modelList,
+    modelButtonGeneric
 
 }

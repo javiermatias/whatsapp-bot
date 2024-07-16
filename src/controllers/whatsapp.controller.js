@@ -11,15 +11,15 @@ const model = require("../shared/models");
 
 const test = async(req, res) => {
    // const user =await whatsappService.findProvincia(1079);
-   const user = await whatsappService.findLocalidad(141);
-   
+   //const user = await whatsappService.findLocalidad(141);
+   const botonEleccion = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);
    //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
     // const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
 
     //console.log(JSON.stringify(resultString));
     //process.stdout.write(resultString)
 
-    res.send(user)
+    res.send(botonEleccion)
 }
 
 const verifyToken = (req, res) => {
@@ -194,9 +194,9 @@ const receiveMessage = async(req, res) => {
                 {
                     let isValid = false;
                     if (whatsappService.isNumeric(text)) {
-                    const index = (Number.parseInt(text) - 1);
-                       if(index >= 0 && index < userState.provincias.length){
-                        const idProvincia = userState.provincias[index].id;
+                       const index = (Number.parseInt(text) - 1);
+                       if(index >= 0 && index < userState.provincias.length){                        
+                        const idProvincia = userState.provincias[index].id;                        
                         const localidades = await whatsappService.findLocalidad(idProvincia);
                         const title = 'Por Favor elija su localidad\n'                    
                         const resultString = localidades.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
@@ -219,13 +219,13 @@ const receiveMessage = async(req, res) => {
              
                     break;      
                 }
-                case 11://localidad
+                case 11://sucursal
                 {
                     let isValid = false;
                     if (whatsappService.isNumeric(text)) {
                     const index = (Number.parseInt(text) - 1);
                        if(index >= 0 && index < userState.localidades.length){
-                        const idLocalidad = userState.localidades[index].id;
+                        const idLocalidad = userState.localidades[index].id;                        
                         const sucursales = await whatsappService.findSucursal(idLocalidad);
                         const title = 'Por Favor elija su sucursal\n'                    
                         const resultString = sucursales.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
@@ -233,7 +233,15 @@ const receiveMessage = async(req, res) => {
                         const str_sucursales_title = title + resultString;
                         const str_sucursales = model.modelText(number, str_sucursales_title);
                         whatsappService.sendMessage(str_sucursales);
-                        userState.step = 12; 
+                         
+                        
+                        if(text=="Enfermedad"){
+
+                            userState.step = 12 
+                        }else{
+                            userState.step = 20; 
+                        }
+
                         isValid = true;
                        }
                    }
@@ -249,34 +257,41 @@ const receiveMessage = async(req, res) => {
                     break;      
                 }
 
-                case 12://localidad
+                case 12://Presunta Enfermedad
                 {
-                    let isValid = false;
-                    if (whatsappService.isNumeric(text)) {
-                    const index = (Number.parseInt(text) - 1);
-                       if(index >= 0 && index < userState.localidades.length){
-                        const idLocalidad = userState.localidades[index].id;
-                        const sucursales = await whatsappService.findSucursal(idLocalidad);
-                        const title = 'Por Favor elija su sucursal\n'                    
-                        const resultString = sucursales.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
-                        userState.sucursales = sucursales;
-                        const str_sucursales_title = title + resultString;
-                        const str_sucursales = model.modelText(number, str_sucursales_title);
-                        whatsappService.sendMessage(str_sucursales);
-                        userState.step = 12; 
-                        isValid = true;
-                       }
-                   }
-                    if (!isValid) {
-                        // Handle case where the input text is not numeric or index is out of bounds
-                        const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
-                        whatsappService.sendMessage(sucursalNoEncontrado);
-                        userState.step = 12;
-                    }
-                
-                        
-             
-                    break;      
+                    userState.idSucursal = text;                                            
+                    const enfermedad = model.modelText(number, utilities.enfermedad);
+                    whatsappService.sendMessage(enfermedad);
+                    userState.step = 13; 
+                    break;           
+                    
+                }
+                case 13://Sintomas
+                {
+                    userState.enfermedad = text;                                            
+                    const enfermedad = model.modelText(number, utilities.sintomas);
+                    whatsappService.sendMessage(enfermedad);
+                    userState.step = 14; 
+                    break;           
+                    
+                }
+                case 14://Medicacion
+                {
+                    userState.sintomas = text;                                            
+                    const medicacion = model.modelText(number, utilities.medicacion);
+                    whatsappService.sendMessage(medicacion);
+                    userState.step = 15; 
+                    break;           
+                    
+                }
+                case 15://Recibio Asistencia
+                {
+                    userState.sintomas = text;     
+                    const botonAsistencia = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);        
+                    whatsappService.sendMessage(botonAsistencia);
+                    userState.step = 16; 
+                    break;           
+                    
                 }
 
 
@@ -284,7 +299,7 @@ const receiveMessage = async(req, res) => {
                 {
                         //direccion{}
                     //const test1 = model.modelText(number, utilities.test);                    
-                    //whatsappService.sendMessage(number, test1);
+                    whatsappService.sendMessage(number, text);
                     break;
 
                 }
