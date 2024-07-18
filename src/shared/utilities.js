@@ -59,7 +59,8 @@ function GetTextUser(messages) {
         }
     }else if(type == "image") {
         const image = messages["image"];
-        text = image["id"]
+        console.log(image)
+        text = image.id
     }else{
         
     }
