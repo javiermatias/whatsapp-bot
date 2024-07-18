@@ -62,7 +62,7 @@ function GetTextUser(messages) {
         console.log(image)
         text = image.id
     }else{
-        
+        console.log("sin mensaje nada")
     }
 
     return text;
