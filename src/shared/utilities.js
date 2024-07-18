@@ -59,9 +59,14 @@ function GetTextUser(messages) {
         }
     }else if(typeMessage == "image") {
         const image = messages["image"];
-        console.log(image)
+        //console.log(image)
         text = image["id"]
-    }else{
+    }else if(typeMessage == "document") {
+    const document = messages["document"];
+        //console.log(image)
+         text = document["id"]
+    }
+    else{
         console.log("sin mensaje nada")
     }
 
