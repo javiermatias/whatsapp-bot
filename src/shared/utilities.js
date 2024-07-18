@@ -41,13 +41,13 @@ const userJson = `
 function GetTextUser(messages) {
     //console.log(messages);
     let text = "";
-    let typeMessage = messages["type"];
+    const typeMessage = messages["type"];
     if (typeMessage == "text") {
         text = (messages["text"])["body"]
 
     } else if (typeMessage == "interactive") {
-        let interactiveObject = messages["interactive"];
-        let type = interactiveObject["type"];
+        const interactiveObject = messages["interactive"];
+        const type = interactiveObject["type"];
 
         if (type == "button_reply") {
             text = (interactiveObject["button_reply"])["title"]
@@ -57,8 +57,11 @@ function GetTextUser(messages) {
         } else {
             console.log("sin mensaje")
         }
-    } else {
-        console.log("sin mensaje")
+    }else if(type == "image") {
+        const image = messages["image"];
+        text = image["id"]
+    }else{
+        
     }
 
     return text;
