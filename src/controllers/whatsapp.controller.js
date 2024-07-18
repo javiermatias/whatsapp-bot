@@ -45,7 +45,7 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = async(req, res) => {
     try {
-        //console.log(usersState);
+        console.log(req.body);
 
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];
