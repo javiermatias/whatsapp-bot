@@ -45,13 +45,13 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = async(req, res) => {
     try {
-        console.log(req.body);
+        
 
         let entry = (req.body["entry"])[0];
-        let changes = (entry["changes"])[0];
+        let changes = (entry["changes"])[0];        
         let value = changes["value"];
         let messages = value["messages"];
-       
+        console.log(messages);
 
 
         if (typeof messages != "undefined") {
