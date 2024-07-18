@@ -57,10 +57,10 @@ function GetTextUser(messages) {
         } else {
             console.log("sin mensaje")
         }
-    }else if(type == "image") {
+    }else if(typeMessage == "image") {
         const image = messages["image"];
         console.log(image)
-        text = image.id
+        text = image["id"]
     }else{
         console.log("sin mensaje nada")
     }
