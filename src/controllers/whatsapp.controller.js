@@ -286,28 +286,61 @@ const receiveMessage = async(req, res) => {
                 case 15://Recibio Asistencia
                 {
                     userState.sintomas = text;     
-                    const botonAsistencia = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);        
+                    const botonAsistencia = model.modelButtonGeneric(number, "Recibio Asistencia:", ["SI", "NO"]);        
                     whatsappService.sendMessage(botonAsistencia);
                     userState.step = 16; 
-                    break;           
-                    
+                    break;         
                 }
-                case 16://Recibio Asistencia
+                case 16://Posee certificado
                 {
                     userState.asistencia = text;     
-                    const asistencia = model.modelText(number, text);        
-                    whatsappService.sendMessage(asistencia);
+                    const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
+                    whatsappService.sendMessage(botonCertificado);
                     userState.step = 17; 
-                    break;           
+                    break;   
+                }
+                case 17://Posee certificado
+                {
+                    if(text == "SI"){
+                        userState.certificado = text;                 
+                        const adjuntarImagen = model.modelText(number, utilities.imagen);
+                        whatsappService.sendMessage(adjuntarImagen);
+                        userState.step = 18; 
+                    }else{
+                        userState.certificado = "NO";
+                      /*   const ausencia = model.modelText(number, utilities.ausencia);
+                        whatsappService.sendMessage(ausencia);
+                        userState.step = 4;  
+                        
+                        if (whatsappService.isNumeric(text)) {
+                        
+                        */
+                    }
+              
+                    break;
+
                     
+                }
+                case 18://Adjuntar certificado
+                {
+                    if (whatsappService.isNumeric(text)) {
+                        userState.certificiado_id = text;
+                        const greeting = model.modelText(number, utilities.saludo);                    
+                        whatsappService.sendMessage(number, greeting);
+                    }else{
+
+                    }
+                        
+              
+                    break;   
                 }
 
 
                 default:
                 {
                         //direccion{}
-                    //const test1 = model.modelText(number, utilities.test);                    
-                    whatsappService.sendMessage(number, text);
+                    const test1 = model.modelText(number, utilities.test);                    
+                    whatsappService.sendMessage(number, test1);
                     break;
 
                 }

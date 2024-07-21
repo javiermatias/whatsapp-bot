@@ -1,6 +1,6 @@
 // messages.js
 
-const greetingMessage = "Bienvenidos a Ausentismos online. Para notificar su ausencia via online puede dirigirse a: https://front-ausentismo.vercel.app/ Si quiere notificar la ausencia por este medio indique *OK*";
+const greetingMessage = "Bienvenidos a Ausentismos online. Para notificar su ausencia via online puede dirigirse a: https://front-ausentismo.vercel.app/ Si quiere notificar la ausencia por este medio indique *OK*. En el caso de que quiera salir presione *S*";
 const dniMessage = "Por favor indique numero de *DNI*:";
 const errorDni = "Disculpa! El DNI que indicaste tiene un error. ";
 const dniAceptado = "Gracias por indicar tu dni";
@@ -18,6 +18,8 @@ const errorSucursal = "Por favor elija con el numero la sucursal";
 const enfermedad = "Por favor indique presunta enfermedad";
 const sintomas = "Por favor indique sus sintomas";
 const medicacion = "Indique la medicación que toma";
+const imagen = "Por favor adjunte la imagen";
+const saludo = "Tu notificación ya fue cargada.Tu número de registro es: ";
 const userJson = `
 {
     "id": 3,
@@ -93,5 +95,7 @@ module.exports = {
     errorSucursal,
     enfermedad,
     sintomas,
-    medicacion
+    medicacion,
+    imagen,
+    saludo
 }
