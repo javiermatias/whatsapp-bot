@@ -19,7 +19,7 @@ const enfermedad = "Por favor indique presunta enfermedad";
 const sintomas = "Por favor indique sus sintomas";
 const medicacion = "Indique la medicación que toma";
 const imagen = "Por favor adjunte la imagen";
-const saludo = "Tu notificación ya fue cargada.Tu número de registro es: ";
+const saludo = "Tu notificación ya fue cargada.";
 const userJson = `
 {
     "id": 3,

@@ -323,10 +323,11 @@ const receiveMessage = async(req, res) => {
                 }
                 case 18://Adjuntar certificado
                 {
+                    console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
                         userState.certificiado_id = text;
-                        const greeting = model.modelText(number, utilities.saludo);                    
-                        whatsappService.sendMessage(number, greeting);
+                        const saludo = model.modelText(number, utilities.saludo);
+                        whatsappService.sendMessage(saludo);
                     }else{
 
                     }
