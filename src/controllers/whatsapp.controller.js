@@ -246,24 +246,34 @@ const receiveMessage = async(req, res) => {
                    }
                     if (!isValid) {
                         // Handle case where the input text is not numeric or index is out of bounds
-                        const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
-                        whatsappService.sendMessage(sucursalNoEncontrado);
+                        const localidadNoEncontrado = model.modelText(number, utilities.errorLocalidad);
+                        whatsappService.sendMessage(localidadNoEncontrado);
                         userState.step = 11;
                     }
-                
-                        
-             
                     break;      
                 }
 
                 case 12://Presunta Enfermedad
                 {
-                    userState.idSucursal = text;                                            
-                    const enfermedad = model.modelText(number, utilities.enfermedad);
-                    whatsappService.sendMessage(enfermedad);
-                    userState.step = 13; 
-                    break;           
-                    
+                    let isValid = false;
+                    if (whatsappService.isNumeric(text)) {
+                       const index = (Number.parseInt(text) - 1);
+                       if(index >= 0 && index < userState.sucursales.length){                      
+                        userState.idSucursal = userState.sucursales[index].id;  
+                        userState.nombreSucursal = userState.sucursales[index].nombre;                                        
+                        const enfermedad = model.modelText(number, utilities.enfermedad);
+                        whatsappService.sendMessage(enfermedad);
+                        userState.step = 13;                        
+                        isValid = true;
+                       }
+                   }
+                    if (!isValid) {
+                        // Handle case where the input text is not numeric or index is out of bounds
+                        const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
+                        whatsappService.sendMessage(sucursalNoEncontrado);
+                        userState.step = 12;
+                    }
+                    break;   
                 }
                 case 13://Sintomas
                 {
@@ -285,7 +295,7 @@ const receiveMessage = async(req, res) => {
                 }
                 case 15://Recibio Asistencia
                 {
-                    userState.sintomas = text;     
+                    userState.medicacion = text;     
                     const botonAsistencia = model.modelButtonGeneric(number, "Recibio Asistencia:", ["SI", "NO"]);        
                     whatsappService.sendMessage(botonAsistencia);
                     userState.step = 16; 
@@ -307,7 +317,17 @@ const receiveMessage = async(req, res) => {
                         whatsappService.sendMessage(adjuntarImagen);
                         userState.step = 18; 
                     }else{
-                        userState.certificado = "NO";
+                        userState.certificado = "NO"; 
+                        userState.certificado_id = 0;
+                        const incidencia = generateUser(userState);
+                        console.log(incidencia);
+
+
+
+                        //const saveUser = await whatsappService.saveUser();
+
+
+
                       /*   const ausencia = model.modelText(number, utilities.ausencia);
                         whatsappService.sendMessage(ausencia);
                         userState.step = 4;  
@@ -325,7 +345,7 @@ const receiveMessage = async(req, res) => {
                 {
                     console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
-                        userState.certificiado_id = text;
+                        userState.certificado_id = text;
                         const saludo = model.modelText(number, utilities.saludo);
                         whatsappService.sendMessage(saludo);
                     }else{
@@ -360,6 +380,32 @@ const receiveMessage = async(req, res) => {
         myConsole.log(ex);
         res.send("EVENT_RECEIVED")
     }
+}
+
+
+function generateUser(userState){
+
+    const user = {
+        nombre: userState.nombreApellido,
+        email: userState.email,
+        legajo: userState.legajo,
+        direccion: userState.direccion,
+        celular: userState.celular,
+        enfermedad: userState.enfermedad,
+        sintomas: userState.sintomas,
+        medicacion: userState.medicacion,
+        asistencia: userState.asistencia,
+        certificado: userState.certificado,
+        idUser: userState.user.id,
+        idSucursal: userState.idSucursal,
+        nombreSucursal: userState.nombreSucursal,
+        certificado_id: userState.certificado_id
+      };
+
+      return user;
+
+
+
 }
 
 

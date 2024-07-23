@@ -14,6 +14,7 @@ const direccion = "Ingrese su dirección";
 const celular = "Ingrese su celular";
 const test = "Mensaje de prueba";
 const errorProvincia = "Por favor elija con el numero la provincia";
+const errorLocalidad = "Por favor elija con el numero la localidad";
 const errorSucursal = "Por favor elija con el numero la sucursal";
 const enfermedad = "Por favor indique presunta enfermedad";
 const sintomas = "Por favor indique sus sintomas";
@@ -92,7 +93,8 @@ module.exports = {
     celular,
     userJson,
     errorProvincia,
-    errorSucursal,
+    errorLocalidad,
+    errorSucursal,    
     enfermedad,
     sintomas,
     medicacion,
