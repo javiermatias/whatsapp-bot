@@ -80,6 +80,18 @@ const receiveMessage = async(req, res) => {
                 // Bienvenidos a Ausentismos Online
                 case 1:{                    
                     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
+                    userState.nombre = "John Doe";
+                    userState.email = "john.doe@example.com";
+                    userState.legajo = "12345";
+                    userState.direccion = "123 Main St";
+                    userState.celular = "1234567890";
+                    userState.enfermedad = "Colicos";
+                    userState.sintomas = "Dolor de panza";
+                    userState.medicacion = "Antinflamatorio";                                      
+                    userState.idSucursal = 101;
+                    userState.nombreSucursal = "Olmos";
+                    userState.idImagen = 0;
+                    
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
                     userState.step = 15;
@@ -324,7 +336,8 @@ const receiveMessage = async(req, res) => {
 
 
 
-                        //const saveUser = await whatsappService.saveUser();
+                        //const saveUser = await whatsappService.saveUser(incidencia);
+                        console.log(saveUser);
 
 
 
@@ -384,6 +397,8 @@ const receiveMessage = async(req, res) => {
 
 
 function generateUser(userState){
+    const certificado = userState.certificado == 'SI' ? true : false;
+    const asistencia = userState.asistencia == 'SI' ? true : false;
 
     const user = {
         nombre: userState.nombreApellido,
@@ -394,8 +409,8 @@ function generateUser(userState){
         enfermedad: userState.enfermedad,
         sintomas: userState.sintomas,
         medicacion: userState.medicacion,
-        asistencia: userState.asistencia,
-        certificado: userState.certificado,
+        asistencia: asistencia,
+        certificado: certificado,
         idUser: userState.user.id,
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
