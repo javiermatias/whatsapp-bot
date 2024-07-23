@@ -336,7 +336,7 @@ const receiveMessage = async(req, res) => {
 
 
 
-                        const saveUser = await whatsappService.saveUser(incidencia);
+                        const saveUser = await whatsappService.postSucursal(incidencia);
                         console.log(saveUser);
 
 
