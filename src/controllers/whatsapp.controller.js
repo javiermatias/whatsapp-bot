@@ -80,7 +80,7 @@ const receiveMessage = async(req, res) => {
                 // Bienvenidos a Ausentismos Online
                 case 1:{                    
                     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
-                    userState.nombre = "John Doe";
+                    userState.nombreApellido = "John Doe";
                     userState.email = "john.doe@example.com";
                     userState.legajo = "12345";
                     userState.direccion = "123 Main St";
