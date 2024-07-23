@@ -90,7 +90,7 @@ const receiveMessage = async(req, res) => {
                     userState.medicacion = "Antinflamatorio";                                      
                     userState.idSucursal = 101;
                     userState.nombreSucursal = "Olmos";
-                    userState.idImagen = 0;
+                    userState.certificado_id = "0";
                     
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
@@ -414,7 +414,7 @@ function generateUser(userState){
         idUser: userState.user.id,
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
-        certificado_id: userState.certificado_id
+        idImagen: userState.certificado_id
       };
 
       return user;
