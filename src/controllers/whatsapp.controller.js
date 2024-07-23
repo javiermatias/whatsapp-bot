@@ -332,11 +332,11 @@ const receiveMessage = async(req, res) => {
                         userState.certificado = "NO"; 
                         userState.certificado_id = 0;
                         const incidencia = generateUser(userState);
-                        console.log(incidencia);
+                        //console.log(incidencia);
 
 
 
-                        //const saveUser = await whatsappService.saveUser(incidencia);
+                        const saveUser = await whatsappService.saveUser(incidencia);
                         console.log(saveUser);
 
 
