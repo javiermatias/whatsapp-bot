@@ -331,14 +331,12 @@ const receiveMessage = async(req, res) => {
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
-                        const incidencia = generateUser(userState);
-                        //console.log(incidencia);
-
-                       
-
+                        const incidencia = generateUser(userState); 
                         const saveUser = await whatsappService.postIncidencia(incidencia);
-                        console.log(saveUser);
-                        userState.step = 18; 
+                        const saludo = utilities.saludo + saveUser; 
+                        const saludo_model = model.modelText(number, saludo);
+                        whatsappService.sendMessage(saludo_model);
+                        userState.step = 1; 
 
 
                       /*   const ausencia = model.modelText(number, utilities.ausencia);
