@@ -111,7 +111,7 @@ async function findSucursal(idLocalidad) {
   }
 }
 
-async function postSucursal(data) {
+async function postIncidencia(data) {
    
   const user ={
     nombre : "John Doe",
@@ -194,5 +194,5 @@ module.exports = {
     findProvincia,
     findLocalidad,
     findSucursal,
-    postSucursal
+    postIncidencia
 }

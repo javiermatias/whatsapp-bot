@@ -330,15 +330,15 @@ const receiveMessage = async(req, res) => {
                         userState.step = 18; 
                     }else{
                         userState.certificado = "NO"; 
-                        userState.certificado_id = 0;
+                        userState.certificado_id = "0";
                         const incidencia = generateUser(userState);
                         //console.log(incidencia);
 
+                       
 
-
-                        const saveUser = await whatsappService.postSucursal(incidencia);
+                        const saveUser = await whatsappService.postIncidencia(incidencia);
                         console.log(saveUser);
-
+                        userState.step = 18; 
 
 
                       /*   const ausencia = model.modelText(number, utilities.ausencia);
