@@ -94,7 +94,7 @@ const receiveMessage = async(req, res) => {
                     
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
-                    userState.step = 15;
+                    userState.step = 2;
                     break;
                 }
                 // Por favor indique numero de DNI
@@ -338,14 +338,6 @@ const receiveMessage = async(req, res) => {
                         whatsappService.sendMessage(saludo_model);
                         userState.step = 1; 
 
-
-                      /*   const ausencia = model.modelText(number, utilities.ausencia);
-                        whatsappService.sendMessage(ausencia);
-                        userState.step = 4;  
-                        
-                        if (whatsappService.isNumeric(text)) {
-                        
-                        */
                     }
               
                     break;
