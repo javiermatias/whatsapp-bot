@@ -113,7 +113,7 @@ async function findSucursal(idLocalidad) {
 
 async function postIncidencia(data) {
    
-  const user ={
+/*   const user ={
     nombre : "John Doe",
     email :"john.doe@example.com",
     legajo: "12345",
@@ -128,13 +128,13 @@ async function postIncidencia(data) {
     idSucursal:101,
     nombreSucursal:"Sucursal Example",
     idImagen:"cert123"
-  }
+  } */
 
 
 
-  const url = `${base_url}/whatsapp`;
+  const url = `${base_url}/whatsapp/incidencia`;
   try {
-    const response = await axios.post(url, user);
+    const response = await axios.post(url, data);
     return response.data; // Return the data if the request is successful
   } catch (error) {
     if (error.response) {
