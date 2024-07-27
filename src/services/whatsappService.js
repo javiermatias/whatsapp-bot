@@ -130,6 +130,7 @@ async function postIncidencia(data) {
     idImagen:"cert123"
   } */
 
+  console.log(JSON.stringify(data))
 
 
   const url = `${base_url}/whatsapp/incidencia`;
