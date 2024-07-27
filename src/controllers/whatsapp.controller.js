@@ -79,7 +79,7 @@ const receiveMessage = async(req, res) => {
             switch (userState.step) {
                 // Bienvenidos a Ausentismos Online
                 case 1:{                    
-                    userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
+                /*     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
                     userState.nombreApellido = "John Doe";
                     userState.email = "john.doe@example.com";
                     userState.legajo = "12345";
@@ -90,7 +90,7 @@ const receiveMessage = async(req, res) => {
                     userState.medicacion = "Antinflamatorio";                                      
                     userState.idSucursal = 101;
                     userState.nombreSucursal = "Olmos";
-                    userState.certificado_id = "0";
+                    userState.certificado_id = "0"; */
                     
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     whatsappService.sendMessage(modelGreeting);
@@ -244,16 +244,9 @@ const receiveMessage = async(req, res) => {
                         const str_sucursales_title = title + resultString;
                         const str_sucursales = model.modelText(number, str_sucursales_title);
                         whatsappService.sendMessage(str_sucursales);
-                         
+                        userState.step = 12;
+                        isValid = true;        
                         
-                        if(text=="Enfermedad"){
-
-                            userState.step = 12 
-                        }else{
-                            userState.step = 20; 
-                        }
-
-                        isValid = true;
                        }
                    }
                     if (!isValid) {
@@ -272,11 +265,15 @@ const receiveMessage = async(req, res) => {
                        const index = (Number.parseInt(text) - 1);
                        if(index >= 0 && index < userState.sucursales.length){                      
                         userState.idSucursal = userState.sucursales[index].id;  
-                        userState.nombreSucursal = userState.sucursales[index].nombre;                                        
-                        const enfermedad = model.modelText(number, utilities.enfermedad);
-                        whatsappService.sendMessage(enfermedad);
-                        userState.step = 13;                        
-                        isValid = true;
+                        userState.nombreSucursal = userState.sucursales[index].nombre;
+                        isValid = true;                                         
+                        if(userState.causa == "Enfermedad"){
+                            const enfermedad = model.modelText(number, utilities.enfermedad);
+                            whatsappService.sendMessage(enfermedad);
+                            userState.step = 13;   
+                        }else{
+                            userState.step = 20; 
+                        }
                        }
                    }
                     if (!isValid) {
@@ -337,6 +334,7 @@ const receiveMessage = async(req, res) => {
                         const saludo_model = model.modelText(number, saludo);
                         whatsappService.sendMessage(saludo_model);
                         userState.step = 1; 
+                        //borro el user?
 
                     }
               
@@ -348,12 +346,18 @@ const receiveMessage = async(req, res) => {
                 {
                     console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
+                        userState.certificado = "SI";
                         userState.certificado_id = text;
-                        const saludo = model.modelText(number, utilities.saludo);
-                        whatsappService.sendMessage(saludo);
+                
                     }else{
-
+                        userState.certificado = "NO"; 
+                        userState.certificado_id = "0";
                     }
+                    const incidencia = generateUser(userState); 
+                    const saveUser = await whatsappService.postIncidencia(incidencia);
+                    const saludo = utilities.saludo + saveUser;                                     
+                    whatsappService.sendMessage(saludo);
+                    userState.step = 1; 
                         
               
                     break;   
