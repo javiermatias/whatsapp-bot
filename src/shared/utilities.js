@@ -16,6 +16,7 @@ const test = "Mensaje de prueba";
 const errorProvincia = "Por favor elija con el numero la provincia";
 const errorLocalidad = "Por favor elija con el numero la localidad";
 const errorSucursal = "Por favor elija con el numero la sucursal";
+const errorEmail = "El email no es valido. Ingrese nuevamente su email";
 const enfermedad = "Por favor indique presunta enfermedad";
 const sintomas = "Por favor indique sus sintomas";
 const medicacion = "Indique la medicación que toma";
@@ -94,7 +95,8 @@ module.exports = {
     userJson,
     errorProvincia,
     errorLocalidad,
-    errorSucursal,    
+    errorSucursal, 
+    errorEmail,   
     enfermedad,
     sintomas,
     medicacion,

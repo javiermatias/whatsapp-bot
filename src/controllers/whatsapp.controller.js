@@ -164,10 +164,17 @@ const receiveMessage = async(req, res) => {
                 }
                 case 6://legajo
                 {
-                    userState.email = text;                                            
-                    const legajo = model.modelText(number, utilities.legajo);
-                    whatsappService.sendMessage(legajo);
-                    userState.step = 7; 
+                    if(!isValidEmail(text)){
+                        const emailError = model.modelText(number, utilities.emailError);
+                       whatsappService.sendMessage(emailError );
+                       userState.step = 5; 
+                    }else{
+                        userState.email = text;                                            
+                        const legajo = model.modelText(number, utilities.legajo);
+                        whatsappService.sendMessage(legajo);
+                        userState.step = 7;
+                    }
+                   
                     break;
                 }
                 case 7://direccion
