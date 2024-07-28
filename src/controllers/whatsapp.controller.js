@@ -362,8 +362,9 @@ const receiveMessage = async(req, res) => {
                     }
                     const incidencia = generateUser(userState); 
                     const saveUser = await whatsappService.postIncidencia(incidencia);
-                    const saludo = utilities.saludo + saveUser;                                     
-                    whatsappService.sendMessage(saludo);
+                    const saludo = utilities.saludo + saveUser;
+                    const saludo_model = model.modelText(number, saludo);                                     
+                    whatsappService.sendMessage(saludo_model);
                     userState.step = 1; 
                         
               
