@@ -167,7 +167,7 @@ const receiveMessage = async(req, res) => {
                     if(!whatsappService.isValidEmail(text)){
                         const emailError = model.modelText(number, utilities.errorEmail);
                        whatsappService.sendMessage(emailError);
-                       userState.step = 5; 
+                       userState.step = 6; 
                     }else{
                         userState.email = text;                                            
                         const legajo = model.modelText(number, utilities.legajo);
