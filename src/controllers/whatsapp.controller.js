@@ -165,8 +165,8 @@ const receiveMessage = async(req, res) => {
                 case 6://legajo
                 {
                     if(!isValidEmail(text)){
-                        const emailError = model.modelText(number, utilities.emailError);
-                       whatsappService.sendMessage(emailError );
+                        const emailError = model.modelText(number, utilities.errorEmail);
+                       whatsappService.sendMessage(emailError);
                        userState.step = 5; 
                     }else{
                         userState.email = text;                                            
@@ -351,7 +351,7 @@ const receiveMessage = async(req, res) => {
                 }
                 case 18://Adjuntar certificado
                 {
-                    console.log("id certificado " + text)
+                    //console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
                         userState.certificado = "SI";
                         userState.certificado_id = text;
