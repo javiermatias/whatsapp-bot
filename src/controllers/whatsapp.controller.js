@@ -62,9 +62,9 @@ const receiveMessage = async(req, res) => {
             if(text === "S" || text === "s"){
                 const byeGreeting = model.modelText(number, utilities.byeMessage);
                 whatsappService.sendMessage(byeGreeting);
-                console.log(usersState[number]);
+                console.log("antes" + usersState[number]);
                 usersState[number] = { step: 1, timestamp: currentTime };
-                console.log(usersState[number]);
+                console.log("despues" +usersState[number]);
                 return;
             }
             const currentTime = new Date().getTime();
