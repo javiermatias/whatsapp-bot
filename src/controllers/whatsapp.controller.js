@@ -6,6 +6,7 @@ const utilities = require("../shared/utilities");
 const usersState = {}; // Aquí almacenamos el estado de cada usuario
 //deberiamos eliminar el estado pasado x tiempo
 const model = require("../shared/models");
+const cron = require('node-cron');
 
 
 
@@ -58,7 +59,9 @@ const receiveMessage = async(req, res) => {
             const messageValue = messages[0];
             const number = messageValue["from"];
             const text = utilities.GetTextUser(messageValue);
-            console.log(text);
+            if(text === "S" || text === "s"){
+                usersState[number] = { step: 1, timestamp: currentTime };
+            }
             const currentTime = new Date().getTime();
             if (!usersState[number]) {
                 usersState[number] = { step: 1, timestamp: currentTime };
@@ -66,9 +69,9 @@ const receiveMessage = async(req, res) => {
                 const lastInteractionTime = usersState[number].timestamp;
                 const timeDifference = currentTime - lastInteractionTime;
                 // 20 minutes in milliseconds
-                const twentyMinutes = 20 * 60 * 1000;
+                const eigthMinutes = 8 * 60 * 1000;
                 // If more than 20 minutes have passed, reset the step
-                if (timeDifference > twentyMinutes) {
+                if (timeDifference > eigthMinutes) {
                     usersState[number] = { step: 1, timestamp: currentTime };
                 }
             }
@@ -141,7 +144,7 @@ const receiveMessage = async(req, res) => {
                 }
                 case 4://nombre y apellido
                 {
-                    if(text == "Enfermedad" || text == "Otros"){
+                    if(text === "Enfermedad" || text === "Otros"){
                         userState.causa = text;                  
                         const nombreyapellido = model.modelText(number, utilities.apellido);
                         whatsappService.sendMessage(nombreyapellido);
@@ -446,6 +449,17 @@ const receiveMessage = async(req, res) => {
     }
 }
 
+cron.schedule('*/10 * * * *', () => {
+    const currentTime = new Date().getTime();
+    const tenMinutes = 10 * 60 * 1000;
+    for (const number in usersState) {
+      const lastInteractionTime = usersState[number].timestamp;
+      const timeDifference = currentTime - lastInteractionTime;
+      if (timeDifference > tenMinutes) {
+        delete usersState[number];
+      }
+    }
+  });
 
 
 
