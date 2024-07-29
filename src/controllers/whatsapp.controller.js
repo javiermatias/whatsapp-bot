@@ -60,7 +60,10 @@ const receiveMessage = async(req, res) => {
             const number = messageValue["from"];
             const text = utilities.GetTextUser(messageValue);
             if(text === "S" || text === "s"){
+                const byeGreeting = model.modelText(number, utilities.byeMessage);
+                whatsappService.sendMessage(byeGreeting);
                 usersState[number] = { step: 1, timestamp: currentTime };
+                return;
             }
             const currentTime = new Date().getTime();
             if (!usersState[number]) {
