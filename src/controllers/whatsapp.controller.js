@@ -450,15 +450,20 @@ const receiveMessage = async(req, res) => {
 }
 
 cron.schedule('*/10 * * * *', () => {
-    const currentTime = new Date().getTime();
-    const tenMinutes = 10 * 60 * 1000;
-    for (const number in usersState) {
-      const lastInteractionTime = usersState[number].timestamp;
-      const timeDifference = currentTime - lastInteractionTime;
-      if (timeDifference > tenMinutes) {
-        delete usersState[number];
+    try {
+        const currentTime = new Date().getTime();
+        const tenMinutes = 10 * 60 * 1000;
+        for (const number in usersState) {
+          const lastInteractionTime = usersState[number].timestamp;
+          const timeDifference = currentTime - lastInteractionTime;
+          if (timeDifference > tenMinutes) {
+            delete usersState[number];
+          }
+        }
+        console.log('Cleanup completed successfully.');
+      } catch (error) {
+        console.error('Error during cleanup:', error);
       }
-    }
   });
 
 
