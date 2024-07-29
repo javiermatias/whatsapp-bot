@@ -22,6 +22,7 @@ const sintomas = "Por favor indique sus sintomas";
 const medicacion = "Indique la medicación que toma";
 const imagen = "Por favor adjunte la imagen";
 const saludo = "Tu notificación ya fue cargada. Tu número de referencia es: ";
+const motivo = "Por favor indique el motivo de la ausencia: ";
 const userJson = `
 {
     "id": 3,
@@ -77,8 +78,68 @@ function GetTextUser(messages) {
     return text;
 }
 
+function generateIncidencia(userState){
+    const certificado = userState.certificado == 'SI' ? true : false;
+    const asistencia = userState.asistencia == 'SI' ? true : false;
+
+    const user = {
+        nombre: userState.nombreApellido,
+        email: userState.email,
+        legajo: userState.legajo,
+        direccion: userState.direccion,
+        celular: userState.celular,
+        enfermedad: userState.enfermedad,
+        sintomas: userState.sintomas,
+        medicacion: userState.medicacion,
+        asistencia: asistencia,
+        certificado: certificado,
+        idUser: userState.user.id,
+        idSucursal: userState.idSucursal,
+        nombreSucursal: userState.nombreSucursal,
+        idImagen: userState.certificado_id
+      };
+
+      return user;
+}
+
+function generateIncidenciaNo(userState){
+    const certificado = userState.certificado == 'SI' ? true : false;
+      /*  {
+"nombre":"Jgg",
+"email":"Gh@gm.com",
+"legajo":"0",
+"direccion":"Fy",
+"celular":"68",
+"motivo":"Ghi",
+"certificado":false,
+"idUser":2,
+"idSucursal":52,
+"nombreSucursal":"Sucursal 44 - RESISTENCIA",
+"idImagen":"0"
+} */
+
+    const user = {
+        nombre: userState.nombreApellido,
+        email: userState.email,
+        legajo: userState.legajo,
+        direccion: userState.direccion,
+        celular: userState.celular,
+        motivo: userState.motivo,    
+        certificado: certificado,
+        idUser: userState.user.id,
+        idSucursal: userState.idSucursal,
+        nombreSucursal: userState.nombreSucursal,
+        idImagen: userState.certificado_id
+      };
+
+      return user;
+}
+
+
 module.exports = {
     GetTextUser,
+    generateIncidencia,
+    generateIncidenciaNo,
     greetingMessage,
     tituloBoton,
     test,
@@ -101,5 +162,6 @@ module.exports = {
     sintomas,
     medicacion,
     imagen,
-    saludo
+    saludo,
+    motivo
 }

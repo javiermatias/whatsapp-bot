@@ -279,6 +279,8 @@ const receiveMessage = async(req, res) => {
                             whatsappService.sendMessage(enfermedad);
                             userState.step = 13;   
                         }else{
+                            const motivo = model.modelText(number, utilities.motivo);
+                            whatsappService.sendMessage(motivo);
                             userState.step = 20; 
                         }
                        }
@@ -335,7 +337,7 @@ const receiveMessage = async(req, res) => {
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
-                        const incidencia = generateUser(userState); 
+                        const incidencia = utilities.generateIncidencia(userState); 
                         const saveUser = await whatsappService.postIncidencia(incidencia);
                         const saludo = utilities.saludo + saveUser; 
                         const saludo_model = model.modelText(number, saludo);
@@ -344,7 +346,6 @@ const receiveMessage = async(req, res) => {
                         //borro el user?
 
                     }
-              
                     break;
 
                     
@@ -360,7 +361,7 @@ const receiveMessage = async(req, res) => {
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
                     }
-                    const incidencia = generateUser(userState); 
+                    const incidencia = utilities.generateIncidencia(userState);
                     const saveUser = await whatsappService.postIncidencia(incidencia);
                     const saludo = utilities.saludo + saveUser;
                     const saludo_model = model.modelText(number, saludo);                                     
@@ -370,8 +371,56 @@ const receiveMessage = async(req, res) => {
               
                     break;   
                 }
+                case 20:
+                {
+                    userState.motivo = text;     
+                    const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
+                    whatsappService.sendMessage(botonCertificado);
+                    userState.step = 21;                    
+                    break;  
+                }
+                case 21:
+                {
+                    if(text == "SI"){
+                        userState.certificado = text;                 
+                        const adjuntarImagen = model.modelText(number, utilities.imagen);
+                        whatsappService.sendMessage(adjuntarImagen);
+                        userState.step = 22; 
+                    }else{
+                        userState.certificado = "NO"; 
+                        userState.certificado_id = "0";
+                        const incidencia_no = utilities.generateIncidenciaNo(userState); 
+                        const saveUser = await whatsappService.postIncidenciaNo(incidencia_no);
+                        const saludo = utilities.saludo + saveUser; 
+                        const saludo_model = model.modelText(number, saludo);
+                        whatsappService.sendMessage(saludo_model);
+                        userState.step = 1; 
+                        //borro el user?
 
-
+                    }
+                    break;
+                }
+                case 22://Adjuntar certificado
+                {
+                    //console.log("id certificado " + text)
+                    if (whatsappService.isNumeric(text)) {
+                        userState.certificado = "SI";
+                        userState.certificado_id = text;
+                
+                    }else{
+                        userState.certificado = "NO"; 
+                        userState.certificado_id = "0";
+                    }
+                    const incidencia_no = utilities.generateIncidenciaNo(userState); 
+                    const saveUser = await whatsappService.postIncidenciaNo(incidencia_no);
+                    const saludo = utilities.saludo + saveUser; 
+                    const saludo_model = model.modelText(number, saludo);
+                    whatsappService.sendMessage(saludo_model);
+                    userState.step = 1; 
+                        
+              
+                    break;   
+                }
                 default:
                 {
                         //direccion{}
@@ -398,32 +447,7 @@ const receiveMessage = async(req, res) => {
 }
 
 
-function generateUser(userState){
-    const certificado = userState.certificado == 'SI' ? true : false;
-    const asistencia = userState.asistencia == 'SI' ? true : false;
 
-    const user = {
-        nombre: userState.nombreApellido,
-        email: userState.email,
-        legajo: userState.legajo,
-        direccion: userState.direccion,
-        celular: userState.celular,
-        enfermedad: userState.enfermedad,
-        sintomas: userState.sintomas,
-        medicacion: userState.medicacion,
-        asistencia: asistencia,
-        certificado: certificado,
-        idUser: userState.user.id,
-        idSucursal: userState.idSucursal,
-        nombreSucursal: userState.nombreSucursal,
-        idImagen: userState.certificado_id
-      };
-
-      return user;
-
-
-
-}
 
 
 
