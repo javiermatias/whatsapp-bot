@@ -19,8 +19,8 @@ const test = async(req, res) => {
 
     //console.log(JSON.stringify(resultString));
     //process.stdout.write(resultString)
-
-    res.send(botonEleccion)
+ res.send("hola")
+    //res.send(botonEleccion)
 }
 
 const verifyToken = (req, res) => {
@@ -60,7 +60,7 @@ const receiveMessage = async(req, res) => {
             const number = messageValue["from"];
             const text = utilities.GetTextUser(messageValue);
             if(text === "S" || text === "s"){
-                delete usersState[number];                
+                delete usersState[number];  
             }
             const currentTime = new Date().getTime();
             if (!usersState[number]) {
@@ -96,7 +96,7 @@ const receiveMessage = async(req, res) => {
                     userState.certificado_id = "0"; */
                     
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
-                    whatsappService.sendMessage(modelGreeting);
+                    await whatsappService.sendMessage(modelGreeting);
                     userState.step = 2;
                     break;
                 }
@@ -104,7 +104,7 @@ const receiveMessage = async(req, res) => {
                 case 2:
                     {
                     const modelDni = model.modelText(number, utilities.dniMessage);
-                    whatsappService.sendMessage(modelDni);
+                    await whatsappService.sendMessage(modelDni);
                     userState.step = 3;
                     break;
                     }
@@ -121,82 +121,84 @@ const receiveMessage = async(req, res) => {
                         if(user){
                             userState.user = user;
                             const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
-                            whatsappService.sendMessage(botonEleccion);
+                            await whatsappService.sendMessage(botonEleccion);
 
                             userState.step = 4;
                         }else{
+                            //Registrar
                             const dniNoEncontrado = model.modelText(number, utilities.userNoEncontrado);
-                            whatsappService.sendMessage(dniNoEncontrado); 
+                            await whatsappService.sendMessage(dniNoEncontrado); 
                             userState.step = 1;                           
                         }                      
                                               
                     } else {
 
                         const errorDni = model.modelText(number, utilities.errorDni);
-                        const modelDni = model.modelText(number, utilities.dniMessage);
-                        whatsappService.sendMessage(errorDni);
-                        whatsappService.sendMessage(modelDni);
+                        //const modelDni = model.modelText(number, utilities.dniMessage);                        const errorDni = model.modelText(number, utilities.errorDni);
+
+                        
+                        await whatsappService.sendMessage(errorDni);
                         userState.step = 3;
 
                     }               
 
                     break;
                 }
-                case 4://nombre y apellido
+                case 4: //Causa
                 {
                     if(text === "Enfermedad" || text === "Otros"){
                         userState.causa = text;                  
                         const nombreyapellido = model.modelText(number, utilities.apellido);
-                        whatsappService.sendMessage(nombreyapellido);
+                        await whatsappService.sendMessage(nombreyapellido);
                         userState.step = 5; 
                     }else{
                         const ausencia = model.modelText(number, utilities.ausencia);
-                        whatsappService.sendMessage(ausencia);
+                        await whatsappService.sendMessage(ausencia);
                         userState.step = 4; 
                     }
               
                     break;
                 }
-                case 5: //email
+                case 5: //nombre y apellido
                 {
                     userState.nombreApellido = text;                                            
                     const email = model.modelText(number, utilities.email);
-                    whatsappService.sendMessage(email);
+                    await whatsappService.sendMessage(email);
                     userState.step = 6; 
                     break;
                 }
-                case 6://legajo
+                case 6://email
                 {
                     if(!whatsappService.isValidEmail(text)){
                         const emailError = model.modelText(number, utilities.errorEmail);
-                       whatsappService.sendMessage(emailError);
+                       await whatsappService.sendMessage(emailError);
                        userState.step = 6; 
                     }else{
                         userState.email = text;                                            
                         const legajo = model.modelText(number, utilities.legajo);
-                        whatsappService.sendMessage(legajo);
+                        await whatsappService.sendMessage(legajo);
                         userState.step = 7;
                     }
                    
                     break;
                 }
-                case 7://direccion
+                case 7://legajo
                 {
                     userState.legajo = text;                                            
                     const dire = model.modelText(number, utilities.direccion);
-                    whatsappService.sendMessage(dire);
+                    await whatsappService.sendMessage(dire);
                     userState.step = 8; 
                     break;
                 }
-                case 8://celular
+                case 8://direccion
                 {
                     userState.direccion = text;                                            
                     const celular = model.modelText(number, utilities.celular);
-                    whatsappService.sendMessage(celular);
+                    await whatsappService.sendMessage(celular);
                     userState.step = 9; 
                     break;
                 } 
-                case 9://provincia
+                case 9://celular
                 {
                     userState.celular = text;
                     const empresaId = userState.user.empresa.id;     
@@ -206,7 +208,7 @@ const receiveMessage = async(req, res) => {
                     userState.provincias = provincias;
                     const str_provincias_title = title + resultString;
                     const str_provincias = model.modelText(number, str_provincias_title);
-                    whatsappService.sendMessage(str_provincias);
+                    await whatsappService.sendMessage(str_provincias);
                     userState.step = 10; 
              
                     break;
@@ -224,7 +226,7 @@ const receiveMessage = async(req, res) => {
                         userState.localidades = localidades;
                         const str_localidades_title = title + resultString;
                         const str_localidades = model.modelText(number, str_localidades_title);
-                        whatsappService.sendMessage(str_localidades);
+                        await whatsappService.sendMessage(str_localidades);
                         userState.step = 11; 
                         isValid = true;
                        }
@@ -232,7 +234,7 @@ const receiveMessage = async(req, res) => {
                     if (!isValid) {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const provinciaNoEncontrado = model.modelText(number, utilities.errorProvincia);
-                        whatsappService.sendMessage(provinciaNoEncontrado);
+                        await whatsappService.sendMessage(provinciaNoEncontrado);
                         userState.step = 10;
                     }
                 
@@ -253,7 +255,7 @@ const receiveMessage = async(req, res) => {
                         userState.sucursales = sucursales;
                         const str_sucursales_title = title + resultString;
                         const str_sucursales = model.modelText(number, str_sucursales_title);
-                        whatsappService.sendMessage(str_sucursales);
+                        await whatsappService.sendMessage(str_sucursales);
                         userState.step = 12;
                         isValid = true;        
                         
@@ -262,7 +264,7 @@ const receiveMessage = async(req, res) => {
                     if (!isValid) {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const localidadNoEncontrado = model.modelText(number, utilities.errorLocalidad);
-                        whatsappService.sendMessage(localidadNoEncontrado);
+                        await whatsappService.sendMessage(localidadNoEncontrado);
                         userState.step = 11;
                     }
                     break;      
@@ -279,19 +281,19 @@ const receiveMessage = async(req, res) => {
                         isValid = true;                                         
                         if(userState.causa == "Enfermedad"){
                             const enfermedad = model.modelText(number, utilities.enfermedad);
-                            whatsappService.sendMessage(enfermedad);
+                            await whatsappService.sendMessage(enfermedad);
                             userState.step = 13;   
                         }else{
                             const motivo = model.modelText(number, utilities.motivo);
-                            whatsappService.sendMessage(motivo);
-                            userState.step = 20; 
+                            await whatsappService.sendMessage(motivo);
+                            userState.step = 30; 
                         }
                        }
                    }
                     if (!isValid) {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
-                        whatsappService.sendMessage(sucursalNoEncontrado);
+                        await whatsappService.sendMessage(sucursalNoEncontrado);
                         userState.step = 12;
                     }
                     break;   
@@ -300,7 +302,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.enfermedad = text;                                            
                     const enfermedad = model.modelText(number, utilities.sintomas);
-                    whatsappService.sendMessage(enfermedad);
+                    await whatsappService.sendMessage(enfermedad);
                     userState.step = 14; 
                     break;           
                     
@@ -309,7 +311,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.sintomas = text;                                            
                     const medicacion = model.modelText(number, utilities.medicacion);
-                    whatsappService.sendMessage(medicacion);
+                    await whatsappService.sendMessage(medicacion);
                     userState.step = 15; 
                     break;           
                     
@@ -318,7 +320,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.medicacion = text;     
                     const botonAsistencia = model.modelButtonGeneric(number, "Recibio Asistencia:", ["SI", "NO"]);        
-                    whatsappService.sendMessage(botonAsistencia);
+                    await whatsappService.sendMessage(botonAsistencia);
                     userState.step = 16; 
                     break;         
                 }
@@ -326,7 +328,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.asistencia = text;     
                     const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
-                    whatsappService.sendMessage(botonCertificado);
+                    await whatsappService.sendMessage(botonCertificado);
                     userState.step = 17; 
                     break;   
                 }
@@ -335,17 +337,18 @@ const receiveMessage = async(req, res) => {
                     if(text == "SI"){
                         userState.certificado = text;                 
                         const adjuntarImagen = model.modelText(number, utilities.imagen);
-                        whatsappService.sendMessage(adjuntarImagen);
+                        await whatsappService.sendMessage(adjuntarImagen);
                         userState.step = 18; 
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
-                        const incidencia = utilities.generateIncidencia(userState); 
+                        
+                     /*    const incidencia = utilities.generateIncidencia(userState); 
                         const saveUser = await whatsappService.postIncidencia(incidencia);
                         const saludo = utilities.saludo + saveUser; 
                         const saludo_model = model.modelText(number, saludo);
                         whatsappService.sendMessage(saludo_model);
-                        userState.step = 1; 
+                        userState.step = 1;  */
                         //borro el user?
 
                     }
@@ -364,31 +367,63 @@ const receiveMessage = async(req, res) => {
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
                     }
-                    const incidencia = utilities.generateIncidencia(userState);
+                    const resumen = `Resumen Aviso Notificación:\n 
+                                     Empresa:${userState.user.empresa.nombre}\n
+                                     Nombre Completo: ${userState.nombreApellido}\n
+                                     Email: ${userState.email}\n
+                                     Celular: ${userState.celular}\n
+                                     Sucursal: ${userState.nombreSucursal}\n
+                                     Enfermedad: ${userState.enfermedad}\n
+                                     Sintomas: ${userState.sintomas}\n
+                                     Medicación: ${userState.medicacion}\n
+                                     Recibio Asistencia?: ${userState.asistencia}\n
+                                     Tiene Certificado?: ${userState.certificado}\n
+                                     Los datos son correctos?\n
+                                     1.Si 2.NO
+                                     `;
+                    const resumen_model = model.modelText(number, resumen);
+                    await whatsappService.sendMessage(resumen_model);
+                    
+/*                     const incidencia = utilities.generateIncidencia(userState);
                     const saveUser = await whatsappService.postIncidencia(incidencia);
                     const saludo = utilities.saludo + saveUser;
                     const saludo_model = model.modelText(number, saludo);                                     
                     whatsappService.sendMessage(saludo_model);
-                    userState.step = 1; 
+                    userState.step = 1;  */
                         
               
                     break;   
                 }
-                case 20:
+                case 19: //resumen
+                {
+
+                }
+                case 20: //guarda
+                {
+
+                    const incidencia = utilities.generateIncidencia(userState);
+                    const saveUser = await whatsappService.postIncidencia(incidencia);
+                    const saludo = utilities.saludo + saveUser;
+                    const saludo_model = model.modelText(number, saludo);                                     
+                    await whatsappService.sendMessage(saludo_model);
+                    userState.step = 1; 
+
+                }
+                case 30: //otros
                 {
                     userState.motivo = text;     
                     const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
-                    whatsappService.sendMessage(botonCertificado);
-                    userState.step = 21;                    
+                    await whatsappService.sendMessage(botonCertificado);
+                    userState.step = 31;                    
                     break;  
                 }
-                case 21:
+                case 31:
                 {
                     if(text == "SI"){
                         userState.certificado = text;                 
                         const adjuntarImagen = model.modelText(number, utilities.imagen);
-                        whatsappService.sendMessage(adjuntarImagen);
-                        userState.step = 22; 
+                        await whatsappService.sendMessage(adjuntarImagen);
+                        userState.step = 32; 
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
@@ -396,14 +431,14 @@ const receiveMessage = async(req, res) => {
                         const saveUser = await whatsappService.postIncidenciaNo(incidencia_no);
                         const saludo = utilities.saludo + saveUser; 
                         const saludo_model = model.modelText(number, saludo);
-                        whatsappService.sendMessage(saludo_model);
+                        await whatsappService.sendMessage(saludo_model);
                         userState.step = 1; 
                         //borro el user?
 
                     }
                     break;
                 }
-                case 22://Adjuntar certificado
+                case 32://Adjuntar certificado
                 {
                     //console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
@@ -418,7 +453,7 @@ const receiveMessage = async(req, res) => {
                     const saveUser = await whatsappService.postIncidenciaNo(incidencia_no);
                     const saludo = utilities.saludo + saveUser; 
                     const saludo_model = model.modelText(number, saludo);
-                    whatsappService.sendMessage(saludo_model);
+                    await whatsappService.sendMessage(saludo_model);
                     userState.step = 1; 
                         
               
@@ -428,7 +463,7 @@ const receiveMessage = async(req, res) => {
                 {
                         //direccion{}
                     const test1 = model.modelText(number, utilities.test);                    
-                    whatsappService.sendMessage(number, test1);
+                    await whatsappService.sendMessage(number, test1);
                     break;
 
                 }
@@ -448,6 +483,8 @@ const receiveMessage = async(req, res) => {
         res.send("EVENT_RECEIVED")
     }
 }
+
+
 
 cron.schedule('*/10 * * * *', () => {
     try {
