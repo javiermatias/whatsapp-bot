@@ -383,6 +383,7 @@ const receiveMessage = async(req, res) => {
                                      `;
                     const resumen_model = model.modelText(number, resumen);
                     await whatsappService.sendMessage(resumen_model);
+                    userState.step = 19;
                     
 /*                     const incidencia = utilities.generateIncidencia(userState);
                     const saveUser = await whatsappService.postIncidencia(incidencia);
