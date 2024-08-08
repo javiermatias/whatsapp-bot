@@ -503,16 +503,16 @@ const receiveMessage = async(req, res) => {
 
                 case 50:{ //verificar registro user
                     if(text == "SI"){
-                        const registrar = utilities.registrarUser;
+             /*            const registrar = utilities.registrarUser;
                         const registrar_model = model.modelText(number, registrar);
                         await whatsappService.sendMessage(registrar_model);
                         const nombre = model.modelText(number, utilities.nombre);
                         await whatsappService.sendMessage(nombre);
-                        userState.step = 4;
+                        userState.step = 4; */
                     }else{
-                        const dni_again = model.modelText(number, utilities.dniMessage);  
-                        await whatsappService.sendMessage(dni_again);
-                        userState.step = 3;
+                        const volver = model.modelText(number, utilities.volver);  
+                        await whatsappService.sendMessage(volver);
+                        userState.step = 1;
               
                     }
                     break;

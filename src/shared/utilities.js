@@ -27,6 +27,7 @@ const saludo = "Tu notificación ya fue cargada. Tu número de referencia es: ";
 const registrarUser = "Te pediremos algunos datos para registrarte en el sistema";
 const saludo_vuelta = "Vuelva a iniciar el proceso. Gracias";
 const motivo = "Por favor indique el motivo de la ausencia: ";
+const volver = "Bien va tener que iniciar el proceso de vuelta.";
 const userJson = `
 {
     "id": 3,
@@ -201,4 +202,5 @@ module.exports = {
     byeMessage,
     saludo_vuelta,
     registrarUser,
+    volver
 }
