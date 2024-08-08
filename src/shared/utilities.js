@@ -5,7 +5,7 @@ const byeMessage = "Gracias por comunicarse con ausentismos online!";
 const dniMessage = "Por favor indique numero de *DNI*:";
 const errorDni = "Disculpa! El DNI que indicaste tiene un error. ";
 const dniAceptado = "Gracias por indicar tu dni";
-const userNoEncontrado = "No encontramos tu dni. Por favor registrese en https://front-ausentismo.vercel.app/register";
+const userNoEncontrado = "No encontramos tu dni. Esta bien escrito?";
 const tituloBoton = "Ausencia por enfermedad u otras causas";
 const ausencia ="Elija: Enfermedad u Otro";
 const apellido = "Ingrese su nombre y apellido";
@@ -23,6 +23,7 @@ const sintomas = "Por favor indique sus sintomas";
 const medicacion = "Indique la medicación que toma";
 const imagen = "Por favor adjunte la imagen";
 const saludo = "Tu notificación ya fue cargada. Tu número de referencia es: ";
+const saludo_vuelta = "Vuelva a iniciar el proceso. Gracias";
 const motivo = "Por favor indique el motivo de la ausencia: ";
 const userJson = `
 {
@@ -136,11 +137,28 @@ function generateIncidenciaNo(userState){
       return user;
 }
 
+function getResumenIncidencia(userState){
+    const resumen = `Resumen Aviso Notificación:\n 
+    Empresa:${userState.user.empresa.nombre}\n
+    Nombre Completo: ${userState.nombreApellido}\n
+    Email: ${userState.email}\n
+    Celular: ${userState.celular}\n
+    Sucursal: ${userState.nombreSucursal}\n
+    Enfermedad: ${userState.enfermedad}\n
+    Sintomas: ${userState.sintomas}\n
+    Medicación: ${userState.medicacion}\n
+    Recibio Asistencia?: ${userState.asistencia}\n
+    Tiene Certificado?: ${userState.certificado}\n                                     
+    `;
+    return resumen;
+}
+
 
 module.exports = {
     GetTextUser,
     generateIncidencia,
     generateIncidenciaNo,
+    getResumenIncidencia,
     greetingMessage,
     tituloBoton,
     test,
@@ -165,5 +183,6 @@ module.exports = {
     imagen,
     saludo,
     motivo,
-    byeMessage
+    byeMessage,
+    saludo_vuelta
 }
