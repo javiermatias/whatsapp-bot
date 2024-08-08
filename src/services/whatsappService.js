@@ -212,7 +212,7 @@ async function postIncidenciaNo(data) {
 
     try {
         const response = await axios.post(url, data, { headers });
-        console.log(response.data);
+        //console.log(response.data);
     } catch (error) {
         console.error(error);
     }
