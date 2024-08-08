@@ -139,6 +139,17 @@ function generateIncidenciaNo(userState){
       return user;
 }
 
+function getUser(userState){
+    const resumen = `Usuario a registrar:\n 
+    Empresa:${userState.empresa}\n
+    Nombre:${userState.nombre}\n
+    Apellido:${userState.apellido}\n
+    Email: ${userState.email}\n
+    Celular: ${userState.celular}\n
+                                    
+    `;
+    return resumen;
+}
 function getResumenIncidencia(userState){
     const resumen = `Resumen Aviso Notificación:\n 
     Empresa:${userState.user.empresa.nombre}\n
@@ -161,6 +172,7 @@ module.exports = {
     generateIncidencia,
     generateIncidenciaNo,
     getResumenIncidencia,
+    getUser,
     greetingMessage,
     tituloBoton,
     test,
@@ -188,5 +200,5 @@ module.exports = {
     motivo,
     byeMessage,
     saludo_vuelta,
-    registrarUser
+    registrarUser,
 }
