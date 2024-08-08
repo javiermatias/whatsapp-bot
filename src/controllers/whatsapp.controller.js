@@ -536,6 +536,7 @@ const receiveMessage = async(req, res) => {
         res.send("EVENT_RECEIVED")
     } catch (ex) {
 
+        console.log(ex);
         myConsole.log(ex);
         res.send("EVENT_RECEIVED")
     }
