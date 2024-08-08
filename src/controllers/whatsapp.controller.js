@@ -168,9 +168,17 @@ const receiveMessage = async(req, res) => {
               
                     break;
                 } */
-                case 4: //nombre y apellido
+                case 4: //nombre
                 {
-                    userState.nombreApellido = text;                                            
+                    userState.nombre = text;                                            
+                    const apellido = model.modelText(number, utilities.apellido);
+                    await whatsappService.sendMessage(apellido);
+                    userState.step = 5; 
+                    break;
+                }
+                case 5: //apellido
+                {
+                    userState.nombre = text;                                            
                     const email = model.modelText(number, utilities.email);
                     await whatsappService.sendMessage(email);
                     userState.step = 6; 
