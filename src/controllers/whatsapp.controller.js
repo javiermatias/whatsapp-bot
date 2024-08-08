@@ -121,8 +121,12 @@ const receiveMessage = async(req, res) => {
                         if(user){
                             userState.existe_user = true;
                             userState.user = user;
-                            const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
-                            await whatsappService.sendMessage(botonEleccion);
+                            
+                            const nombre = model.modelText(number, utilities.nombre);
+                             await whatsappService.sendMessage(nombre);
+                            
+                            //const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
+                            //await whatsappService.sendMessage(botonEleccion);
 
                             userState.step = 4;
                         }else{
@@ -149,7 +153,7 @@ const receiveMessage = async(req, res) => {
 
                     break;
                 }
-                case 4: //Causa
+          /*       case 4: //Causa
                 {
                     if(text === "Enfermedad" || text === "Otros"){
                         userState.causa = text;                  
@@ -163,8 +167,8 @@ const receiveMessage = async(req, res) => {
                     }
               
                     break;
-                }
-                case 5: //nombre y apellido
+                } */
+                case 4: //nombre y apellido
                 {
                     userState.nombreApellido = text;                                            
                     const email = model.modelText(number, utilities.email);
@@ -461,6 +465,9 @@ const receiveMessage = async(req, res) => {
                         const registrar = utilities.registrarUser;
                         const registrar_model = model.modelText(number, registrar);
                         await whatsappService.sendMessage(registrar_model);
+                        const nombre = model.modelText(number, utilities.nombre);
+                        await whatsappService.sendMessage(nombre);
+                        userState.step = 4;
                     }else{
                         const dni_again = model.modelText(number, utilities.dniMessage);  
                         await whatsappService.sendMessage(dni_again);

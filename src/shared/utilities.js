@@ -8,7 +8,8 @@ const dniAceptado = "Gracias por indicar tu dni";
 const userNoEncontrado = "No encontramos tu dni. Esta bien escrito?";
 const tituloBoton = "Ausencia por enfermedad u otras causas";
 const ausencia ="Elija: Enfermedad u Otro";
-const apellido = "Ingrese su nombre y apellido";
+const nombre = "Ingrese su nombre";
+const apellido = "Ingrese su apellido";
 const email = "Ingrese su email";
 const legajo = "Ingrese su legajo, 0 si no tiene";
 const direccion = "Ingrese su dirección";
@@ -167,6 +168,7 @@ module.exports = {
     errorDni,
     dniAceptado,
     userNoEncontrado,
+    nombre,
     apellido,
     ausencia,
     email,
