@@ -116,7 +116,8 @@ const receiveMessage = async(req, res) => {
                     // Check if the conversion resulted in a valid number
                     if (whatsappService.isNumeric(text)) {
                         //Traer el dni del usuario
-                        const user = await whatsappService.findByDni(text)                    
+                        const user = await whatsappService.findByDni(text)
+                        userState.dni = text;                    
                         if(user){
                             userState.existe_user = true;
                             userState.user = user;
@@ -132,8 +133,7 @@ const receiveMessage = async(req, res) => {
 
                             const botonConfirmar = model.modelButtonGeneric(number, "No encontramos tu dni esta bien escrito?", ["SI", "NO"]);        
                             await whatsappService.sendMessage(botonConfirmar);
-
-                            userState.step = 1;                           
+                            userState.step = 40;                           
                         }                      
                                               
                     } else {
@@ -454,6 +454,21 @@ const receiveMessage = async(req, res) => {
                         
               
                     break;   
+                }
+
+                case 40:{
+                    if(text == "SI"){
+                        const registrar = utilities.registrarUser;
+                        const registrar_model = model.modelText(number, registrar);
+                        await whatsappService.sendMessage(registrar_model);
+                    }else{
+                        const dni_again = model.modelText(number, utilities.dniMessage);  
+                        await whatsappService.sendMessage(dni_again);
+                        userState.step = 3;
+              
+                    }
+                    break;
+                   
                 }
                 default:
                 {
