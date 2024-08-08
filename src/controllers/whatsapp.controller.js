@@ -123,11 +123,9 @@ const receiveMessage = async(req, res) => {
                         userState.dni = text;                    
                         if(user){
                             userState.existe_user = true;
-                            userState.user = user;
-                            
+                            userState.user = user;                            
                             const nombre = model.modelText(number, utilities.nombre);
-                             await whatsappService.sendMessage(nombre);
-                            
+                             await whatsappService.sendMessage(nombre);                            
                             //const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
                             //await whatsappService.sendMessage(botonEleccion);
 

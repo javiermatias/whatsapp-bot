@@ -88,7 +88,7 @@ function generateIncidencia(userState){
     const asistencia = userState.asistencia == 'SI' ? true : false;
 
     const user = {
-        nombre: userState.nombreApellido,
+        nombre: userState.nombre + " " + userState.apellido,
         email: userState.email,
         legajo: userState.legajo,
         direccion: userState.direccion,
@@ -124,7 +124,7 @@ function generateIncidenciaNo(userState){
 } */
 
     const user = {
-        nombre: userState.nombreApellido,
+        nombre: userState.nombre + " " + userState.apellido,
         email: userState.email,
         legajo: userState.legajo,
         direccion: userState.direccion,
@@ -153,8 +153,8 @@ function getUser(userState){
 }
 function getResumenIncidencia(userState){
     const resumen = `Resumen Aviso Notificación:\n 
-    Empresa:${userState.user.empresa.nombre}\n
-    Nombre Completo: ${userState.nombreApellido}\n
+    Empresa:${userState.empresa}\n
+    Nombre Completo: ${userState.nombre} ${userState.apellido}\n
     Email: ${userState.email}\n
     Celular: ${userState.celular}\n
     Sucursal: ${userState.nombreSucursal}\n
