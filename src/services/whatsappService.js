@@ -191,6 +191,36 @@ async function postIncidenciaNo(data, token) {
     }
   }
 
+  async function postRegistrar(data, token) {
+   
+    const url = `${base_url}/users`;
+    try {
+      const response = await axios.post(url, data,{
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+      return response.data; // Return the data if the request is successful
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error('Error response:', error.response.status);
+        return [];
+        // throw new Error(`Error from API: ${error.response.status}`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('Error request:', error.request);
+        // throw new Error('No response received from the API.');
+        return [];
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error', error.message);
+        // throw new Error('An error occurred while making the request.');
+        return [];
+      }
+    }
+  }
 
   async function sendMessage(data) {
     const url = 'https://graph.facebook.com/v19.0/250745364796553/messages';
@@ -267,5 +297,6 @@ module.exports = {
     postIncidencia,
     postIncidenciaNo,
     isValidEmail,
-    loginToAusentismosOnline
+    loginToAusentismosOnline,
+    postRegistrar
 }

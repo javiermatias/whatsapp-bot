@@ -25,6 +25,7 @@ const medicacion = "Indique la medicación que toma";
 const imagen = "Por favor adjunte la imagen";
 const saludo = "Tu notificación ya fue cargada. Tu número de referencia es: ";
 const registrarUser = "Te pediremos algunos datos para registrarte en el sistema";
+const registroExitoso = "Se registro correctamente el user."
 const saludo_vuelta = "Vuelva a iniciar el proceso. Gracias";
 const motivo = "Por favor indique el motivo de la ausencia: ";
 const volver = "Bien va tener que iniciar el proceso de vuelta.";
@@ -140,6 +141,23 @@ function generateIncidenciaNo(userState){
       return user;
 }
 
+function generateUser(userState){
+    
+    const user = {
+        nombre: userState.nombre,
+        apellido: userState.apellido,
+        email: userState.email,
+        dni: userState.dni,
+        rol: "empleado",
+        empresaId: userState.empresa_id
+      };
+
+      return user;
+   
+}
+
+
+
 function getUser(userState){
     const resumen = `Usuario a registrar:\n 
     Empresa:${userState.empresa}\n
@@ -174,6 +192,7 @@ module.exports = {
     generateIncidenciaNo,
     getResumenIncidencia,
     getUser,
+    generateUser,
     greetingMessage,
     tituloBoton,
     test,
@@ -202,5 +221,6 @@ module.exports = {
     byeMessage,
     saludo_vuelta,
     registrarUser,
+    registroExitoso,
     volver
 }
