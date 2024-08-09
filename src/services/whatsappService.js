@@ -2,12 +2,18 @@ const https = require("https");
 const axios = require('axios');
 require('dotenv').config();
 
-const base_url = 'https://ausentismos.online/api/';
-async function findByDni(dni){
+//const base_url = 'https://ausentismos.online/api';
+const base_url = 'http://localhost:3001/api';
+
+async function findByDni(dni, token){
     const url = `${base_url}/whatsapp/${dni}`;
     //console.log(url);
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      });
       return response.data; // Return the data if the request is successful
     } catch (error) {
       if (error.response) {
@@ -30,11 +36,15 @@ async function findByDni(dni){
     }
 }
 
-async function findProvincia(idEmpresa) {
+async function findProvincia(idEmpresa,token) {
   const url = `${base_url}/whatsapp/provincias?empresa=${idEmpresa}`;
   //console.log(url);
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url,{
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+    });
     return response.data; // Return the data if the request is successful
   } catch (error) {
     if (error.response) {
@@ -57,11 +67,15 @@ async function findProvincia(idEmpresa) {
   }
 }
 
-async function findLocalidad(idProvincia) {
+async function findLocalidad(idProvincia,token) {
   const url = `${base_url}/whatsapp/localidades?provincia=${idProvincia}`;
   //console.log(url);
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url,{
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+    });
     return response.data; // Return the data if the request is successful
   } catch (error) {
     if (error.response) {
@@ -84,11 +98,15 @@ async function findLocalidad(idProvincia) {
   }
 }
 
-async function findSucursal(idLocalidad) {
+async function findSucursal(idLocalidad,token) {
   const url = `${base_url}/whatsapp/sucursales?localidad=${idLocalidad}`;
   //console.log(url);
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url,{
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+    });
     return response.data; // Return the data if the request is successful
   } catch (error) {
     if (error.response) {
@@ -111,31 +129,15 @@ async function findSucursal(idLocalidad) {
   }
 }
 
-async function postIncidencia(data) {
+async function postIncidencia(data,token) {
    
-/*   const user ={
-    nombre : "John Doe",
-    email :"john.doe@example.com",
-    legajo: "12345",
-    direccion: "123 Main St",
-    celular:"1234567890",
-    enfermedad:"None",
-    sintomas: "None",
-    medicacion:"None",
-    asistencia: true,
-    certificado:false,
-    idUser: 1,
-    idSucursal:101,
-    nombreSucursal:"Sucursal Example",
-    idImagen:"cert123"
-  } */
-
-  console.log(JSON.stringify(data))
-
-
   const url = `${base_url}/whatsapp/incidencia`;
   try {
-    const response = await axios.post(url, data);
+    const response = await axios.post(url, data,{
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  });
     return response.data; // Return the data if the request is successful
   } catch (error) {
     if (error.response) {
@@ -158,28 +160,15 @@ async function postIncidencia(data) {
   }
 }
 
-async function postIncidenciaNo(data) {
+async function postIncidenciaNo(data, token) {
    
-  /*  {
-"nombre":"Jgg",
-"email":"Gh@gm.com",
-"legajo":"0",
-"direccion":"Fy",
-"celular":"68",
-"motivo":"Ghi",
-"certificado":false,
-"idUser":2,
-"idSucursal":52,
-"nombreSucursal":"Sucursal 44 - RESISTENCIA",
-"idImagen":"0"
-} */
-  
-    console.log(JSON.stringify(data))
-  
-  
     const url = `${base_url}/whatsapp/incidenciano`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axios.post(url, data,{
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
       return response.data; // Return the data if the request is successful
     } catch (error) {
       if (error.response) {
@@ -216,6 +205,21 @@ async function postIncidenciaNo(data) {
     } catch (error) {
         console.error(error);
     }
+}
+async function loginToAusentismosOnline(username, password) {
+  try {
+      const response = await axios.post(`${base_url}/auth/login`, {
+          username: username,
+          password: password
+      });
+
+      // Handle the response as needed
+      //console.log('Login successful:', response.data);
+      return response.data;
+  } catch (error) {
+      console.error('Login failed:', error.response ? error.response.data : error.message);
+      throw error;
+  }
 }
 
 /* function sendMessage(data) {
@@ -262,5 +266,6 @@ module.exports = {
     findSucursal,
     postIncidencia,
     postIncidenciaNo,
-    isValidEmail
+    isValidEmail,
+    loginToAusentismosOnline
 }

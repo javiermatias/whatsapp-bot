@@ -13,13 +13,14 @@ const cron = require('node-cron');
 const test = async(req, res) => {
    // const user =await whatsappService.findProvincia(1079);
    //const user = await whatsappService.findLocalidad(141);
-   const botonEleccion = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);
+   //const botonEleccion = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);
    //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
     // const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
 
-    const customParam = req.empresa.id;
-    console.log(customParam)
-    res.send("hola")
+    const saveUser = await whatsappService.loginToAusentismosOnline("32972083","32972083");
+    const token = saveUser.access_token;
+    const user = await whatsappService.findByDni("32972085", token )
+    res.send(user);
     //res.send(botonEleccion)
 }
 
@@ -64,7 +65,8 @@ const receiveMessage = async(req, res) => {
             }
             const currentTime = new Date().getTime();
             if (!usersState[number]) {
-                usersState[number] = { step: 1, timestamp: currentTime };
+                const user = await whatsappService.loginToAusentismosOnline("32972083","32972083");
+                usersState[number] = { step: 1, timestamp: currentTime, token:user.access_token};
             } else {
                 const lastInteractionTime = usersState[number].timestamp;
                 const timeDifference = currentTime - lastInteractionTime;
@@ -119,7 +121,7 @@ const receiveMessage = async(req, res) => {
                     // Check if the conversion resulted in a valid number
                     if (whatsappService.isNumeric(text)) {
                         //Traer el dni del usuario
-                        const user = await whatsappService.findByDni(text)
+                        const user = await whatsappService.findByDni(text, usersState.token)
                         userState.dni = text;                    
                         if(user){
                             userState.existe_user = true;
@@ -232,7 +234,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.direccion = text;  
                     const empresaId = userState.empresa_id;     
-                    const provincias = await whatsappService.findProvincia(empresaId);                    
+                    const provincias = await whatsappService.findProvincia(empresaId, usersState.token);                    
                     const title = 'Por Favor elija su provincia\n'                    
                     const resultString = provincias.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                     userState.provincias = provincias;
@@ -250,7 +252,7 @@ const receiveMessage = async(req, res) => {
                        const index = (Number.parseInt(text) - 1);
                        if(index >= 0 && index < userState.provincias.length){                        
                         const idProvincia = userState.provincias[index].id;                        
-                        const localidades = await whatsappService.findLocalidad(idProvincia);
+                        const localidades = await whatsappService.findLocalidad(idProvincia, usersState.token);
                         const title = 'Por Favor elija su localidad\n'                    
                         const resultString = localidades.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                         userState.localidades = localidades;
@@ -279,7 +281,7 @@ const receiveMessage = async(req, res) => {
                     const index = (Number.parseInt(text) - 1);
                        if(index >= 0 && index < userState.localidades.length){
                         const idLocalidad = userState.localidades[index].id;                        
-                        const sucursales = await whatsappService.findSucursal(idLocalidad);
+                        const sucursales = await whatsappService.findSucursal(idLocalidad, usersState.token);
                         const title = 'Por Favor elija su sucursal\n'                    
                         const resultString = sucursales.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                         userState.sucursales = sucursales;
@@ -410,7 +412,7 @@ const receiveMessage = async(req, res) => {
                 {
                     if(text == "SI"){
                         const incidencia = utilities.generateIncidencia(userState);
-                        const saveUser = await whatsappService.postIncidencia(incidencia);
+                        const saveUser = await whatsappService.postIncidencia(incidencia, usersState.token );
                         const saludo = utilities.saludo + saveUser;
                         const saludo_model = model.modelText(number, saludo);                                     
                         await whatsappService.sendMessage(saludo_model);
@@ -449,7 +451,7 @@ const receiveMessage = async(req, res) => {
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
                         const incidencia_no = utilities.generateIncidenciaNo(userState); 
-                        const saveUser = await whatsappService.postIncidenciaNo(incidencia_no);
+                        const saveUser = await whatsappService.postIncidenciaNo(incidencia_no, usersState.token);
                         const saludo = utilities.saludo + saveUser; 
                         const saludo_model = model.modelText(number, saludo);
                         await whatsappService.sendMessage(saludo_model);
@@ -471,7 +473,7 @@ const receiveMessage = async(req, res) => {
                         userState.certificado_id = "0";
                     }
                     const incidencia_no = utilities.generateIncidenciaNo(userState); 
-                    const saveUser = await whatsappService.postIncidenciaNo(incidencia_no);
+                    const saveUser = await whatsappService.postIncidenciaNo(incidencia_no, usersState.token);
                     const saludo = utilities.saludo + saveUser; 
                     const saludo_model = model.modelText(number, saludo);
                     await whatsappService.sendMessage(saludo_model);
