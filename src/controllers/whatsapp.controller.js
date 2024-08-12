@@ -19,8 +19,13 @@ const test = async(req, res) => {
 
     const saveUser = await whatsappService.loginToAusentismosOnline("32972083","32972083");
     const token = saveUser.access_token;
-    const user = await whatsappService.findByDni("32972085", token )
-    res.send(user);
+    const user = await whatsappService.findByDni("5489481", "asa")
+    if(user){
+        res.send("Existe el user");
+    }else{
+        res.send("No existe el user")
+    }
+    //res.send(user);
     //res.send(botonEleccion)
 }
 
@@ -120,8 +125,8 @@ const receiveMessage = async(req, res) => {
                     //const dni = Number.parseInt(text)
                     // Check if the conversion resulted in a valid number
                     if (whatsappService.isNumeric(text)) {
-                        //Traer el dni del usuario
-                        const user = await whatsappService.findByDni(text, usersState.token)
+                        //Traer el dni del usuario                       
+                        const user = await whatsappService.findByDni(text, userState.token)
                         userState.dni = text;                    
                         if(user){
                             userState.existe_user = true;

@@ -14,23 +14,25 @@ async function findByDni(dni, token){
             Authorization: `Bearer ${token}`
         }
       });
-      return response.data; // Return the data if the request is successful
+       
+          return response.data; // Return the data if the status is 200
+      
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         console.error('Error response:', error.response.status);
-        return {}
+        return null
         //throw new Error(`Error from API: ${error.response.status}`);
       } else if (error.request) {
         // The request was made but no response was received
         console.error('Error request:', error.request);
-        return {}
+        return null
         //throw new Error('No response received from the API.');
       } else {
         // Something happened in setting up the request that triggered an Error
         console.error('Error', error.message);
-        return {}
+        return null
         //throw new Error('An error occurred while making the request.');
       }
     }
