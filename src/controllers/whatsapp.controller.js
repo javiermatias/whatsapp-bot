@@ -315,16 +315,11 @@ const receiveMessage = async(req, res) => {
                        if(index >= 0 && index < userState.sucursales.length){                      
                         userState.idSucursal = userState.sucursales[index].id;  
                         userState.nombreSucursal = userState.sucursales[index].nombre;
-                        isValid = true;                                         
-                        if(userState.causa == "Enfermedad"){
-                            const enfermedad = model.modelText(number, utilities.enfermedad);
-                            await whatsappService.sendMessage(enfermedad);
-                            userState.step = 13;   
-                        }else{
-                            const motivo = model.modelText(number, utilities.motivo);
-                            await whatsappService.sendMessage(motivo);
-                            userState.step = 30; 
-                        }
+                        isValid = true;             
+                         const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
+                        await whatsappService.sendMessage(botonEleccion);
+                        userState.step = 13;                            
+              
                        }
                    }
                     if (!isValid) {
@@ -335,58 +330,79 @@ const receiveMessage = async(req, res) => {
                     }
                     break;   
                 }
-                case 13://Sintomas
+                case 13:{
+                    if(text === "Enfermedad"){                        
+                        userState.causa = text;                  
+                        const enfermedad = model.modelText(number, utilities.enfermedad);
+                        await whatsappService.sendMessage(enfermedad);
+                        userState.step = 14; 
+                    }else if(text === "Otros"){
+                        const motivo = model.modelText(number, utilities.motivo);
+                        await whatsappService.sendMessage(motivo);
+                        userState.step = 30; 
+                    }
+                    else{
+                        const ausencia = model.modelText(number, utilities.ausencia);
+                        await whatsappService.sendMessage(ausencia);
+                        userState.step = 13;                       
+                    }                  
+                    break;
+
+                }
+
+
+                case 14://Sintomas
                 {
                     userState.enfermedad = text;                                            
                     const enfermedad = model.modelText(number, utilities.sintomas);
                     await whatsappService.sendMessage(enfermedad);
-                    userState.step = 14; 
-                    break;           
-                    
-                }
-                case 14://Medicacion
-                {
-                    userState.sintomas = text;                                            
-                    const medicacion = model.modelText(number, utilities.medicacion);
-                    await whatsappService.sendMessage(medicacion);
                     userState.step = 15; 
                     break;           
                     
                 }
-                case 15://Recibio Asistencia
+                case 15://Medicacion
+                {
+                    userState.sintomas = text;                                            
+                    const medicacion = model.modelText(number, utilities.medicacion);
+                    await whatsappService.sendMessage(medicacion);
+                    userState.step = 16; 
+                    break;           
+                    
+                }
+                case 16://Recibio Asistencia
                 {
                     userState.medicacion = text;     
                     const botonAsistencia = model.modelButtonGeneric(number, "Recibio Asistencia:", ["SI", "NO"]);        
                     await whatsappService.sendMessage(botonAsistencia);
-                    userState.step = 16; 
+                    userState.step = 17; 
                     break;         
                 }
-                case 16://Posee certificado
+                case 17://Posee certificado
                 {
                     userState.asistencia = text;     
                     const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
                     await whatsappService.sendMessage(botonCertificado);
-                    userState.step = 17; 
+                    userState.step = 18; 
                     break;   
                 }
-                case 17://Adjuntar imagen
+                case 18://Adjuntar imagen
                 {
                     if(text == "SI"){
                         userState.certificado = text;                 
                         const adjuntarImagen = model.modelText(number, utilities.imagen);
                         await whatsappService.sendMessage(adjuntarImagen);
-                        userState.step = 18; 
+                        userState.step = 19; 
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
                         await resumen(userState);
-                        userState.step = 19;
+                        userState.step = 20;
                     }
                     break;
 
                     
                 }
-                case 18://Adjuntar certificado
+                case 19://Adjuntar certificado
                 {
                     //console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
@@ -401,7 +417,7 @@ const receiveMessage = async(req, res) => {
                     await resumen(userState);
 
 
-                    userState.step = 19;
+                    userState.step = 20;
                     
 /*                     const incidencia = utilities.generateIncidencia(userState);
                     const saveUser = await whatsappService.postIncidencia(incidencia);
@@ -413,7 +429,7 @@ const receiveMessage = async(req, res) => {
               
                     break;   
                 }
-                case 19: //resumen
+                case 20: //resumen
                 {
                     if(text == "SI"){
                         const incidencia = utilities.generateIncidencia(userState);
