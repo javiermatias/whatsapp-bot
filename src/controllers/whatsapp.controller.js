@@ -395,7 +395,7 @@ const receiveMessage = async(req, res) => {
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
-                        await resumen(userState);
+                        await resumen(userState, number);
                         userState.step = 20;
                     }
                     break;
@@ -414,7 +414,7 @@ const receiveMessage = async(req, res) => {
                         userState.certificado_id = "0";
                         
                     }
-                    await resumen(userState);
+                    await resumen(userState, number);
 
 
                     userState.step = 20;
@@ -592,7 +592,7 @@ cron.schedule('*/10 * * * *', () => {
   });
 
 
-  async function resumen(userState){
+  async function resumen(userState,number){
     const resumen = utilities.getResumenIncidencia(userState)
     const resumen_model = model.modelText(number, resumen);
     await whatsappService.sendMessage(resumen_model);
