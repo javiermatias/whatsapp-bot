@@ -159,28 +159,28 @@ function generateUser(userState){
 
 
 function getUser(userState){
-    const resumen = `Usuario a registrar:\n 
-    Empresa:${userState.empresa}\n
-    Nombre:${userState.nombre}\n
-    Apellido:${userState.apellido}\n
-    Email: ${userState.email}\n
-    Celular: ${userState.celular}\n
+    const resumen = `Usuario a registrar: 
+    Empresa:${userState.empresa}
+    Nombre:${userState.nombre}
+    Apellido:${userState.apellido}
+    Email: ${userState.email}
+    Celular: ${userState.celular}
                                     
     `;
     return resumen;
 }
 function getResumenIncidencia(userState){
-    const resumen = `Resumen Aviso Notificación:\n 
-    Empresa:${userState.empresa}\n
-    Nombre Completo: ${userState.nombre} ${userState.apellido}\n
-    Email: ${userState.email}\n
-    Celular: ${userState.celular}\n
-    Sucursal: ${userState.nombreSucursal}\n
-    Enfermedad: ${userState.enfermedad}\n
-    Sintomas: ${userState.sintomas}\n
-    Medicación: ${userState.medicacion}\n
-    Recibio Asistencia?: ${userState.asistencia}\n
-    Tiene Certificado?: ${userState.certificado}\n                                     
+    const resumen = `Resumen Aviso Notificación:
+    Empresa:${userState.empresa}
+    Nombre Completo: ${userState.nombre} ${userState.apellido}
+    Email: ${userState.email}
+    Celular: ${userState.celular}
+    Sucursal: ${userState.nombreSucursal}
+    Enfermedad: ${userState.enfermedad}
+    Sintomas: ${userState.sintomas}
+    Medicación: ${userState.medicacion}
+    Recibio Asistencia?: ${userState.asistencia}
+    Tiene Certificado?: ${userState.certificado}                                     
     `;
     return resumen;
 }
