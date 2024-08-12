@@ -445,13 +445,14 @@ const receiveMessage = async(req, res) => {
                         userState.step = 1;
                    
                     }
+                    break;
 
                 }
                 case 22: //guarda
                 {
 
                
-
+                  break;
                 }
                 case 30: //otros
                 {
