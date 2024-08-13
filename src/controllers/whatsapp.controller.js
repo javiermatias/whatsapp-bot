@@ -433,11 +433,13 @@ const receiveMessage = async(req, res) => {
                         const saludo_model = model.modelText(number, utilities.saludo);                       
                         await whatsappService.sendMessage(registro_model);
                         await whatsappService.sendMessage(saludo_model);
+                        delete usersState[number];
                         userState.step = 1; 
                     }else{
                         const saludo = utilities.saludo_vuelta;
                         const saludo_model = model.modelText(number, saludo);                                     
                         await whatsappService.sendMessage(saludo_model);
+                        delete usersState[number];
                         userState.step = 1;
                    
                     }
@@ -475,6 +477,7 @@ const receiveMessage = async(req, res) => {
                         const saludo_model = model.modelText(number, utilities.saludo);                       
                         await whatsappService.sendMessage(registro_model);
                         await whatsappService.sendMessage(saludo_model);
+                        delete usersState[number];
                         userState.step = 1; 
                         //borro el user?
 
@@ -499,6 +502,7 @@ const receiveMessage = async(req, res) => {
                     const saludo_model = model.modelText(number, utilities.saludo);                       
                     await whatsappService.sendMessage(registro_model);
                     await whatsappService.sendMessage(saludo_model);
+                    delete usersState[number];
                     userState.step = 1; 
                         
               
@@ -541,6 +545,7 @@ const receiveMessage = async(req, res) => {
                     }else{
                         const volver = model.modelText(number, utilities.volver);  
                         await whatsappService.sendMessage(volver);
+                        delete usersState[number];
                         userState.step = 1;
               
                     }
