@@ -419,13 +419,7 @@ const receiveMessage = async(req, res) => {
 
                     userState.step = 20;
                     
-/*                     const incidencia = utilities.generateIncidencia(userState);
-                    const saveUser = await whatsappService.postIncidencia(incidencia);
-                    const saludo = utilities.saludo + saveUser;
-                    const saludo_model = model.modelText(number, saludo);                                     
-                    whatsappService.sendMessage(saludo_model);
-                    userState.step = 1;  */
-                        
+                       
               
                     break;   
                 }
@@ -434,8 +428,10 @@ const receiveMessage = async(req, res) => {
                     if(text == "SI"){
                         const incidencia = utilities.generateIncidencia(userState);
                         const saveUser = await whatsappService.postIncidencia(incidencia, userState.token );
-                        const saludo = utilities.saludo + saveUser;
-                        const saludo_model = model.modelText(number, saludo);                                     
+                        const registro = utilities.registro + saveUser; 
+                        const registro_model = model.modelText(number, registro); 
+                        const saludo_model = model.modelText(number, utilities.saludo);                       
+                        await whatsappService.sendMessage(registro_model);
                         await whatsappService.sendMessage(saludo_model);
                         userState.step = 1; 
                     }else{
@@ -474,8 +470,10 @@ const receiveMessage = async(req, res) => {
                         userState.certificado_id = "0";
                         const incidencia_no = utilities.generateIncidenciaNo(userState); 
                         const saveUser = await whatsappService.postIncidenciaNo(incidencia_no, userState.token);
-                        const saludo = utilities.saludo + saveUser; 
-                        const saludo_model = model.modelText(number, saludo);
+                        const registro = utilities.registro + saveUser; 
+                        const registro_model = model.modelText(number, registro); 
+                        const saludo_model = model.modelText(number, utilities.saludo);                       
+                        await whatsappService.sendMessage(registro_model);
                         await whatsappService.sendMessage(saludo_model);
                         userState.step = 1; 
                         //borro el user?
@@ -496,8 +494,10 @@ const receiveMessage = async(req, res) => {
                     }
                     const incidencia_no = utilities.generateIncidenciaNo(userState); 
                     const saveUser = await whatsappService.postIncidenciaNo(incidencia_no, userState.token);
-                    const saludo = utilities.saludo + saveUser; 
-                    const saludo_model = model.modelText(number, saludo);
+                    const registro = utilities.registro + saveUser; 
+                    const registro_model = model.modelText(number, registro); 
+                    const saludo_model = model.modelText(number, utilities.saludo);                       
+                    await whatsappService.sendMessage(registro_model);
                     await whatsappService.sendMessage(saludo_model);
                     userState.step = 1; 
                         

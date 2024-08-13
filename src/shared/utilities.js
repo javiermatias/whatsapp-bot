@@ -23,10 +23,11 @@ const enfermedad = "Por favor indique presunta enfermedad";
 const sintomas = "Por favor indique sus sintomas";
 const medicacion = "Indique la medicación que toma";
 const imagen = "Por favor adjunte la imagen";
-const saludo = "Tu notificación ya fue cargada. Tu número de referencia es: ";
+const registro = "Tu notificación ya fue cargada. Tu número de referencia es: ";
+const saludo = "Gracias por tu aviso! Que tengas un buen día";
 const registrarUser = "Te pediremos algunos datos para registrarte en el sistema";
 const registroExitoso = "Se registro correctamente el user."
-const saludo_vuelta = "Vuelva a iniciar el proceso. Gracias";
+const saludo_vuelta = "Vuelva a iniciar el proceso. Presione Ok. Gracias";
 const motivo = "Por favor indique el motivo de la ausencia: ";
 const volver = "Bien va tener que iniciar el proceso de vuelta.";
 const userJson = `
@@ -217,6 +218,7 @@ module.exports = {
     medicacion,
     imagen,
     saludo,
+    registro,
     motivo,
     byeMessage,
     saludo_vuelta,
