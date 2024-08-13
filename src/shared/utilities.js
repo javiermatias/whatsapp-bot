@@ -103,7 +103,8 @@ function generateIncidencia(userState){
         idUser: userState.user.id,
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
-        idImagen: userState.certificado_id
+        idImagen: userState.certificado_id,
+        idEmpresa:userState.empresa_id
       };
 
       return user;
@@ -136,7 +137,8 @@ function generateIncidenciaNo(userState){
         idUser: userState.user.id,
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
-        idImagen: userState.certificado_id
+        idImagen: userState.certificado_id,
+        idEmpresa:userState.empresa_id
       };
 
       return user;
