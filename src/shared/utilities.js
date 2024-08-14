@@ -188,12 +188,26 @@ function getResumenIncidencia(userState){
     return resumen;
 }
 
+function getResumenIncidenciaNo(userState){
+    const resumen = `Resumen Aviso Notificación:
+    Empresa:${userState.empresa}
+    Nombre Completo: ${userState.nombre} ${userState.apellido}
+    Email: ${userState.email}
+    Celular: ${userState.celular}
+    Sucursal: ${userState.nombreSucursal}
+    Motivo: ${userState.motivo}
+    Tiene Certificado?: ${userState.certificado}                                     
+    `;
+    return resumen;
+}
+
 
 module.exports = {
     GetTextUser,
     generateIncidencia,
     generateIncidenciaNo,
     getResumenIncidencia,
+    getResumenIncidenciaNo,
     getUser,
     generateUser,
     greetingMessage,

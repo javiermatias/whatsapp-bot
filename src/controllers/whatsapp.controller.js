@@ -470,17 +470,11 @@ const receiveMessage = async(req, res) => {
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
-                        const incidencia_no = utilities.generateIncidenciaNo(userState); 
-                        const saveUser = await whatsappService.postIncidenciaNo(incidencia_no, userState.token);
-                        const registro = utilities.registro + saveUser; 
-                        const registro_model = model.modelText(number, registro); 
-                        const saludo_model = model.modelText(number, utilities.saludo);                       
-                        await whatsappService.sendMessage(registro_model);
-                        await whatsappService.sendMessage(saludo_model);
-                        delete usersState[number];
-                        userState.step = 1; 
-                        //borro el user?
 
+                        await resumenNo(userState, number);
+
+
+                        userState.step = 33;
                     }
                     break;
                 }
@@ -495,15 +489,34 @@ const receiveMessage = async(req, res) => {
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
                     }
-                    const incidencia_no = utilities.generateIncidenciaNo(userState); 
-                    const saveUser = await whatsappService.postIncidenciaNo(incidencia_no, userState.token);
-                    const registro = utilities.registro + saveUser; 
-                    const registro_model = model.modelText(number, registro); 
-                    const saludo_model = model.modelText(number, utilities.saludo);                       
-                    await whatsappService.sendMessage(registro_model);
-                    await whatsappService.sendMessage(saludo_model);
-                    delete usersState[number];
-                    userState.step = 1; 
+
+                    await resumenNo(userState, number);
+                    userState.step = 33;
+                    break;   
+                }
+
+                case 33://Adjuntar certificado
+                {
+                    //console.log("id certificado " + text)
+                    if (text == "SI") {
+                        const incidencia_no = utilities.generateIncidenciaNo(userState); 
+                        const saveUser = await whatsappService.postIncidenciaNo(incidencia_no, userState.token);
+                        const registro = utilities.registro + saveUser; 
+                        const registro_model = model.modelText(number, registro); 
+                        const saludo_model = model.modelText(number, utilities.saludo);                       
+                        await whatsappService.sendMessage(registro_model);
+                        await whatsappService.sendMessage(saludo_model);
+                        delete usersState[number];
+                        userState.step = 1; 
+                    
+                    }else{
+                        const saludo = utilities.saludo_vuelta;
+                        const saludo_model = model.modelText(number, saludo);                                     
+                        await whatsappService.sendMessage(saludo_model);
+                        delete usersState[number];
+                        userState.step = 1;
+                    }
+               
                         
               
                     break;   
@@ -599,6 +612,15 @@ cron.schedule('*/10 * * * *', () => {
 
 
   async function resumen(userState,number){
+    const resumen = utilities.getResumenIncidencia(userState)
+    const resumen_model = model.modelText(number, resumen);
+    await whatsappService.sendMessage(resumen_model);
+    const botonConfirmar = model.modelButtonGeneric(number, "Los datos son correctos?", ["SI", "NO"]);        
+    await whatsappService.sendMessage(botonConfirmar);
+
+}
+
+async function resumenNo(userState,number){
     const resumen = utilities.getResumenIncidencia(userState)
     const resumen_model = model.modelText(number, resumen);
     await whatsappService.sendMessage(resumen_model);
