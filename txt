@@ -1,1 +1,10 @@
-*Agregado de seguridad por token en comunicacion con BACKEND API
+*Agregado de seguridad por token en comunicacion con BACKEND API.
+*Agregado de notificaciones.
+
+Falta:
+*Probar con otro numero.
+*Hacer registro manual.
+*Controlar seguridad cantidad de notificaciones.
+*Añadir capa de sentry, notificaciones de logs.
+*Asociar tabla empresa/numero
+*No permitir registrar mas de un usuario con un numero
