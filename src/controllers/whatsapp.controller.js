@@ -621,7 +621,7 @@ cron.schedule('*/10 * * * *', () => {
 }
 
 async function resumenNo(userState,number){
-    const resumen = utilities.getResumenIncidencia(userState)
+    const resumen = utilities.getResumenIncidenciaNo(userState)
     const resumen_model = model.modelText(number, resumen);
     await whatsappService.sendMessage(resumen_model);
     const botonConfirmar = model.modelButtonGeneric(number, "Los datos son correctos?", ["SI", "NO"]);        
