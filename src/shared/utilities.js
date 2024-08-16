@@ -31,6 +31,7 @@ const registroExitoso = "Se registro correctamente el user."
 const saludo_vuelta = "Vuelva a iniciar el proceso. Presione Ok. Gracias";
 const motivo = "Por favor indique el motivo de la ausencia: ";
 const volver = "Bien va tener que iniciar el proceso de vuelta.";
+const certificado = "*Importante!* Debera presentar el certificado original dentro de las próximas 24hs en el departamento médico u departamento de RRHH de la empresa"
 const userJson = `
 {
     "id": 3,
@@ -242,5 +243,6 @@ module.exports = {
     saludo_vuelta,
     registrarUser,
     registroExitoso,
-    volver
+    volver,
+    certificado
 }

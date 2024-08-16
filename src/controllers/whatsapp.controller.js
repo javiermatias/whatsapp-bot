@@ -383,7 +383,9 @@ const receiveMessage = async(req, res) => {
                 }
                 case 17://Posee certificado
                 {
-                    userState.asistencia = text;     
+                    userState.asistencia = text;                    
+                    const certificado = model.modelText(number, utilities.certificado);
+                    await whatsappService.sendMessage(certificado);
                     const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
                     await whatsappService.sendMessage(botonCertificado);
                     userState.step = 18; 
@@ -458,7 +460,9 @@ const receiveMessage = async(req, res) => {
                 }
                 case 30: //otros
                 {
-                    userState.motivo = text;     
+                    userState.motivo = text;                    
+                    const certificado = model.modelText(number, utilities.certificado);
+                    await whatsappService.sendMessage(certificado);
                     const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
                     await whatsappService.sendMessage(botonCertificado);
                     userState.step = 31;                    
