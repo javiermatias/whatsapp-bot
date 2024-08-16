@@ -109,9 +109,13 @@ const receiveMessage = async(req, res) => {
                     userState.step = 2;
                     break;
                 }
+
+              
                 // Por favor indique numero de DNI
                 case 2:
                     {
+                    const modelAviso = model.modelText(number, utilities.avisoNotificacion);
+                    await whatsappService.sendMessage(modelAviso);
                     const modelDni = model.modelText(number, utilities.dniMessage);
                     await whatsappService.sendMessage(modelDni);
                     userState.step = 3;
@@ -240,7 +244,7 @@ const receiveMessage = async(req, res) => {
                     userState.direccion = text;  
                     const empresaId = userState.empresa_id;     
                     const provincias = await whatsappService.findProvincia(empresaId, userState.token);                    
-                    const title = 'Por Favor elija su provincia\n'                    
+                    const title = 'Por Favor elija con un número su provincia\n'                    
                     const resultString = provincias.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                     userState.provincias = provincias;
                     const str_provincias_title = title + resultString;
@@ -258,7 +262,7 @@ const receiveMessage = async(req, res) => {
                        if(index >= 0 && index < userState.provincias.length){                        
                         const idProvincia = userState.provincias[index].id;                        
                         const localidades = await whatsappService.findLocalidad(idProvincia, userState.token);
-                        const title = 'Por Favor elija su localidad\n'                    
+                        const title = 'Por Favor elija con un número su localidad\n'                    
                         const resultString = localidades.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                         userState.localidades = localidades;
                         const str_localidades_title = title + resultString;
@@ -287,7 +291,7 @@ const receiveMessage = async(req, res) => {
                        if(index >= 0 && index < userState.localidades.length){
                         const idLocalidad = userState.localidades[index].id;                        
                         const sucursales = await whatsappService.findSucursal(idLocalidad, userState.token);
-                        const title = 'Por Favor elija su sucursal\n'                    
+                        const title = 'Por Favor elija con un número su sucursal\n'                    
                         const resultString = sucursales.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
                         userState.sucursales = sucursales;
                         const str_sucursales_title = title + resultString;
@@ -565,6 +569,13 @@ const receiveMessage = async(req, res) => {
                     break;
 
                 }
+
+
+
+
+
+
+
                 default:
                 {
                         //direccion{}

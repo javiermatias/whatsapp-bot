@@ -1,5 +1,7 @@
 *Agregado de seguridad por token en comunicacion con BACKEND API.
 *Agregado de notificaciones.
+*Agregado de registro.
+*
 
 Falta:
 *Probar con otro numero.
