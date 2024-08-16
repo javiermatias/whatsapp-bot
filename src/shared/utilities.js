@@ -25,9 +25,11 @@ const sintomas = "Por favor indique sus sintomas";
 const medicacion = "Indique la medicación que toma";
 const imagen = "Por favor adjunte la imagen";
 const registro = "Tu notificación ya fue cargada. Tu número de referencia es: ";
+const notificacionFallida = "Fallo tu notificación. Presione Ok para iniciar el proceso de vuelta";
 const saludo = "Gracias por tu aviso! Que tengas un buen día";
 const registrarUser = "Te pediremos algunos datos para registrarte en el sistema";
-const registroExitoso = "Se registro correctamente el user."
+const registroExitoso = "Se registro correctamente el user.";
+const registroFallido = "Hubo un error al regstrar el user.Presione Ok para continuar.";
 const saludo_vuelta = "Vuelva a iniciar el proceso. Presione Ok. Gracias";
 const motivo = "Por favor indique el motivo de la ausencia: ";
 const volver = "Bien va tener que iniciar el proceso de vuelta.";
@@ -243,6 +245,8 @@ module.exports = {
     saludo_vuelta,
     registrarUser,
     registroExitoso,
+    registroFallido,
+    notificacionFallida,
     volver,
     certificado
 }
