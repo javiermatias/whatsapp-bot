@@ -215,6 +215,7 @@ async function postIncidenciaNo(data, token) {
         //console.log(response.data);
     } catch (error) {
         console.error(error);
+        Sentry.captureException(error);        
     }
 }
 async function loginToAusentismosOnline(username, password) {

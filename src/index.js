@@ -1,5 +1,12 @@
+const apiRoute = require("./routes/routes");
+// IMPORTANT: Make sure to import `instrument.js` at the top of your file.
+// If you're using ECMAScript Modules (ESM) syntax, use `import "./instrument.js";`
+require("./instruments");
+
+// All other imports below
+// Import with `import * as Sentry from "@sentry/node"` if you are using ESM
+const Sentry = require("@sentry/node");
 const express = require("express");
-const apiRoute = require("./routes/routes")
 
 const app = express();
 
@@ -8,5 +15,14 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/whatsapp", apiRoute);
+
+Sentry.setupExpressErrorHandler(app);
+// Optional fallthrough error handler
+app.use(function onError(err, req, res, next) {
+    // The error id is attached to `res.sentry` to be returned
+    // and optionally displayed to the user for support.
+    res.statusCode = 500;
+    res.end(res.sentry + "\n");
+  });
 
 app.listen(PORT, () => console.log("Listening port 3000"))

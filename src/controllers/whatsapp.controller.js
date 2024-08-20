@@ -7,7 +7,7 @@ const usersState = {}; // Aquí almacenamos el estado de cada usuario
 //deberiamos eliminar el estado pasado x tiempo
 const model = require("../shared/models");
 const cron = require('node-cron');
-
+const Sentry = require("@sentry/node");
 
 
 const test = async(req, res) => {
@@ -16,16 +16,21 @@ const test = async(req, res) => {
    //const botonEleccion = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);
    //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
     // const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
-
-    const saveUser = await whatsappService.loginToAusentismosOnline("32972083","32972083");
+    try {
+        throw new Error("My first Sentry error!");
+      } catch (e) {
+        Sentry.captureException(e);
+      }
+    
+/*     const saveUser = await whatsappService.loginToAusentismosOnline("32972083","32972083");
     const token = saveUser.access_token;
     const user = await whatsappService.findByDni("5489481", "asa")
     if(user){
         res.send("Existe el user");
     }else{
         res.send("No existe el user")
-    }
-    //res.send(user);
+    } */
+    res.send("hola");
     //res.send(botonEleccion)
 }
 
@@ -45,6 +50,7 @@ const verifyToken = (req, res) => {
 
     } catch (ex) {
         console.log("Ex Verify: " + ex);
+        Sentry.captureException(ex);
         res.status(400).send();
     }
 
@@ -75,6 +81,8 @@ const receiveMessage = async(req, res) => {
                     usersState[number] = { step: 1, timestamp: currentTime, token:user.access_token};
                 }catch(e){
                     //ideal to log this error.
+                    Sentry.captureException(e);
+                    
                 }
             
             } else {
@@ -160,6 +168,7 @@ const receiveMessage = async(req, res) => {
                             const errorDni = model.modelText(number, utilities.errorDni);
                             await whatsappService.sendMessage(errorDni);
                             userState.step = 1;
+                            Sentry.captureException(e);
 
                         }
                       
@@ -253,6 +262,7 @@ const receiveMessage = async(req, res) => {
                        const error = model.modelText(number, utilities.error);
                        await whatsappService.sendMessage(error);
                        userState.step = 1;
+                       Sentry.captureException(e);
                        //log error
                     }
                     break;
@@ -279,6 +289,7 @@ const receiveMessage = async(req, res) => {
                             const error = model.modelText(number, utilities.error);
                             await whatsappService.sendMessage(error);
                             userState.step = 1;
+                            Sentry.captureException(e);
 
                         }
                        }
@@ -315,6 +326,7 @@ const receiveMessage = async(req, res) => {
                             const error = model.modelText(number, utilities.error);
                             await whatsappService.sendMessage(error);
                             userState.step = 1;
+                            Sentry.captureException(e);
                         }  
                         
                        }
@@ -463,6 +475,7 @@ const receiveMessage = async(req, res) => {
                               const notificacionFallido = utilities.notificacionFallida;
                               const notificacion_model = model.modelText(number, notificacionFallido);
                               await whatsappService.sendMessage(notificacion_model);
+                              Sentry.captureException(e);
                           
                         }
                      
@@ -544,7 +557,8 @@ const receiveMessage = async(req, res) => {
                             //notificacionFallida
                             const notificacionFallido = utilities.notificacionFallida;
                             const notificacion_model = model.modelText(number, notificacionFallido);
-                            await whatsappService.sendMessage(notificacion_model);                           
+                            await whatsappService.sendMessage(notificacion_model);
+                            Sentry.captureException(e);                           
                         }
                     }else{
                         const saludo = utilities.saludo_vuelta;
@@ -593,6 +607,7 @@ const receiveMessage = async(req, res) => {
                             const saludo_model = model.modelText(number, registroFallido);
                             await whatsappService.sendMessage(saludo_model);
                             userState.step = 1;
+                            Sentry.captureException(e);
 
                         }
                                                 
@@ -629,10 +644,9 @@ const receiveMessage = async(req, res) => {
         //console.log(GetTextUser(messageValue[0]))
    
         res.send("EVENT_RECEIVED")
-    } catch (ex) {
+    } catch (e) {
 
-        console.log(ex);
-        myConsole.log(ex);
+        Sentry.captureException(e);
         res.send("EVENT_RECEIVED")
     }
 }
@@ -652,6 +666,7 @@ cron.schedule('*/10 * * * *', () => {
         }
         console.log('Cleanup completed successfully.');
       } catch (error) {
+        Sentry.captureException(error);
         console.error('Error during cleanup:', error);
       }
   });
