@@ -33,6 +33,7 @@ const registroFallido = "Hubo un error al regstrar el user.Presione Ok para cont
 const saludo_vuelta = "Vuelva a iniciar el proceso. Presione Ok. Gracias";
 const motivo = "Por favor indique el motivo de la ausencia: ";
 const volver = "Bien va tener que iniciar el proceso de vuelta.";
+const error = "Hubo un error en la aplicación. Vuelva a iniciar el proceso";
 const certificado = "*Importante!* Debera presentar el certificado original dentro de las próximas 24hs en el departamento médico u departamento de RRHH de la empresa"
 const userJson = `
 {
@@ -248,5 +249,6 @@ module.exports = {
     registroFallido,
     notificacionFallida,
     volver,
-    certificado
+    certificado,
+    error
 }
