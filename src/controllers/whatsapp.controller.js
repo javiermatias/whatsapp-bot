@@ -64,11 +64,11 @@ const receiveMessage = async(req, res) => {
         let changes = (entry["changes"])[0];        
         let value = changes["value"];
         let messages = value["messages"];
-        let metaData = value["metadata"];
-        let origin = value["display_phone_number"];
-        console.log(metaData);
-        console.log("with[]",origin);
-        console.log(metaData.display_phone_number);
+        //let metaData = value["metadata"];
+        //let origin = value["display_phone_number"];
+        //console.log(metaData);
+        //console.log("with[]",origin)
+        //console.log(metaData.display_phone_number);
 
 
         if (typeof messages != "undefined") {
