@@ -1,4 +1,7 @@
+*Agregado un numero por empresa.
+*Agregado registro por medio del bot
 *Agregado de seguridad por token en comunicacion con BACKEND API.
+*Añadir capa de sentry, notificaciones de logs.
 *Agregado de notificaciones.
 *Agregado de registro.
 *
@@ -7,6 +10,6 @@ Falta:
 *Probar con otro numero.
 *Hacer registro manual.
 *Controlar seguridad cantidad de notificaciones.
-*Añadir capa de sentry, notificaciones de logs.
+
 *Asociar tabla empresa/numero
 *No permitir registrar mas de un usuario con un numero

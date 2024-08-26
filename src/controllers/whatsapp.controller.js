@@ -69,6 +69,7 @@ const receiveMessage = async(req, res) => {
 
         if (typeof messages != "undefined") {
             const messageValue = messages[0];
+            console.log(messageValue);
             const number = messageValue["from"];
             const text = utilities.GetTextUser(messageValue);
             if(text === "S" || text === "s"){
