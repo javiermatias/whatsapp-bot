@@ -4,7 +4,7 @@ const company = (req, res, next) => {
     try{
         let phone = req.body.entry[0].changes[0].value.metadata.display_phone_number;
         let company = companies.find(x => x.number === phone);        
-        if(company) { req.empresa = company; console.log(company);}        
+        if(company) { req.empresa = company;}        
         next();      
     }catch(e){    
         Sentry.captureException(e);

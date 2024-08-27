@@ -39,7 +39,7 @@ const verifyToken = (req, res) => {
 
     try {
         let accessToken = process.env.accessToken;
-        console.log(accessToken);
+        //(accessToken);
         let token = req.query["hub.verify_token"];
         let challenge = req.query["hub.challenge"];
         if (challenge != null && token != null & token == accessToken) {
@@ -64,16 +64,11 @@ const receiveMessage = async(req, res) => {
         let changes = (entry["changes"])[0];        
         let value = changes["value"];
         let messages = value["messages"];
-        //let metaData = value["metadata"];
-        //let origin = value["display_phone_number"];
-        //console.log(metaData);
-        //console.log("with[]",origin)
-        //console.log(metaData.display_phone_number);
+     
 
 
         if (typeof messages != "undefined") {
-            const messageValue = messages[0];
-            console.log(messageValue);
+            const messageValue = messages[0];  
             const number = messageValue["from"];
             const text = utilities.GetTextUser(messageValue);
             if(text === "S" || text === "s"){
