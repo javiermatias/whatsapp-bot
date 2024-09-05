@@ -62,10 +62,10 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = async(req, res) => {
     try {
-        const userb = process.env.userBackend;
-        const passb = process.env.passBackend;
-        console.log("user" + userb);
-        console.log("pass" + passb);
+        //const userb = process.env.userBackend;
+        //const passb = process.env.passBackend;
+        //console.log("user" + userb);
+        //console.log("pass" + passb);
 
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];        
