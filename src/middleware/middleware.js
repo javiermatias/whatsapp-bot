@@ -1,3 +1,4 @@
+require('dotenv').config();
 const companies = [{ id:1079, nombre:"Carrefour", number:"5493543609446"}]
 
 const company = (req, res, next) => {
