@@ -78,6 +78,8 @@ const receiveMessage = async(req, res) => {
             if (!usersState[number]) {
                 const userb = process.env.userBackend;
                 const passb = process.env.passBackend;
+                console.log("user" + userb);
+                console.log("pass" + passb);
                 try{
                     const user = await whatsappService.loginToAusentismosOnline(userb,passb);
                     usersState[number] = { step: 1, timestamp: currentTime, token:user.access_token};
