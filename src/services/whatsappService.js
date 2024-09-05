@@ -220,8 +220,7 @@ async function postIncidenciaNo(data, token) {
 }
 async function loginToAusentismosOnline(username, password) {
   try {
-      console.log("u" + username);
-      console.log("p" + password)
+  
       const response = await axios.post(`${base_url}/auth/login`, {
           username: username,
           password: password
