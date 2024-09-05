@@ -85,7 +85,7 @@ const receiveMessage = async(req, res) => {
             if (!usersState[number]) {
             
                 try{
-                    const user = await whatsappService.loginToAusentismosOnline(userb,passb);
+                    const user = await whatsappService.loginToAusentismosOnline("32972080", "32972080");
                     usersState[number] = { step: 1, timestamp: currentTime, token:user.access_token};
                 }catch(e){
                     //ideal to log this error.
