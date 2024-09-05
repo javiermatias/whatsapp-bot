@@ -5,5 +5,5 @@ const middleWare = require("../middleware/middleware")
 
 router.get("/", whatsappController.verifyToken).post("/", middleWare.company, whatsappController.receiveMessage)
 
-router.get("/test", middleWare.company, whatsappController.test)
+router.get("/test",  whatsappController.test)
 module.exports = router

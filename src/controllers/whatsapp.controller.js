@@ -16,11 +16,15 @@ const test = async(req, res) => {
    //const botonEleccion = model.modelButtonGeneric(3543604130, "Recibio Asistencia:", ["SI", "NO"]);
    //const list = user.map((prov, index) => { return {id:index + 1, name:prov.nombre}});
     // const resultString = user.map((item, index) => `${index + 1}. ${item.nombre}`).join('\n');
-    try {
+
+    let accessToken = process.env.accessToken;
+    let userBackend = process.env.userBackend;
+    console.log(accessToken);
+/*     try {
         throw new Error("My first Sentry error!");
       } catch (e) {
         Sentry.captureException(e);
-      }
+      } */
     
 /*     const saveUser = await whatsappService.loginToAusentismosOnline("32972083","32972083");
     const token = saveUser.access_token;
@@ -30,7 +34,7 @@ const test = async(req, res) => {
     }else{
         res.send("No existe el user")
     } */
-    res.send("hola");
+    res.send(userBackend);
     //res.send(botonEleccion)
 }
 
@@ -58,7 +62,10 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = async(req, res) => {
     try {
-        
+        const userb = process.env.userBackend;
+        const passb = process.env.passBackend;
+        console.log("user" + userb);
+        console.log("pass" + passb);
 
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];        
@@ -76,10 +83,7 @@ const receiveMessage = async(req, res) => {
             }
             const currentTime = new Date().getTime();
             if (!usersState[number]) {
-                const userb = process.env.userBackend;
-                const passb = process.env.passBackend;
-                console.log("user" + userb);
-                console.log("pass" + passb);
+            
                 try{
                     const user = await whatsappService.loginToAusentismosOnline(userb,passb);
                     usersState[number] = { step: 1, timestamp: currentTime, token:user.access_token};
