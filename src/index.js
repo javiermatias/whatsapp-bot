@@ -7,12 +7,30 @@ require("./instruments");
 // Import with `import * as Sentry from "@sentry/node"` if you are using ESM
 const Sentry = require("@sentry/node");
 const express = require("express");
-
+const redis = require('redis');
 const app = express();
+
+// Create Redis client
+const client = redis.createClient();
+client.on('error', (err) => console.log('Redis Client Error', err));
+(async () => {
+  await client.connect(); // Connect to Redis
+
+  // Initialize default companies if needed
+  let companies = [{ id: 1079, nombre: "Carrefour", number: "5493543609446" }];
+  await client.set('companies', JSON.stringify(companies));
+})();
+
+// Make Redis client available in request
 
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+  req.redisClient = client;
+  next();
+});
 
 app.use("/whatsapp", apiRoute);
 
@@ -24,5 +42,7 @@ app.use(function onError(err, req, res, next) {
     res.statusCode = 500;
     res.end(res.sentry + "\n");
   });
+
+
 
 app.listen(PORT, () => console.log("Listening port 3000"))
