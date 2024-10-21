@@ -1,8 +1,14 @@
 // controllers/companyController.js
 const updateCompanies = async (req, res) => {
+   
+    let accessToken = "ASDFDSQWEQWSADADAFSDFSD"
+
     try {
-        const { id, nombre, number } = req.body;
+        const { id, nombre, number, token } = req.body;
         
+        if(token !== accessToken){
+            res.status(400).send();
+        }
         // Get Redis client from request
         const redisClient = req.redisClient;
 

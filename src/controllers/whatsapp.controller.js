@@ -62,11 +62,7 @@ const verifyToken = (req, res) => {
 
 const receiveMessage = async(req, res) => {
     try {
-        //const userb = process.env.userBackend;
-        //const passb = process.env.passBackend;
-        //console.log("user" + userb);
-        //console.log("pass" + passb);
-
+       
         let entry = (req.body["entry"])[0];
         let changes = (entry["changes"])[0];        
         let value = changes["value"];
@@ -86,7 +82,11 @@ const receiveMessage = async(req, res) => {
             
                 try{
                     const user = await whatsappService.loginToAusentismosOnline("32972083", "32972083");
-                    usersState[number] = { step: 1, timestamp: currentTime, token:user.access_token};
+                    const numberCompany = req.phone;
+                    const company = await whatsappService.getCompany(numberCompany, user.access_token);
+                    usersState[number] = { step: 1, timestamp: currentTime, token:user.access_token,
+                        empresa:company
+                    };
                 }catch(e){
                     //ideal to log this error.
                     Sentry.captureException(e);
@@ -105,8 +105,8 @@ const receiveMessage = async(req, res) => {
             }
 
             const userState = usersState[number];
-            userState.empresa_id = req.empresa.id;
-            userState.empresa = req.empresa.nombre;
+            //userState.empresa_id = req.empresa.id;
+            //userState.empresa = req.empresa.nombre;
             //console.log("numero: " + number + " estado: " + userState);
             console.log(userState);
             switch (userState.step) {
@@ -256,7 +256,7 @@ const receiveMessage = async(req, res) => {
                 case 9://direccion
                 {
                     userState.direccion = text;  
-                    const empresaId = userState.empresa_id;
+                    const empresaId = userState.empresa.id;
                     try{     
                        const provincias = await whatsappService.findProvincia(empresaId, userState.token);                    
                        const title = 'Por Favor elija con un número su provincia\n'                    
