@@ -126,7 +126,7 @@ const receiveMessage = async(req, res) => {
                     userState.certificado_id = "0"; */
                     
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
-                    await whatsappService.sendMessage(modelGreeting);
+                    await whatsappService.sendMessage(modelGreeting,userState.empresa);
                     userState.step = 2;
                     break;
                 }
@@ -136,9 +136,9 @@ const receiveMessage = async(req, res) => {
                 case 2:
                     {
                     const modelAviso = model.modelText(number, utilities.avisoNotificacion);
-                    await whatsappService.sendMessage(modelAviso);
+                    await whatsappService.sendMessage(modelAviso,userState.empresa);
                     const modelDni = model.modelText(number, utilities.dniMessage);
-                    await whatsappService.sendMessage(modelDni);
+                    await whatsappService.sendMessage(modelDni,userState.empresa);
                     userState.step = 3;
                     break;
                     }
@@ -159,22 +159,19 @@ const receiveMessage = async(req, res) => {
                                 userState.existe_user = true;
                                 userState.user = user;                            
                                 const nombre = model.modelText(number, utilities.nombre);
-                                 await whatsappService.sendMessage(nombre);                            
-                                //const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
-                                //await whatsappService.sendMessage(botonEleccion);
-    
+                                await whatsappService.sendMessage(nombre,userState.empresa);
                                 userState.step = 4;
                             }else{
                                 //Registrar
                                 userState.existe_user = false;                           
                                 const botonConfirmar = model.modelButtonGeneric(number, "No encontramos tu dni esta bien escrito?", ["SI", "NO"]);        
-                                await whatsappService.sendMessage(botonConfirmar);
+                                await whatsappService.sendMessage(botonConfirmar,userState.empresa);
                                 userState.step = 40;                           
                             }
 
                         }catch(e){
                             const errorDni = model.modelText(number, utilities.errorDni);
-                            await whatsappService.sendMessage(errorDni);
+                            await whatsappService.sendMessage(errorDni,userState.empresa);
                             userState.step = 1;
                             Sentry.captureException(e);
 
@@ -186,7 +183,7 @@ const receiveMessage = async(req, res) => {
                     } else {
 
                         const errorDni = model.modelText(number, utilities.errorDni);
-                        await whatsappService.sendMessage(errorDni);
+                        await whatsappService.sendMessage(errorDni,userState.empresa);
                         userState.step = 3;
 
                     }               
@@ -198,7 +195,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.nombre = text;                                            
                     const apellido = model.modelText(number, utilities.apellido);
-                    await whatsappService.sendMessage(apellido);
+                    await whatsappService.sendMessage(apellido,userState.empresa);
                     userState.step = 5; 
                     break;
                 }
@@ -206,7 +203,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.apellido = text;                                            
                     const email = model.modelText(number, utilities.email);
-                    await whatsappService.sendMessage(email);
+                    await whatsappService.sendMessage(email,userState.empresa);
                     userState.step = 6; 
                     break;
                 }
@@ -214,12 +211,12 @@ const receiveMessage = async(req, res) => {
                 {
                     if(!whatsappService.isValidEmail(text)){
                         const emailError = model.modelText(number, utilities.errorEmail);
-                       await whatsappService.sendMessage(emailError);
+                       await whatsappService.sendMessage(emailError,userState.empresa);
                        userState.step = 6; 
                     }else{
                         userState.email = text;      
                         const celular = model.modelText(number, utilities.celular);
-                        await whatsappService.sendMessage(celular);
+                        await whatsappService.sendMessage(celular,userState.empresa);
                         userState.step = 7;
                     }
                    
@@ -230,14 +227,14 @@ const receiveMessage = async(req, res) => {
                     userState.celular = text;
                     if(userState.existe_user){
                         const legajo = model.modelText(number, utilities.legajo);
-                        await whatsappService.sendMessage(legajo);   
+                        await whatsappService.sendMessage(legajo,userState.empresa);   
                         userState.step = 8; 
                     }else{
                         const registro = utilities.getUser(userState)
                         const registro_model = model.modelText(number, registro);
-                        await whatsappService.sendMessage(registro_model);
+                        await whatsappService.sendMessage(registro_model,userState.empresa);
                         const botonConfirmar = model.modelButtonGeneric(number, "Los datos son correctos?", ["SI", "NO"]);        
-                        await whatsappService.sendMessage(botonConfirmar);
+                        await whatsappService.sendMessage(botonConfirmar,userState.empresa);
                         userState.step = 50; 
 
                     }
@@ -248,7 +245,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.legajo = text;                                        
                     const dire = model.modelText(number, utilities.direccion);
-                    await whatsappService.sendMessage(dire);
+                    await whatsappService.sendMessage(dire,userState.empresa);
                     userState.step = 9; 
                     break;
                 }
@@ -264,11 +261,11 @@ const receiveMessage = async(req, res) => {
                        userState.provincias = provincias;
                        const str_provincias_title = title + resultString;
                        const str_provincias = model.modelText(number, str_provincias_title);
-                       await whatsappService.sendMessage(str_provincias);
+                       await whatsappService.sendMessage(str_provincias,userState.empresa);
                        userState.step = 10; 
                     }catch(e){
                        const error = model.modelText(number, utilities.error);
-                       await whatsappService.sendMessage(error);
+                       await whatsappService.sendMessage(error,userState.empresa);
                        userState.step = 1;
                        Sentry.captureException(e);
                        //log error
@@ -290,12 +287,12 @@ const receiveMessage = async(req, res) => {
                            userState.localidades = localidades;
                            const str_localidades_title = title + resultString;
                            const str_localidades = model.modelText(number, str_localidades_title);
-                           await whatsappService.sendMessage(str_localidades);
+                           await whatsappService.sendMessage(str_localidades,userState.empresa);
                            userState.step = 11; 
                            isValid = true;
                         }catch(e){
                             const error = model.modelText(number, utilities.error);
-                            await whatsappService.sendMessage(error);
+                            await whatsappService.sendMessage(error,userState.empresa);
                             userState.step = 1;
                             Sentry.captureException(e);
 
@@ -305,7 +302,7 @@ const receiveMessage = async(req, res) => {
                     if (!isValid) {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const provinciaNoEncontrado = model.modelText(number, utilities.errorProvincia);
-                        await whatsappService.sendMessage(provinciaNoEncontrado);
+                        await whatsappService.sendMessage(provinciaNoEncontrado,userState.empresa);
                         userState.step = 10;
                     }
                 
@@ -327,12 +324,12 @@ const receiveMessage = async(req, res) => {
                             userState.sucursales = sucursales;
                             const str_sucursales_title = title + resultString;
                             const str_sucursales = model.modelText(number, str_sucursales_title);
-                            await whatsappService.sendMessage(str_sucursales);
+                            await whatsappService.sendMessage(str_sucursales,userState.empresa);
                             userState.step = 12;
                             isValid = true;      
                         }catch(e){
                             const error = model.modelText(number, utilities.error);
-                            await whatsappService.sendMessage(error);
+                            await whatsappService.sendMessage(error,userState.empresa);
                             userState.step = 1;
                             Sentry.captureException(e);
                         }  
@@ -342,7 +339,7 @@ const receiveMessage = async(req, res) => {
                     if (!isValid) {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const localidadNoEncontrado = model.modelText(number, utilities.errorLocalidad);
-                        await whatsappService.sendMessage(localidadNoEncontrado);
+                        await whatsappService.sendMessage(localidadNoEncontrado,userState.empresa);
                         userState.step = 11;
                     }
                     break;      
@@ -358,7 +355,7 @@ const receiveMessage = async(req, res) => {
                         userState.nombreSucursal = userState.sucursales[index].nombre;
                         isValid = true;             
                          const botonEleccion = model.modelButtonAusencia(number, utilities.tituloBoton);                           
-                        await whatsappService.sendMessage(botonEleccion);
+                        await whatsappService.sendMessage(botonEleccion,userState.empresa);
                         userState.step = 13;                            
               
                        }
@@ -366,7 +363,7 @@ const receiveMessage = async(req, res) => {
                     if (!isValid) {
                         // Handle case where the input text is not numeric or index is out of bounds
                         const sucursalNoEncontrado = model.modelText(number, utilities.errorSucursal);
-                        await whatsappService.sendMessage(sucursalNoEncontrado);
+                        await whatsappService.sendMessage(sucursalNoEncontrado,userState.empresa);
                         userState.step = 12;
                     }
                     break;   
@@ -375,11 +372,11 @@ const receiveMessage = async(req, res) => {
                     if(text === "Enfermedad"){                        
                         userState.causa = text;                  
                         const enfermedad = model.modelText(number, utilities.enfermedad);
-                        await whatsappService.sendMessage(enfermedad);
+                        await whatsappService.sendMessage(enfermedad,userState.empresa);
                         userState.step = 14; 
                     }else if(text === "Otros"){
                         const motivo = model.modelText(number, utilities.motivo);
-                        await whatsappService.sendMessage(motivo);
+                        await whatsappService.sendMessage(motivo,userState.empresa);
                         userState.step = 30; 
                     }
                     else{
@@ -396,7 +393,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.enfermedad = text;                                            
                     const enfermedad = model.modelText(number, utilities.sintomas);
-                    await whatsappService.sendMessage(enfermedad);
+                    await whatsappService.sendMessage(enfermedad,userState.empresa);
                     userState.step = 15; 
                     break;           
                     
@@ -405,7 +402,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.sintomas = text;                                            
                     const medicacion = model.modelText(number, utilities.medicacion);
-                    await whatsappService.sendMessage(medicacion);
+                    await whatsappService.sendMessage(medicacion,userState.empresa);
                     userState.step = 16; 
                     break;           
                     
@@ -414,7 +411,7 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.medicacion = text;     
                     const botonAsistencia = model.modelButtonGeneric(number, "Recibio Asistencia:", ["SI", "NO"]);        
-                    await whatsappService.sendMessage(botonAsistencia);
+                    await whatsappService.sendMessage(botonAsistencia,userState.empresa);
                     userState.step = 17; 
                     break;         
                 }
@@ -422,9 +419,9 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.asistencia = text;                    
                     const certificado = model.modelText(number, utilities.certificado);
-                    await whatsappService.sendMessage(certificado);
+                    await whatsappService.sendMessage(certificado,userState.empresa);
                     const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
-                    await whatsappService.sendMessage(botonCertificado);
+                    await whatsappService.sendMessage(botonCertificado,userState.empresa);
                     userState.step = 18; 
                     break;   
                 }
@@ -433,7 +430,7 @@ const receiveMessage = async(req, res) => {
                     if(text == "SI"){
                         userState.certificado = text;                 
                         const adjuntarImagen = model.modelText(number, utilities.imagen);
-                        await whatsappService.sendMessage(adjuntarImagen);
+                        await whatsappService.sendMessage(adjuntarImagen,userState.empresa);
                         userState.step = 19; 
                     }else{
                         userState.certificado = "NO"; 
@@ -475,14 +472,14 @@ const receiveMessage = async(req, res) => {
                             const registro = utilities.registro + saveUser; 
                             const registro_model = model.modelText(number, registro); 
                             const saludo_model = model.modelText(number, utilities.saludo);                       
-                            await whatsappService.sendMessage(registro_model);
-                            await whatsappService.sendMessage(saludo_model);
+                            await whatsappService.sendMessage(registro_model,userState.empresa);
+                            await whatsappService.sendMessage(saludo_model,userState.empresa);
                            
                         }catch(e){
                               //notificacionFallida
                               const notificacionFallido = utilities.notificacionFallida;
                               const notificacion_model = model.modelText(number, notificacionFallido);
-                              await whatsappService.sendMessage(notificacion_model);
+                              await whatsappService.sendMessage(notificacion_model,userState.empresa);
                               Sentry.captureException(e);
                           
                         }
@@ -490,7 +487,7 @@ const receiveMessage = async(req, res) => {
                     }else{
                         const saludo = utilities.saludo_vuelta;
                         const saludo_model = model.modelText(number, saludo);                                     
-                        await whatsappService.sendMessage(saludo_model);                       
+                        await whatsappService.sendMessage(saludo_model,userState.empresa);                       
                    
                     }
                     delete usersState[number];
@@ -508,9 +505,9 @@ const receiveMessage = async(req, res) => {
                 {
                     userState.motivo = text;                    
                     const certificado = model.modelText(number, utilities.certificado);
-                    await whatsappService.sendMessage(certificado);
+                    await whatsappService.sendMessage(certificado,userState.empresa);
                     const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
-                    await whatsappService.sendMessage(botonCertificado);
+                    await whatsappService.sendMessage(botonCertificado,userState.empresa);
                     userState.step = 31;                    
                     break;  
                 }
@@ -519,7 +516,7 @@ const receiveMessage = async(req, res) => {
                     if(text == "SI"){
                         userState.certificado = text;                 
                         const adjuntarImagen = model.modelText(number, utilities.imagen);
-                        await whatsappService.sendMessage(adjuntarImagen);
+                        await whatsappService.sendMessage(adjuntarImagen,userState.empresa);
                         userState.step = 32; 
                     }else{
                         userState.certificado = "NO"; 
@@ -559,19 +556,19 @@ const receiveMessage = async(req, res) => {
                             const registro = utilities.registro + saveUser; 
                             const registro_model = model.modelText(number, registro); 
                             const saludo_model = model.modelText(number, utilities.saludo);                       
-                            await whatsappService.sendMessage(registro_model);
-                            await whatsappService.sendMessage(saludo_model);                        
+                            await whatsappService.sendMessage(registro_model,userState.empresa);
+                            await whatsappService.sendMessage(saludo_model,userState.empresa);                        
                         }catch(e){
                             //notificacionFallida
                             const notificacionFallido = utilities.notificacionFallida;
                             const notificacion_model = model.modelText(number, notificacionFallido);
-                            await whatsappService.sendMessage(notificacion_model);
+                            await whatsappService.sendMessage(notificacion_model,userState.empresa);
                             Sentry.captureException(e);                           
                         }
                     }else{
                         const saludo = utilities.saludo_vuelta;
                         const saludo_model = model.modelText(number, saludo);                                     
-                        await whatsappService.sendMessage(saludo_model);
+                        await whatsappService.sendMessage(saludo_model,userState.empresa);
                     }
                
                     delete usersState[number];
@@ -583,13 +580,13 @@ const receiveMessage = async(req, res) => {
                     if(text == "SI"){
                         const registrar = utilities.registrarUser;
                         const registrar_model = model.modelText(number, registrar);
-                        await whatsappService.sendMessage(registrar_model);
+                        await whatsappService.sendMessage(registrar_model,userState.empresa);
                         const nombre = model.modelText(number, utilities.nombre);
-                        await whatsappService.sendMessage(nombre);
+                        await whatsappService.sendMessage(nombre,userState.empresa);
                         userState.step = 4;
                     }else{
                         const dni_again = model.modelText(number, utilities.dniMessage);  
-                        await whatsappService.sendMessage(dni_again);
+                        await whatsappService.sendMessage(dni_again,userState.empresa);
                         userState.step = 3;
               
                     }
@@ -606,14 +603,14 @@ const receiveMessage = async(req, res) => {
                             userState.user = registrarUser;
                             const registroExitoso = utilities.registroExitoso;
                             const saludo_model = model.modelText(number, registroExitoso);
-                            await whatsappService.sendMessage(saludo_model);
+                            await whatsappService.sendMessage(saludo_model,userState.empresa);
                             const legajo = model.modelText(number, utilities.legajo);
-                            await whatsappService.sendMessage(legajo);   
+                            await whatsappService.sendMessage(legajo,userState.empresa);   
                             userState.step = 8;
                         }catch(e){
                             const registroFallido = utilities.registroFallido;
                             const saludo_model = model.modelText(number, registroFallido);
-                            await whatsappService.sendMessage(saludo_model);
+                            await whatsappService.sendMessage(saludo_model,userState.empresa);
                             userState.step = 1;
                             Sentry.captureException(e);
 
@@ -624,7 +621,7 @@ const receiveMessage = async(req, res) => {
                         
                     }else{
                         const volver = model.modelText(number, utilities.volver);  
-                        await whatsappService.sendMessage(volver);
+                        await whatsappService.sendMessage(volver,userState.empresa);
                         delete usersState[number];
                         userState.step = 1;
               
@@ -638,7 +635,7 @@ const receiveMessage = async(req, res) => {
                 {
                         //direccion{}
                     const test1 = model.modelText(number, utilities.test);                    
-                    await whatsappService.sendMessage(number, test1);
+                    await whatsappService.sendMessage(test1, userState.empresa);
                     break;
 
                 }
@@ -683,18 +680,18 @@ cron.schedule('*/10 * * * *', () => {
   async function resumen(userState,number){
     const resumen = utilities.getResumenIncidencia(userState)
     const resumen_model = model.modelText(number, resumen);
-    await whatsappService.sendMessage(resumen_model);
+    await whatsappService.sendMessage(resumen_model,userState.empresa);
     const botonConfirmar = model.modelButtonGeneric(number, "Los datos son correctos?", ["SI", "NO"]);        
-    await whatsappService.sendMessage(botonConfirmar);
+    await whatsappService.sendMessage(botonConfirmar,userState.empresa);
 
 }
 
 async function resumenNo(userState,number){
     const resumen = utilities.getResumenIncidenciaNo(userState)
     const resumen_model = model.modelText(number, resumen);
-    await whatsappService.sendMessage(resumen_model);
+    await whatsappService.sendMessage(resumen_model,userState.empresa);
     const botonConfirmar = model.modelButtonGeneric(number, "Los datos son correctos?", ["SI", "NO"]);        
-    await whatsappService.sendMessage(botonConfirmar);
+    await whatsappService.sendMessage(botonConfirmar,userState.empresa);
 
 }
 

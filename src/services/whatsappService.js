@@ -247,11 +247,11 @@ async function postIncidenciaNo(data, token) {
     }
   }
 
-  async function sendMessage(data) {
-    const url = 'https://graph.facebook.com/v19.0/250745364796553/messages';
+  async function sendMessage(data, empresa) {
+    const url = `https://graph.facebook.com/v19.0/${empresa.idWhatsapp}/messages`;
     const headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer EAAOYsaSAfZBYBO57Y9B0n4ds9TghahxxcmUeptA19Px9J4Ul6k4YUg1h9Rw80VZApDQs1fIVZA2SmcKtvkLB2fYZAd6hFvHOneBhE0ZAk5SxLMsalRhRKnxwKe8KffyZBbRH480pLKZAjexioopIxZBs9GRKt5KOfb0POKudRexyKiIjoiZAyTkIYvSZBA0sN4XhHNcQZDZD"
+        "Authorization": `Bearer ${empresa.token}`
     };
     
     try {
