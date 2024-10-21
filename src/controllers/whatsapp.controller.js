@@ -77,7 +77,7 @@ const receiveMessage = async(req, res) => {
             if(text === "S" || text === "s"){
                 delete usersState[number];  
             }
-            const currentTime = new Date().getTime();
+            
             if (!usersState[number]) {
             
                 try{
@@ -94,14 +94,9 @@ const receiveMessage = async(req, res) => {
                 }
             
             } else {
-                const lastInteractionTime = usersState[number].timestamp;
-                const timeDifference = currentTime - lastInteractionTime;
-                // 20 minutes in milliseconds
-                const eigthMinutes = 8 * 60 * 1000;
-                // If more than 20 minutes have passed, reset the step
-                if (timeDifference > eigthMinutes) {
-                    usersState[number] = { step: 1, timestamp: currentTime };
-                }
+                const currentTime = new Date().getTime();
+                usersState[number].timestamp = currentTime
+   
             }
 
             const userState = usersState[number];
