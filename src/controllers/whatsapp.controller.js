@@ -74,10 +74,10 @@ const receiveMessage = async(req, res) => {
             const messageValue = messages[0];  
             const number = messageValue["from"];
             const text = utilities.GetTextUser(messageValue);
+            const currentTime = new Date().getTime();
             if(text === "S" || text === "s"){
                 delete usersState[number];  
-            }
-            
+            }            
             if (!usersState[number]) {
             
                 try{
@@ -94,7 +94,7 @@ const receiveMessage = async(req, res) => {
                 }
             
             } else {
-                const currentTime = new Date().getTime();
+                
                 usersState[number].timestamp = currentTime
    
             }
