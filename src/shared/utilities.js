@@ -109,7 +109,7 @@ function generateIncidencia(userState){
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
         idImagen: userState.certificado_id,
-        idEmpresa:userState.empresa_id
+        idEmpresa:userState.empresa.id
       };
 
       return user;
@@ -117,20 +117,6 @@ function generateIncidencia(userState){
 
 function generateIncidenciaNo(userState){
     const certificado = userState.certificado == 'SI' ? true : false;
-      /*  {
-"nombre":"Jgg",
-"email":"Gh@gm.com",
-"legajo":"0",
-"direccion":"Fy",
-"celular":"68",
-"motivo":"Ghi",
-"certificado":false,
-"idUser":2,
-"idSucursal":52,
-"nombreSucursal":"Sucursal 44 - RESISTENCIA",
-"idImagen":"0"
-} */
-
     const user = {
         nombre: userState.nombre + " " + userState.apellido,
         email: userState.email,
@@ -143,7 +129,7 @@ function generateIncidenciaNo(userState){
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
         idImagen: userState.certificado_id,
-        idEmpresa:userState.empresa_id
+        idEmpresa:userState.empresa.id
       };
 
       return user;
@@ -179,7 +165,7 @@ function getUser(userState){
 }
 function getResumenIncidencia(userState){
     const resumen = `Resumen Aviso Notificación:
-    Empresa:${userState.empresa}
+    Empresa:${userState.empresa.nombre}
     Nombre Completo: ${userState.nombre} ${userState.apellido}
     Email: ${userState.email}
     Celular: ${userState.celular}
@@ -195,7 +181,7 @@ function getResumenIncidencia(userState){
 
 function getResumenIncidenciaNo(userState){
     const resumen = `Resumen Aviso Notificación:
-    Empresa:${userState.empresa}
+    Empresa:${userState.empresa.nombre}
     Nombre Completo: ${userState.nombre} ${userState.apellido}
     Email: ${userState.email}
     Celular: ${userState.celular}
