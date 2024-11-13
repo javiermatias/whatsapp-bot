@@ -107,19 +107,7 @@ const receiveMessage = async(req, res) => {
             switch (userState.step) {
                 // Bienvenidos a Ausentismos Online
                 case 1:{                    
-                /*     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
-                    userState.nombreApellido = "John Doe";
-                    userState.email = "john.doe@example.com";
-                    userState.legajo = "12345";
-                    userState.direccion = "123 Main St";
-                    userState.celular = "1234567890";
-                    userState.enfermedad = "Colicos";
-                    userState.sintomas = "Dolor de panza";
-                    userState.medicacion = "Antinflamatorio";                                      
-                    userState.idSucursal = 101;
-                    userState.nombreSucursal = "Olmos";
-                    userState.certificado_id = "0"; */
-                    
+                                 
                     const modelGreeting = model.modelText(number, utilities.greetingMessage);
                     await whatsappService.sendMessage(modelGreeting,userState.empresa);
                     userState.step = 2;
@@ -152,10 +140,15 @@ const receiveMessage = async(req, res) => {
                             userState.dni = text;                    
                             if(user){
                                 userState.existe_user = true;
-                                userState.user = user;                            
-                                const nombre = model.modelText(number, utilities.nombre);
-                                await whatsappService.sendMessage(nombre,userState.empresa);
-                                userState.step = 4;
+                                userState.user = user;
+                                userState.nombre = user.nombre;
+                                userState.apellido = user.apellido;  
+
+                                //const nombre = model.modelText(number, utilities.nombre);
+                                //await whatsappService.sendMessage(nombre,userState.empresa);
+                                const email = model.modelText(number, utilities.email);
+                                await whatsappService.sendMessage(email,userState.empresa);
+                                userState.step = 6;
                             }else{
                                 //Registrar
                                 userState.existe_user = false;                           
@@ -696,3 +689,17 @@ module.exports = {
     receiveMessage,
     test
 }
+
+   /*     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
+                    userState.nombreApellido = "John Doe";
+                    userState.email = "john.doe@example.com";
+                    userState.legajo = "12345";
+                    userState.direccion = "123 Main St";
+                    userState.celular = "1234567890";
+                    userState.enfermedad = "Colicos";
+                    userState.sintomas = "Dolor de panza";
+                    userState.medicacion = "Antinflamatorio";                                      
+                    userState.idSucursal = 101;
+                    userState.nombreSucursal = "Olmos";
+                    userState.certificado_id = "0"; 
+   */
