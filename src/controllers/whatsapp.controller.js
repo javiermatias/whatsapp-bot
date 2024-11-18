@@ -143,9 +143,6 @@ const receiveMessage = async(req, res) => {
                                 userState.user = user;
                                 userState.nombre = user.nombre;
                                 userState.apellido = user.apellido;  
-
-                                //const nombre = model.modelText(number, utilities.nombre);
-                                //await whatsappService.sendMessage(nombre,userState.empresa);
                                 const email = model.modelText(number, utilities.email);
                                 await whatsappService.sendMessage(email,userState.empresa);
                                 userState.step = 6;

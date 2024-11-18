@@ -1,7 +1,7 @@
 // messages.js
 
 const greetingMessage = "Bienvenidos a Ausentismos online. Para notificar su ausencia via online puede dirigirse a: https://front-ausentismo.vercel.app/ Si quiere notificar la ausencia por este medio indique *OK*. En el caso de que quiera salir presione *S*";
-const avisoNotificacion = "*Importante!* Este aviso no exime del cumplimiento de los plazos legales, ni de las autorizaciones, en el caso de que correspondan ser gestionadas previamente."
+const avisoNotificacion = "*Importante!* Este aviso no exime de cumplimiento de las autorizaciones previas, de corresponder, ni de la presentación posterior de las justificaciones documentales."
 const byeMessage = "Gracias por comunicarse con ausentismos online!";
 const dniMessage = "Por favor indique numero de *DNI*:";
 const errorDni = "Disculpa! El DNI que indicaste tiene un error. ";
