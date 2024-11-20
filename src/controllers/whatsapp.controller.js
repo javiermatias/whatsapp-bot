@@ -330,7 +330,7 @@ const receiveMessage = async(req, res) => {
                     break;      
                 }
 
-                case 12://Presunta Enfermedad
+                case 12://Ausencia u otras causas
                 {
                     let isValid = false;
                     if (whatsappService.isNumeric(text)) {
@@ -400,34 +400,52 @@ const receiveMessage = async(req, res) => {
                     userState.step = 17; 
                     break;         
                 }
-                case 17://Posee certificado
+                case 17://Fecha Hasta
                 {
-                    userState.asistencia = text;                    
-                    const certificado = model.modelText(number, utilities.certificado);
-                    await whatsappService.sendMessage(certificado,userState.empresa);
-                    const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
-                    await whatsappService.sendMessage(botonCertificado,userState.empresa);
+                    userState.asistencia = text;
+                    const fechaHasta = model.modelText(number, utilities.fechaHasta);
+                    await whatsappService.sendMessage(fechaHasta,userState.empresa);
                     userState.step = 18; 
-                    break;   
+                    break;
                 }
-                case 18://Adjuntar imagen
+                case 18: //Posee certificado
+                {                    
+                    let isValid = utilities.validateDate(text);
+                    if(isValid){
+                        userState.fechaHasta = text;
+                        const certificado = model.modelText(number, utilities.certificado);
+                        await whatsappService.sendMessage(certificado,userState.empresa);
+                        const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
+                        await whatsappService.sendMessage(botonCertificado,userState.empresa);
+                        userState.step = 19; 
+                         
+                    }else{
+                        const error = model.modelText(number, utilities.errorfechaHasta);
+                        await whatsappService.sendMessage(error,userState.empresa);
+                        userState.step = 17;
+                    }
+
+                    break;
+                }             
+                
+                case 19://Adjuntar imagen
                 {
                     if(text == "SI"){
                         userState.certificado = text;                 
                         const adjuntarImagen = model.modelText(number, utilities.imagen);
                         await whatsappService.sendMessage(adjuntarImagen,userState.empresa);
-                        userState.step = 19; 
+                        userState.step = 20; 
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
                         await resumen(userState, number);
-                        userState.step = 20;
+                        userState.step = 21;
                     }
                     break;
 
                     
                 }
-                case 19://Adjuntar certificado
+                case 20://Adjuntar certificado
                 {
                     //console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
@@ -442,13 +460,13 @@ const receiveMessage = async(req, res) => {
                     await resumen(userState, number);
 
 
-                    userState.step = 20;
+                    userState.step = 21;
                     
                        
               
                     break;   
                 }
-                case 20: //resumen
+                case 21: //resumen
                 {
                     if(text == "SI"){
                         try{
@@ -486,35 +504,53 @@ const receiveMessage = async(req, res) => {
                
                   break;
                 }
-                case 30: //otros
-                {
-                    userState.motivo = text;                    
-                    const certificado = model.modelText(number, utilities.certificado);
-                    await whatsappService.sendMessage(certificado,userState.empresa);
-                    const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
-                    await whatsappService.sendMessage(botonCertificado,userState.empresa);
-                    userState.step = 31;                    
-                    break;  
+                case 30: {
+                   
+                    userState.motivo = text;
+                    const fechaHasta = model.modelText(number, utilities.fechaHasta);
+                    await whatsappService.sendMessage(fechaHasta,userState.empresa);
+                    userState.step = 31; 
+                    break;
+                    
+                  
                 }
-                case 31:
+                case 31: //otros
+                {
+
+                    let isValid = utilities.validateDate(text);
+                    if(isValid){
+                        userState.fechaHasta = text;                                          
+                        const certificado = model.modelText(number, utilities.certificado);
+                        await whatsappService.sendMessage(certificado,userState.empresa);
+                        const botonCertificado = model.modelButtonGeneric(number, "Desea adjuntar Certificado?(Foto)", ["SI", "NO"]);        
+                        await whatsappService.sendMessage(botonCertificado,userState.empresa);
+                        userState.step = 32; 
+                         
+                    }else{
+                        const error = model.modelText(number, utilities.errorfechaHasta);
+                        await whatsappService.sendMessage(error,userState.empresa);
+                        userState.step = 31;
+                    }
+
+                    break;
+ 
+                }
+                case 32:
                 {
                     if(text == "SI"){
                         userState.certificado = text;                 
                         const adjuntarImagen = model.modelText(number, utilities.imagen);
                         await whatsappService.sendMessage(adjuntarImagen,userState.empresa);
-                        userState.step = 32; 
+                        userState.step = 33; 
                     }else{
                         userState.certificado = "NO"; 
                         userState.certificado_id = "0";
-
                         await resumenNo(userState, number);
-
-
-                        userState.step = 33;
+                        userState.step = 34;
                     }
                     break;
                 }
-                case 32://Adjuntar certificado
+                case 33://Adjuntar certificado
                 {
                     //console.log("id certificado " + text)
                     if (whatsappService.isNumeric(text)) {
@@ -527,11 +563,11 @@ const receiveMessage = async(req, res) => {
                     }
 
                     await resumenNo(userState, number);
-                    userState.step = 33;
+                    userState.step = 34;
                     break;   
                 }
 
-                case 33://Adjuntar certificado
+                case 34://Adjuntar certificado
                 {
                     //console.log("id certificado " + text)
                     if (text == "SI") {
@@ -621,6 +657,7 @@ const receiveMessage = async(req, res) => {
                         //direccion{}
                     const test1 = model.modelText(number, utilities.test);                    
                     await whatsappService.sendMessage(test1, userState.empresa);
+                    userState.step = 1;
                     break;
 
                 }

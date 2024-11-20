@@ -1,4 +1,4 @@
-// messages.js
+const { DateTime } = require('luxon');
 
 const greetingMessage = "Bienvenidos a Ausentismos online. Para notificar su ausencia via online puede dirigirse a: https://front-ausentismo.vercel.app/ Si quiere notificar la ausencia por este medio indique *OK*. En el caso de que quiera salir presione *S*";
 const avisoNotificacion = "*Importante!* Este aviso no exime de cumplimiento de las autorizaciones previas, de corresponder, ni de la presentación posterior de las justificaciones documentales."
@@ -15,7 +15,7 @@ const email = "Ingrese su email";
 const legajo = "Ingrese su legajo, 0 si no tiene";
 const direccion = "Ingrese su dirección real actual";
 const celular = "Ingrese su celular";
-const test = "Mensaje de prueba";
+const test = "Hubo un error vuelva a intentarlo";
 const errorProvincia = "Por favor elija con el numero la provincia";
 const errorLocalidad = "Por favor elija con el numero la localidad";
 const errorSucursal = "Por favor elija con el numero la sucursal";
@@ -35,6 +35,8 @@ const motivo = "Por favor indique el motivo de la ausencia: ";
 const volver = "Bien va tener que iniciar el proceso de vuelta.";
 const error = "Hubo un error en la aplicación. Vuelva a iniciar el proceso";
 const certificado = "*Importante!* Debera presentar el certificado original dentro de las próximas 24hs en el departamento médico u departamento de RRHH de la empresa"
+const fechaHasta = "Indique la fecha hasta la cual va a estar ausente en formato DD/MM/AAAA ej: 22/12/2024";
+const errorfechaHasta = "Hubo un error en la fecha hasta, por favor respete el formato DD/MM/AAAA ej: 22/12/2024";
 const userJson = `
 {
     "id": 3,
@@ -109,7 +111,8 @@ function generateIncidencia(userState){
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
         idImagen: userState.certificado_id,
-        idEmpresa:userState.empresa.id
+        idEmpresa:userState.empresa.id,
+        fechaHasta:userState.fechaHasta
       };
 
       return user;
@@ -129,7 +132,8 @@ function generateIncidenciaNo(userState){
         idSucursal: userState.idSucursal,
         nombreSucursal: userState.nombreSucursal,
         idImagen: userState.certificado_id,
-        idEmpresa:userState.empresa.id
+        idEmpresa:userState.empresa.id,
+        fechaHasta:userState.fechaHasta
       };
 
       return user;
@@ -192,6 +196,14 @@ function getResumenIncidenciaNo(userState){
     return resumen;
 }
 
+function validateDate(dateText){
+ // Parse date using the specified format
+ const date = DateTime.fromFormat(dateText, 'dd/MM/yyyy');
+
+ // Check if the date is valid
+ return date.isValid;
+}
+
 
 module.exports = {
     GetTextUser,
@@ -201,6 +213,7 @@ module.exports = {
     getResumenIncidenciaNo,
     getUser,
     generateUser,
+    validateDate,
     greetingMessage,
     avisoNotificacion,
     tituloBoton,
@@ -236,5 +249,7 @@ module.exports = {
     notificacionFallida,
     volver,
     certificado,
-    error
+    error,
+    fechaHasta,
+    errorfechaHasta
 }
