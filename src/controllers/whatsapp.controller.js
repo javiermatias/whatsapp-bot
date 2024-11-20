@@ -422,7 +422,7 @@ const receiveMessage = async(req, res) => {
                     }else{
                         const error = model.modelText(number, utilities.errorfechaHasta);
                         await whatsappService.sendMessage(error,userState.empresa);
-                        userState.step = 17;
+                        userState.step = 18;
                     }
 
                     break;
@@ -724,16 +724,3 @@ module.exports = {
     test
 }
 
-   /*     userState.user = JSON.parse(utilities.userJson); //remeber to remove this line of code when its prodcution
-                    userState.nombreApellido = "John Doe";
-                    userState.email = "john.doe@example.com";
-                    userState.legajo = "12345";
-                    userState.direccion = "123 Main St";
-                    userState.celular = "1234567890";
-                    userState.enfermedad = "Colicos";
-                    userState.sintomas = "Dolor de panza";
-                    userState.medicacion = "Antinflamatorio";                                      
-                    userState.idSucursal = 101;
-                    userState.nombreSucursal = "Olmos";
-                    userState.certificado_id = "0"; 
-   */
